@@ -1,0 +1,43 @@
+{
+  "name": "@ttab/elephant-api",
+  "private": false,
+  "license": "MIT",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    "./repository": {
+      "types": "./dist/repository/index.d.ts",
+      "import": "./dist/repository/index.js",
+      "require": "./dist/repository/index.cjs"
+    },
+    "./newsdoc": {
+      "types": "./dist/newsdoc/newsdoc.d.ts",
+      "import": "./dist/newsdoc/newsdoc.js",
+      "require": "./dist/newsdoc/newsdoc.cjs"
+    },
+    "./ndex": {
+      "types": "./dist/index/index.d.ts",
+      "import": "./dist/index/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:repository": "tsup ./proto/repository/index.ts --format cjs,esm --dts --outDir ./dist/repository",
+    "build:newsdoc": "tsup ./proto/newsdoc/newsdoc.ts --format cjs,esm --dts --outDir ./dist/newsdoc",
+    "build:index": "tsup ./proto/index/index.ts --format cjs,esm --dts --outDir ./dist/index",
+    "build": "npm run build:repository && npm run build:newsdoc && npm run build:index",
+    "prepublish": "npm run build"
+  },
+  "author": "",
+  "description": "",
+  "devDependencies": {
+    "@protobuf-ts/runtime": "^2.9.4",
+    "@protobuf-ts/runtime-rpc": "^2.9.4",
+    "tsup": "^8.2.4"
+  },
+  "files": [
+    "dist"
+  ]
+}

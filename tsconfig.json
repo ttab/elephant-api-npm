@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "outDir": "./dist/types",
+    "rootDir": "./proto"
+  },
+  "include": [
+    "proto/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
