@@ -31,10 +31,22 @@ if git rev-parse "$tag" >/dev/null 2>&1; then
     exit 0
 fi
 
-# Get protobuf sources
-for dir in index newsdoc repository; do
-    mkdir -p "proto/$dir"
-    cp $checkout/$dir/*.proto proto/$dir/
+services=()
+
+# Discover services and copy protobuf sources.
+for proto in $(ls $checkout/*/*.proto); do
+    dir=$(dirname $proto)
+    dirname=$(basename $dir)
+    name=$(basename $proto)
+
+    if [ "$name" = "service.proto" ]; then
+        services+=($dirname)
+    fi
+
+    dst=proto/$dirname
+
+    mkdir -p $dst
+    cp $proto $dst
 done
 
 # Build the docker image, just temporary, should live in a separate repo.
@@ -49,12 +61,8 @@ docker run --rm \
        -w "/usr/src" \
        node-protobuf sh -c "npm install --ignore-scripts"
 
-services="index repository"
-
-service_index=
-
 # Generate clients
-for service in $services; do
+for service in ${services[@]}; do
     docker run --rm \
            -v "$(pwd):/usr/src" \
            -v "${node_modules}:/usr/src/node_modules" \
@@ -68,7 +76,7 @@ for service in $services; do
            --proto_path /usr/src/proto \
            $service/service.proto
 
-    cat > src/$service/index.ts <<EOF
+    tee src/$service/index.ts <<'EOF' >/dev/null
 export * from './service.client.ts'
 export * from './service.ts'
 EOF
