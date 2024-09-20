@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -euo pipefail
 
 src_repo=https://github.com/ttab/elephant-api.git
 checkout=$(mktemp -d -t ele-api-XXX)
@@ -20,7 +20,7 @@ if [ -z "$tag" ]; then
     # Get the latest tag
     tag=$(git -C $checkout describe --tags --abbrev=0)
 
-    git -C $checkout checkout $tag
+    git -C $checkout checkout $tag >/dev/null 2>&1
 else
     git clone --depth 1 --branch $tag $src_repo
 fi
