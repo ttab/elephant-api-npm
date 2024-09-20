@@ -74,6 +74,6 @@ export * from './service.ts'
 EOF
 done
 
-npm version $tag
 npm run build
+npm version $tag
 
