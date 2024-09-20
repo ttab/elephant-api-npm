@@ -22,12 +22,20 @@
     },
     "./package.json": "./package.json"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/ttab"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ttab/elephant-api-npm.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:repository": "tsup ./src/repository/index.ts --format cjs,esm --dts --outDir ./dist/repository",
     "build:newsdoc": "tsup ./src/newsdoc/newsdoc.ts --format cjs,esm --dts --outDir ./dist/newsdoc",
     "build:index": "tsup ./src/index/index.ts --format cjs,esm --dts --outDir ./dist/index",
     "build": "npm run build:repository && npm run build:newsdoc && npm run build:index",
+    "update": "bash .github/workflows/update.sh",
     "prepublish": "npm run build"
   },
   "author": "",
