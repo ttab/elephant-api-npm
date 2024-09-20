@@ -13,7 +13,7 @@ import { UnknownFieldHandler } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
-import { Document } from "../newsdoc/newsdoc.js";
+import { Document } from "../newsdoc/newsdoc";
 /**
  * @generated from protobuf message elephant.repository.GetStatusHistoryRequest
  */

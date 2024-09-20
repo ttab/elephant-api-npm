@@ -9,10 +9,10 @@
     "esModuleInterop": true,
     "allowImportingTsExtensions": true,
     "outDir": "./dist/types",
-    "rootDir": "./proto"
+    "rootDir": "./src"
   },
   "include": [
-    "proto/**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules"

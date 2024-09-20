@@ -24,20 +24,23 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:repository": "tsup ./proto/repository/index.ts --format cjs,esm --dts --outDir ./dist/repository",
-    "build:newsdoc": "tsup ./proto/newsdoc/newsdoc.ts --format cjs,esm --dts --outDir ./dist/newsdoc",
-    "build:index": "tsup ./proto/index/index.ts --format cjs,esm --dts --outDir ./dist/index",
+    "build:repository": "tsup ./src/repository/index.ts --format cjs,esm --dts --outDir ./dist/repository",
+    "build:newsdoc": "tsup ./src/newsdoc/newsdoc.ts --format cjs,esm --dts --outDir ./dist/newsdoc",
+    "build:index": "tsup ./src/index/index.ts --format cjs,esm --dts --outDir ./dist/index",
     "build": "npm run build:repository && npm run build:newsdoc && npm run build:index",
     "prepublish": "npm run build"
   },
   "author": "",
   "description": "",
   "devDependencies": {
-    "@protobuf-ts/runtime": "^2.9.4",
-    "@protobuf-ts/runtime-rpc": "^2.9.4",
+    "@protobuf-ts/plugin": "^2.9.4",
     "tsup": "^8.2.4"
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "@protobuf-ts/runtime": "^2.9.4",
+    "@protobuf-ts/runtime-rpc": "^2.9.4"
+  }
 }

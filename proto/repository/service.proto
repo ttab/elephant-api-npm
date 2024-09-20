@@ -1,0 +1,851 @@
+syntax = "proto3";
+
+import "newsdoc/newsdoc.proto";
+
+package elephant.repository;
+
+option go_package = "./repository";
+
+service Documents {
+  // Get retrieves a document version.
+  rpc Get(GetDocumentRequest) returns (GetDocumentResponse);
+  // GetHistory lists the document version history.
+  rpc GetHistory(GetHistoryRequest) returns (GetHistoryResponse);
+  // Update is used to create new document versions, set statuses, update ACLs.
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  // BulkUpdate is used to create new document versions, set statuses, update ACLs.
+  rpc BulkUpdate(BulkUpdateRequest) returns (BulkUpdateResponse);
+  // Validate is used to validate a document without writing it to the
+  // repository.
+  rpc Validate(ValidateRequest) returns (ValidateResponse);
+  // Delete deletes a document and all its associated data.
+  rpc Delete(DeleteDocumentRequest) returns (DeleteDocumentResponse);
+  // ListDeleted lists deleted document instances for a UUID.
+  rpc ListDeleted(ListDeletedRequest) returns (ListDeletedResponse);
+  // Restore recovers a deleted document.
+  rpc Restore(RestoreRequest) returns (RestoreResponse);
+  // Purge removes a deleted document completely.
+  rpc Purge(PurgeRequest) returns (PurgeResponse);
+  // GetMeta returns metadata for a document, including the ACL and current
+  // status heads.
+  rpc GetMeta(GetMetaRequest) returns (GetMetaResponse);
+  // Eventlog returns document update events, optionally waiting for new events.
+  rpc Eventlog(GetEventlogRequest) returns (GetEventlogResponse);
+  // CompactedEventlog returns document update events. If more than one event
+  // has occured for a document in the given window only the latest will be returned.
+  rpc CompactedEventlog(GetCompactedEventlogRequest) returns (GetCompactedEventlogResponse);
+  // GetStatusHistory returns the history of a status for a document.
+  rpc GetStatusHistory(GetStatusHistoryRequest) returns (GetStatusHistoryReponse);
+  // GetStatusOverview returns the current version and a set of statuses for a
+  // gven list of documents.
+  rpc GetStatusOverview(GetStatusOverviewRequest) returns (GetStatusOverviewResponse);
+  // GetPermissions returns the permissions you have for the document.
+  rpc GetPermissions(GetPermissionsRequest) returns (GetPermissionsResponse);
+  // Lock attempts to acquire a write lock on a document.
+  rpc Lock(LockRequest) returns (LockResponse);
+  // ExtendLock extends the expiration of an existing lock.
+  rpc ExtendLock(ExtendLockRequest) returns (LockResponse);
+  // Unlock releases a write lock on a document.
+  rpc Unlock(UnlockRequest) returns (UnlockResponse);
+}
+
+service Schemas {
+  // Register register a new validation schema version.
+  rpc Register(RegisterSchemaRequest) returns (RegisterSchemaResponse);
+  // SetActive activates schema versions.
+  rpc SetActive(SetActiveSchemaRequest) returns (SetActiveSchemaResponse);
+  // Get retrieves a schema.
+  rpc Get(GetSchemaRequest) returns (GetSchemaResponse);
+  // GetAllActiveSchemas returns the currently active schemas.
+  rpc GetAllActive(GetAllActiveSchemasRequest) returns (GetAllActiveSchemasResponse);
+  // RegisterMetaType registers a type that can be used for meta documents.
+  rpc RegisterMetaType(RegisterMetaTypeRequest) returns (RegisterMetaTypeResponse);
+  // RegisterMetaTypeUse registers a meta type for use with a main type.
+  rpc RegisterMetaTypeUse(RegisterMetaTypeUseRequest) returns (RegisterMetaTypeUseResponse);
+  // GetDeprecations lists all deprecations.
+  rpc GetDeprecations(GetDeprecationsRequest) returns (GetDeprecationsResponse);
+  // UpdateDeprecation creates or updates a deprecation.
+  rpc UpdateDeprecation(UpdateDeprecationRequest) returns (UpdateDeprecationResponse);
+}
+
+service Workflows {
+  // UpdateStatus creates or updates a status that can be used for documents.
+  rpc UpdateStatus(UpdateStatusRequest) returns (UpdateStatusResponse);
+  // GetStatuses lists all enabled statuses.
+  rpc GetStatuses(GetStatusesRequest) returns (GetStatusesResponse);
+  // CreateStatusRule creates or updates a status rule that should be applied
+  // when setting statuses.
+  rpc CreateStatusRule(CreateStatusRuleRequest) returns (CreateStatusRuleResponse);
+  // DeleteStatusRule removes a status rule.
+  rpc DeleteStatusRule(DeleteStatusRuleRequest) returns (DeleteStatusRuleResponse);
+  // GetStatusRules returns all status rules.
+  rpc GetStatusRules(GetStatusRulesRequest) returns (GetStatusRulesResponse);
+}
+
+service Reports {
+  // List all reports.
+  rpc List(ListReportsRequest) returns (ListReportsResponse);
+  // Update or create a report.
+  rpc Update(UpdateReportRequest) returns (UpdateReportResponse);
+  // Get a report.
+  rpc Get(GetReportRequest) returns (GetReportResponse);
+  // Delete a report.
+  rpc Delete(DeleteReportRequest) returns (DeleteReportResponse);
+  // Run a report. This will run the report and return the results instead of
+  // sending it to any outputs.
+  rpc Run(RunReportRequest) returns (RunReportResponse);
+  // Test a report by runing it without saving.
+  rpc Test(TestReportRequest) returns (TestReportResponse);
+}
+
+service Metrics {
+  // Register a metric kind
+  rpc RegisterKind(RegisterMetricKindRequest) returns (RegisterMetricKindResponse);
+  // Delete a metric kind
+  rpc DeleteKind(DeleteMetricKindRequest) returns (DeleteMetricKindResponse);
+  // List all metric kinds
+  rpc GetKinds(GetMetricKindsRequest) returns (GetMetricKindsResponse);
+  // Register a data point
+  rpc RegisterMetric(RegisterMetricRequest) returns (RegisterMetricResponse);
+}
+
+message GetStatusHistoryRequest {
+  // UUID of the document to get the status history for.
+  string uuid = 1;
+  // Name of the status to get.
+  string name = 2;
+  // Before is a status ID used to page backwards through the status history. If
+  // no ID or a zero ID is provided the list will start with the lastest status.
+  int64 before = 3;
+}
+
+message GetStatusHistoryReponse {
+  repeated Status statuses = 1;
+}
+
+message GetStatusOverviewRequest {
+  // UUIDs to get statuses for.
+  repeated string uuids    = 1;
+  // Statuses to return information for.
+  repeated string statuses = 2;
+  // GetMeta can be used to load any set status metadata.
+  bool get_meta            = 3;
+}
+
+message GetStatusOverviewResponse {
+  repeated StatusOverviewItem items = 1;
+}
+
+message StatusOverviewItem {
+  // UUID of the document.
+  string uuid     = 1;
+  // Version the document is at.
+  int64 version   = 2;
+  // Modified timestamp is the RFC3339 timestamp for the last change that
+  // affected the document.
+  string modified = 3;
+  // Heads are the last statuses.
+  map<string, Status> heads = 4;
+}
+
+message GetPermissionsRequest {
+  // UUID of the document to get the permissions for.
+  string uuid = 1;
+}
+
+message GetPermissionsResponse {
+  // Permissions that the client has for the document. The map is keyed by the
+  // permission the client has and the value is either the client subject, the
+  // unit URI if the permission was granted through a unit membership, or
+  // "scope://[name]" if it was granted through elevated privileges.
+  map<string, string> permissions = 1;
+}
+
+message GetEventlogRequest {
+  // After specifies the event ID after which to start returning events. A
+  // negative value of -N will start from the N most recent events.
+  int64 after = 1;
+  // Wait is the maximum time to wait for new events. Defaults to 2000.
+  int32 wait_ms = 2;
+  // BatchSize is the number of events we want in the response. Defaults to 10.
+  int32 batch_size = 3;
+  // BatchWaitMs is the maximum time we wait for a batch to be filled. Defaults to 200.
+  int32 batch_wait_ms = 4;
+}
+
+message GetEventlogResponse {
+  repeated EventlogItem items = 1;
+}
+
+message GetCompactedEventlogRequest {
+  // After specifies the event ID after which to start returning events.
+  int64 after = 1;
+  // Until allows us to control the number of events we want to evaluate when
+  // compacting. Must be between 1 and 10000 more than `after`, and cannot be
+  // greater than the current last event.
+  int64 until = 3;
+  // Limit restricts the number of events we want returned for each
+  // call. Together with `offset` this allows us to page through the unique
+  // document events between `after` and `until`. Defaults to 0, meaning no
+  // limit.
+  int32 limit = 4;
+  // Offset allows us to skip N number of events relative to `after`. So while
+  // `after` and until allows us to paginate through the log as a whole,
+  // `offset` and `limit` allows us to page through the unique document events
+  // between `after` and `until`. Defaults to 0, meaning no offset.
+  int32 offset = 5;
+  // Type is used to only return events for documents of the given
+  // type. Defaults to empty, which will return events for all document types.
+  string type = 6;
+}
+
+message GetCompactedEventlogResponse {
+  repeated EventlogItem items = 1;
+}
+
+message EventlogItem {
+  // Id of the event.
+  int64 id              = 1;
+  // Event type, one of: "document", "status", "acl", "delete_document",
+  // "restore_finished".
+  string event          = 2;
+  // Uuid of the document that was affected.
+  string uuid           = 3;
+  // Timestamp that the event occurred, as an RFC3339 timestamp.
+  string timestamp      = 4;
+  // Version of the document.
+  int64 version         = 5;
+  // Status that was affected, if it was a "status" event.
+  string status         = 6;
+  // StatusId is the ID of the created status.
+  int64 status_id       = 7;
+  // Acl entry, if it was an "acl" event.
+  repeated ACLEntry acl = 8;
+  // UpdaterUri is the URI for the subject that performed the update.
+  string updater_uri    = 9;
+  // Type of the affected document.
+  string type           = 10;
+  // Language of the affected document.
+  string language       = 11;
+  // OldLanguage of the document if the document changed language.
+  string old_language   = 12;
+  // MainDocument UUID if the document is a metadata document.
+  string main_document  = 13;
+  // SystemState is set to "restoring" if this event was generated from a
+  // restore operation. If the event wasn't generated by a special operation it
+  // is left empty.
+  string system_state   = 14;
+}
+
+message RunReportRequest {
+  string name = 1;
+}
+
+message RunReportResponse {
+  repeated string tables = 1;
+  bytes spreadsheet = 2;
+}
+
+message TestReportRequest {
+  Report report = 1;
+}
+
+message TestReportResponse {
+  repeated string tables = 1;
+  bytes spreadsheet = 2;
+}
+
+message DeleteReportRequest {
+  string name = 1;
+}
+
+message DeleteReportResponse {}
+
+message GetReportRequest {
+  string name = 1;
+}
+
+message GetReportResponse {
+  Report report = 1;
+  bool enabled = 2;
+  string next_execution = 3;
+}
+
+message UpdateReportRequest {
+  Report report = 1;
+  bool enabled = 2;
+}
+
+message ListReportsRequest {}
+
+message ListReportsResponse {
+  repeated ReportListItem reports = 1;
+}
+
+message ReportListItem {
+  string name = 1;
+  string title = 2;
+  string cron_expression = 3;
+  string cron_timezone = 4; // (default UTC)
+}
+
+message Report {
+  string name = 1;
+  string title = 2;
+  bool generate_sheet = 3;
+  string cron_expression = 4;
+  string cron_timezone = 7; // (default UTC)
+  repeated string slack_channels = 5;
+  repeated ReportQuery queries = 6;
+}
+
+message ReportQuery {
+  string name = 1;
+  repeated int32 summarise = 2;
+  string sql = 3;
+  repeated ReportValue value_processing = 4;
+}
+
+message ReportValue {
+  string column = 1;
+  repeated string processors = 2;
+}
+
+message UpdateReportResponse {
+  string next_execution = 1;
+}
+
+message GetStatusRulesRequest {}
+
+message GetStatusRulesResponse {
+  repeated StatusRule rules = 1;
+}
+
+message GetStatusesRequest {}
+
+message WorkflowStatus {
+  string name = 1;
+}
+
+message GetStatusesResponse {
+  repeated WorkflowStatus statuses = 1;
+}
+
+message UpdateStatusRequest {
+  // Name of the status.
+  string name = 1;
+  // Disabled disables the status so that it cannot be used when setting new
+  // statuses.
+  bool disabled = 2;
+}
+
+message UpdateStatusResponse {}
+
+message CreateStatusRuleRequest {
+  StatusRule rule = 1;
+}
+
+message StatusRule {
+  string name = 1;
+  string description = 2;
+  bool access_rule = 3;
+  repeated string applies_to = 4;
+  repeated string for_types = 5;
+  string expression = 6;
+}
+
+message CreateStatusRuleResponse {}
+
+message DeleteStatusRuleRequest {
+  string name = 1;
+}
+
+message DeleteStatusRuleResponse {}
+
+enum GetMetaDoc {
+  META_NONE    = 0;
+  META_INCLUDE = 1;
+  META_ONLY    = 2;
+}
+
+message GetDocumentRequest {
+  // UUID of the document to get.
+  string uuid                = 1;
+  // Version to get, omit to get latest (or use status).
+  int64 version              = 2;
+  // Status is used to fetch the version of the document references by the last
+  // status update. Can be used instead of specifying a version.
+  string status              = 3;
+  // Lock will lock the document for updates. This only affects the creation of
+  // new versions of the document, statuses can still be updated.
+  bool lock                  = 4;
+  // MetaDocument controls the inclusion of associated meta
+  // documents. "META_INCLUDE" will include the document if it
+  // exists. "META_ONLY" will only return the meta document, and will return a
+  // not found error if it doesn't exist.
+  GetMetaDoc meta_document   = 5;
+}
+
+message GetDocumentResponse {
+  // Document is the requested document.
+  newsdoc.Document document = 1;
+  // Version is the version of the returned document.
+  int64 version             = 2;
+  // Status is returned if the document was requested by status name.
+  Status status             = 3;
+  // Meta contains the meta document, if requested, and if it exists.
+  MetaDocument meta         = 4;
+  // IsMetaDocument is true if the document is a meta document.
+  bool is_meta_document     = 5;
+  // MainDocument is the UUID of the main document if this is a meta document.
+  string main_document      = 6;
+}
+
+message MetaDocument {
+  // Document is the requested document.
+  newsdoc.Document document = 1;
+  // Version is the version of the returned document.
+  int64 version = 2;
+}
+
+message GetHistoryRequest {
+  // UUID of the document to get the history for.
+  string uuid = 1;
+  // Before is which version number we should start fetching history from, omit
+  // to start with the latest version.
+  int64 before = 2;
+}
+
+message GetHistoryResponse {
+  repeated DocumentVersion versions = 1;
+}
+
+message DocumentVersion {
+  // Version of the document.
+  int64 version = 1;
+  // Created timestamp is the RFC3339 timestamp for when the version was
+  // created.
+  string created = 2;
+  // Creator of the version.
+  string creator = 3;
+  // Meta data to for the document version.
+  map<string, string> meta = 4;
+}
+
+// UpdateRequest creates a new document version and/or sets statuses and ACLs
+// for a document. The update is transactional will fail or succed as a whole.
+//
+// If the document fails validation an "invalid_argument" error will be returned
+// with the number of errors as meta "err_count" and the individual errors as
+// "0", "1", "2"... Use the Validate method to get th errors as structured data.
+message UpdateRequest {
+  // UUID of the document to update.
+  string uuid                      = 1;
+  // Document version to create.
+  newsdoc.Document document        = 2;
+  // Meta data to associate with the document version.
+  map<string, string> meta         = 3;
+  // IfMatch is used for optimistic locks. Set to the version that you require
+  // to be the current one for the update to be performed, or -1 to only perform
+  // the update if the document doesn't already exist.
+  int64 if_match                   = 4;
+  // Status updates to perform.
+  repeated StatusUpdate status     = 5;
+  // ACL is an ACL list controlling access to the document.
+  repeated ACLEntry acl            = 6;
+  // ImportDirective can be used to preserve timestamps and authorship
+  // information from originating systems, but requires the "import_directive"
+  // scope for use.
+  ImportDirective import_directive = 7;
+  // LockToken is used for explicit pessimistic locking.
+  string lockToken                 = 8;
+  // UpdateMetaDocument can be set to true to update the meta document instead
+  // of the document identified by the UUID.
+  bool update_meta_document        = 9;
+}
+
+// ImportDirective can be used to preserve timestamps and authorship information
+// from originating systems.
+message ImportDirective {
+  string originally_created = 1;
+  string original_creator = 2;
+}
+
+// UpdateResponse describes the result of an update request.
+message UpdateResponse {
+  int64 version = 1;
+  string uuid   = 2;
+}
+
+message BulkUpdateRequest {
+  repeated UpdateRequest updates = 1;
+}
+
+message BulkUpdateResponse {
+  repeated UpdateResponse updates = 1;
+}
+
+message ValidateRequest {
+  newsdoc.Document document = 1;
+}
+
+message ValidateResponse {
+  repeated ValidationResult errors = 1;
+}
+
+message ValidationResult {
+  repeated EntityRef entity = 1;
+  string error = 2;
+}
+
+message EntityRef {
+  // RefType is type of entity that's referenced, one of "block", "property",
+  // "attribute", "data attribute", or "parameter."
+  string ref_type = 1;
+  // Kind is the block type, one of "link", "meta", or "content".
+  string kind = 2;
+  // Index is the position of the entity in an array, where applicable.
+  int64 index = 3;
+  // Name is the name of the entity, where applicable.
+  string name = 4;
+  // Type is the type of the entity, where applicable.
+  string type = 5;
+  // Rel is the relationship for the entity, where applicable.
+  string rel = 6;
+}
+
+message StatusUpdate {
+  // Name of the status to set.
+  string name = 1;
+  // Version to set the status for. Set to -1 to signal that the status no
+  // longer is valid for the document. Optional if part of a document update
+  // request as it then will default to the version being written.
+  int64 version = 2;
+  // Meta data to include with the status update.
+  map<string, string> meta = 3;
+  // IfMatch is used for optimistic locks. Set to the status id that you require
+  // to be the current one for the status to be set, or -1 to only perform the
+  // update if the status hasn't previously been set.
+  int64 if_match = 4;
+}
+
+message UpdatePermissionsRequest {
+  // UUID of the document to update permissions for.
+  string uuid = 1;
+  // Set (upsert based on URI) this list of ACL entries.
+  repeated ACLEntry list = 2;
+}
+
+message UpdatePermissionsResponse {}
+
+message DeleteDocumentRequest {
+  // UUID of the document to delete.
+  string uuid = 1;
+  // Meta data to include with the delete record.
+  map<string, string> meta = 2;
+  // IfMatch is used for optimistic locks. Set to the version that you require
+  // to be the current one for the delete to be performed.
+  int64 if_match = 3;
+  // LockToken is used for explicit pessimistic locking.
+  string lockToken = 8;
+}
+
+message DeleteDocumentResponse {}
+
+message RestoreRequest {
+  // UUID of the document to restore.
+  string uuid            = 1;
+  // DeleteRecordID for the specific instance of the document that was deleted.
+  int64 delete_record_id = 2;
+  // ACL that should be set for the restored document.
+  repeated ACLEntry acl  = 3;
+}
+
+message RestoreResponse {}
+
+message PurgeRequest {
+  // UUID of the document to purge.
+  string uuid            = 1;
+  // DeleteRecordID for the specific instance of the document that should be
+  // purged.
+  int64 delete_record_id = 2;
+}
+
+message PurgeResponse {}
+
+message ListDeletedRequest {
+  // UUID of the document list deletions of. Optional.
+  string uuid          = 1;
+  // BeforeID is used to paginate backwards in deletions. Optional.
+  int64 before_id      = 2;
+  // BeforeDate is used to get deletions going back from before the specified
+  // date YYYY-MM-DD. Optional, will be ignored if before_id is specified.
+  string before_date = 3;
+  // Timezone that the date should be interpreted in.
+  string timezone      = 4;
+}
+
+message ListDeletedResponse {
+  // Deletes that have been performed on document instances with the given UUID.
+  repeated DeleteRecord deletes = 1;
+}
+
+message DeleteRecord {
+  // ID of the delete record.
+  int64 id       = 1;
+  // UUID of the document.
+  string uuid    = 2;
+  // URI of the document.
+  string uri     = 3;
+  // Type of the document.
+  string type    = 4;
+  // Version that the document had at the time of restore.
+  int64 version  = 5;
+  // Creation time for the delete record, as an RFC3339 timestamp.
+  string created = 6;
+  // Creator of the delete record.
+  string creator = 7;
+  // Meta data included with the delete record.
+  map<string, string> meta = 8;
+  // Language that the document was in.
+  string language          = 9;
+  // Finalised is the time, as an RFC3339 timestamp, that the document finished
+  // deleting. Empty if the delete is in progress.
+  string finalised         = 10;
+  // Purged is the time, as an RFC3339 timestamp, all archived data for the
+  // document was purged. Empty if the document hasn't been purged.
+  string purged            = 11;
+}
+
+message GetMetaRequest {
+  // UUID of the document to get metadata for
+  string uuid = 1;
+}
+
+message GetMetaResponse {
+  DocumentMeta meta = 1;
+}
+
+message DocumentMeta {
+  // Created timestamp is the RFC3339 timestamp for when the document was
+  // created.
+  string created            = 1;
+  // Modified timestamp is the RFC3339 timestamp for the last change that
+  // affected the document.
+  string modified           = 2;
+  // CurrentVersion is the last written version of the document.
+  int64 current_version     = 3;
+  // Heads are the last statuses.
+  map<string, Status> heads = 4;
+  // ACL is an ACL list controlling access to the document.
+  repeated ACLEntry acl     = 5;
+  // Document lock, if any
+  Lock lock                 = 6;
+  // IsMetaDocument is true if the document is a meta document.
+  bool is_meta_document     = 7;
+  // MainDocument is the UUID of the main document if this is a meta document.
+  string main_document      = 8;
+}
+
+message Status {
+  // ID of the status.
+  int64 id = 1;
+  // Version of the document that the status refers to.
+  int64 version = 2;
+  // Creator of the status.
+  string creator = 3;
+  // Created timestamp is the RFC3339 timestamp for when the status was created.
+  string created = 4;
+  // Meta data for the status.
+  map<string, string> meta = 5;
+  // MetaDocumentVersion is the version the meta document had at the time the
+  // status was set.
+  int64 meta_doc_version   = 6;
+}
+
+message ACLEntry {
+  // URI that identifies the party that's granted access.
+  string uri = 1;
+  // Permissions given to the grantee.
+  repeated string permissions = 2;
+}
+
+message Lock {
+  // Lock token string
+  string token = 1;
+  // URI of the lock owner
+  string uri = 2;
+  // Created timestamp is the RFC3339 timestamp for when the lock was created.
+  string created = 3;
+  // Expires timestamp is the RFC3339 timestamp for when the lock will expire.
+  string expires = 4;
+  // URI identifying the locking application.
+  string app = 5;
+  // Optional free-form comment.
+  string comment = 6;
+}
+
+message RegisterMetaTypeRequest {
+  // Type to use as a meta type.
+  string type    = 1;
+  // Exclusive - set to true to only allow the type to be used as a meta type.
+  bool exclusive = 2;
+}
+
+message RegisterMetaTypeResponse {}
+
+message RegisterMetaTypeUseRequest {
+  // MainType to use the meta type for.
+  string main_type = 1;
+  // MetaType to use for the main document.
+  string meta_type = 2;
+}
+
+message RegisterMetaTypeUseResponse {}
+
+message RegisterSchemaRequest {
+  // Schema to register. The spec can be omitted if a schema URL is passed.
+  Schema schema = 1;
+  // Activate the registered schema immediately.
+  bool activate = 2;
+  // SchemaURL is an HTTP(S) url to the schema to load, can be passed instead of
+  // an inline schema spec.
+  string schema_url = 3;
+  // SchemaSHA256 is a SHA256 checksum to validate the response body from the
+  // schema URL against.
+  string schema_sha256 = 4;
+}
+
+message RegisterSchemaResponse {}
+
+message SetActiveSchemaRequest {
+  // Name is the name of the schema to activate or deactivate, required.
+  string name = 1;
+  // Version of the schema to activate, required when activating a new version.
+  string version = 2;
+  // Deactivate is used to disable a schema, activate new schema versions
+  // instead if you want to start using a new version.
+  bool deactivate = 3;
+}
+
+message SetActiveSchemaResponse {}
+
+message GetSchemaRequest {
+  // Name of the schema to get.
+  string name = 1;
+  // Version of the schema to get, optional. The currently active version of the
+  // schema will be returned if no version is specified.
+  string version = 2;
+}
+
+message GetSchemaResponse {
+  string version = 1;
+  bytes spec = 2;
+}
+
+message GetAllActiveSchemasRequest {
+  int64 wait_seconds = 1;
+  map<string, string> known = 2;
+}
+
+message GetAllActiveSchemasResponse {
+  repeated Schema schemas = 1;
+}
+
+message Schema {
+  string name = 1;
+  string version = 2;
+  string spec = 3;
+}
+
+message GetDeprecationsRequest{}
+
+message Deprecation {
+  string label = 1;
+  bool enforced = 2;
+}
+
+message GetDeprecationsResponse{
+  repeated Deprecation deprecations = 1;
+}
+
+message UpdateDeprecationRequest{
+  Deprecation deprecation = 1;
+}
+
+message UpdateDeprecationResponse{}
+
+message RegisterMetricKindRequest {
+  string name = 1;
+  MetricAggregation aggregation = 2;
+}
+
+message RegisterMetricKindResponse {}
+
+message DeleteMetricKindRequest {
+  string name = 1;
+}
+
+message DeleteMetricKindResponse {}
+
+message GetMetricKindsRequest {}
+
+message GetMetricKindsResponse {
+  repeated MetricKind kinds = 1;
+}
+
+message MetricKind {
+  string name = 1;
+  MetricAggregation aggregation = 2;
+}
+
+enum MetricAggregation {
+  NONE = 0;
+  REPLACE = 1;
+  INCREMENT = 2;
+}
+
+message RegisterMetricRequest {
+  string uuid = 1;
+  string kind = 2;
+  string label = 3;
+  int64 value = 5;
+}
+
+message RegisterMetricResponse {}
+
+message LockRequest {
+  // UUID of the document to lock
+  string uuid = 1;
+  // Lock TTL in milliseconds
+  int32 ttl = 2;
+  // Name of the locking application. Optional.
+  string app = 3;
+  // Free-form comment string. Optional.
+  string comment = 4;
+}
+
+message LockResponse {
+  // Generated lock token in UUID format.
+  string token = 1;
+  // Expires is the RFC3339 timestamp when the lock will expire.
+  string expires = 2;
+}
+
+message ExtendLockRequest {
+  // UUID of the document to extend the lock for.
+  string uuid = 1;
+  // Lock TTL in milliseconds.
+  int32 ttl = 2;
+  // Lock token in UUID format.
+  string token = 3;
+}
+
+message UnlockRequest {
+  // UUID of the document to unlock
+  string uuid = 1;
+  // Lock token in UUID format.
+  string token = 2;
+}
+
+message UnlockResponse {}
