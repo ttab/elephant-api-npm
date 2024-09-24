@@ -3,6 +3,8 @@
 // @generated from protobuf file "index/service.proto" (package "elephant.index", syntax proto3)
 // tslint:disable
 // @ts-nocheck
+import { QueryResponseV1 } from "./search_v1";
+import { QueryRequestV1 } from "./search_v1";
 import { ServiceType } from "@protobuf-ts/runtime-rpc";
 import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
 import type { IBinaryWriter } from "@protobuf-ts/runtime";
@@ -1279,4 +1281,10 @@ export const Management = new ServiceType("elephant.index.Management", [
     { name: "PartialReindex", options: {}, I: PartialReindexRequest, O: PartialReindexResponse },
     { name: "ListIndexSets", options: {}, I: ListIndexSetsRequest, O: ListIndexSetsResponse },
     { name: "SetIndexSetStatus", options: {}, I: SetIndexSetStatusRequest, O: SetIndexSetStatusResponse }
+]);
+/**
+ * @generated ServiceType for protobuf service elephant.index.SearchV1
+ */
+export const SearchV1 = new ServiceType("elephant.index.SearchV1", [
+    { name: "Query", options: {}, I: QueryRequestV1, O: QueryResponseV1 }
 ]);

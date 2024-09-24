@@ -3,6 +3,9 @@
 // @generated from protobuf file "index/service.proto" (package "elephant.index", syntax proto3)
 // tslint:disable
 // @ts-nocheck
+import { SearchV1 } from "./service";
+import type { QueryResponseV1 } from "./search_v1";
+import type { QueryRequestV1 } from "./search_v1";
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { Management } from "./service";
@@ -166,5 +169,31 @@ export class ManagementClient implements IManagementClient, ServiceInfo {
     setIndexSetStatus(input: SetIndexSetStatusRequest, options?: RpcOptions): UnaryCall<SetIndexSetStatusRequest, SetIndexSetStatusResponse> {
         const method = this.methods[7], opt = this._transport.mergeOptions(options);
         return stackIntercept<SetIndexSetStatusRequest, SetIndexSetStatusResponse>("unary", this._transport, method, opt, input);
+    }
+}
+/**
+ * @generated from protobuf service elephant.index.SearchV1
+ */
+export interface ISearchV1Client {
+    /**
+     * @generated from protobuf rpc: Query(elephant.index.QueryRequestV1) returns (elephant.index.QueryResponseV1);
+     */
+    query(input: QueryRequestV1, options?: RpcOptions): UnaryCall<QueryRequestV1, QueryResponseV1>;
+}
+/**
+ * @generated from protobuf service elephant.index.SearchV1
+ */
+export class SearchV1Client implements ISearchV1Client, ServiceInfo {
+    typeName = SearchV1.typeName;
+    methods = SearchV1.methods;
+    options = SearchV1.options;
+    constructor(private readonly _transport: RpcTransport) {
+    }
+    /**
+     * @generated from protobuf rpc: Query(elephant.index.QueryRequestV1) returns (elephant.index.QueryResponseV1);
+     */
+    query(input: QueryRequestV1, options?: RpcOptions): UnaryCall<QueryRequestV1, QueryResponseV1> {
+        const method = this.methods[0], opt = this._transport.mergeOptions(options);
+        return stackIntercept<QueryRequestV1, QueryResponseV1>("unary", this._transport, method, opt, input);
     }
 }
