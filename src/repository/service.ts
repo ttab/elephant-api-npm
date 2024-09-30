@@ -729,6 +729,60 @@ export interface GetDocumentResponse {
     mainDocument: string;
 }
 /**
+ * @generated from protobuf message elephant.repository.BulkGetRequest
+ */
+export interface BulkGetRequest {
+    /**
+     * Documents to get.
+     *
+     * @generated from protobuf field: repeated elephant.repository.BulkGetReference documents = 1;
+     */
+    documents: BulkGetReference[];
+}
+/**
+ * @generated from protobuf message elephant.repository.BulkGetReference
+ */
+export interface BulkGetReference {
+    /**
+     * UUID of the document to get.
+     *
+     * @generated from protobuf field: string uuid = 1;
+     */
+    uuid: string;
+    /**
+     * Version to get, omit to get latest.
+     *
+     * @generated from protobuf field: int64 version = 2;
+     */
+    version: bigint;
+}
+/**
+ * @generated from protobuf message elephant.repository.BulkGetResponse
+ */
+export interface BulkGetResponse {
+    /**
+     * @generated from protobuf field: repeated elephant.repository.BulkGetItem items = 1;
+     */
+    items: BulkGetItem[];
+}
+/**
+ * @generated from protobuf message elephant.repository.BulkGetItem
+ */
+export interface BulkGetItem {
+    /**
+     * Document is the requested document.
+     *
+     * @generated from protobuf field: newsdoc.Document document = 1;
+     */
+    document?: Document;
+    /**
+     * Version is the version of the returned document.
+     *
+     * @generated from protobuf field: int64 version = 2;
+     */
+    version: bigint;
+}
+/**
  * @generated from protobuf message elephant.repository.MetaDocument
  */
 export interface MetaDocument {
@@ -4209,6 +4263,209 @@ class GetDocumentResponse$Type extends MessageType<GetDocumentResponse> {
  */
 export const GetDocumentResponse = new GetDocumentResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class BulkGetRequest$Type extends MessageType<BulkGetRequest> {
+    constructor() {
+        super("elephant.repository.BulkGetRequest", [
+            { no: 1, name: "documents", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => BulkGetReference }
+        ]);
+    }
+    create(value?: PartialMessage<BulkGetRequest>): BulkGetRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.documents = [];
+        if (value !== undefined)
+            reflectionMergePartial<BulkGetRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: BulkGetRequest): BulkGetRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.repository.BulkGetReference documents */ 1:
+                    message.documents.push(BulkGetReference.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: BulkGetRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.repository.BulkGetReference documents = 1; */
+        for (let i = 0; i < message.documents.length; i++)
+            BulkGetReference.internalBinaryWrite(message.documents[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.BulkGetRequest
+ */
+export const BulkGetRequest = new BulkGetRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class BulkGetReference$Type extends MessageType<BulkGetReference> {
+    constructor() {
+        super("elephant.repository.BulkGetReference", [
+            { no: 1, name: "uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "version", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<BulkGetReference>): BulkGetReference {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.uuid = "";
+        message.version = 0n;
+        if (value !== undefined)
+            reflectionMergePartial<BulkGetReference>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: BulkGetReference): BulkGetReference {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string uuid */ 1:
+                    message.uuid = reader.string();
+                    break;
+                case /* int64 version */ 2:
+                    message.version = reader.int64().toBigInt();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: BulkGetReference, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string uuid = 1; */
+        if (message.uuid !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.uuid);
+        /* int64 version = 2; */
+        if (message.version !== 0n)
+            writer.tag(2, WireType.Varint).int64(message.version);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.BulkGetReference
+ */
+export const BulkGetReference = new BulkGetReference$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class BulkGetResponse$Type extends MessageType<BulkGetResponse> {
+    constructor() {
+        super("elephant.repository.BulkGetResponse", [
+            { no: 1, name: "items", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => BulkGetItem }
+        ]);
+    }
+    create(value?: PartialMessage<BulkGetResponse>): BulkGetResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.items = [];
+        if (value !== undefined)
+            reflectionMergePartial<BulkGetResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: BulkGetResponse): BulkGetResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.repository.BulkGetItem items */ 1:
+                    message.items.push(BulkGetItem.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: BulkGetResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.repository.BulkGetItem items = 1; */
+        for (let i = 0; i < message.items.length; i++)
+            BulkGetItem.internalBinaryWrite(message.items[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.BulkGetResponse
+ */
+export const BulkGetResponse = new BulkGetResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class BulkGetItem$Type extends MessageType<BulkGetItem> {
+    constructor() {
+        super("elephant.repository.BulkGetItem", [
+            { no: 1, name: "document", kind: "message", T: () => Document },
+            { no: 2, name: "version", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<BulkGetItem>): BulkGetItem {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.version = 0n;
+        if (value !== undefined)
+            reflectionMergePartial<BulkGetItem>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: BulkGetItem): BulkGetItem {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* newsdoc.Document document */ 1:
+                    message.document = Document.internalBinaryRead(reader, reader.uint32(), options, message.document);
+                    break;
+                case /* int64 version */ 2:
+                    message.version = reader.int64().toBigInt();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: BulkGetItem, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* newsdoc.Document document = 1; */
+        if (message.document)
+            Document.internalBinaryWrite(message.document, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* int64 version = 2; */
+        if (message.version !== 0n)
+            writer.tag(2, WireType.Varint).int64(message.version);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.BulkGetItem
+ */
+export const BulkGetItem = new BulkGetItem$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class MetaDocument$Type extends MessageType<MetaDocument> {
     constructor() {
         super("elephant.repository.MetaDocument", [
@@ -7664,6 +7921,7 @@ export const UnlockResponse = new UnlockResponse$Type();
  */
 export const Documents = new ServiceType("elephant.repository.Documents", [
     { name: "Get", options: {}, I: GetDocumentRequest, O: GetDocumentResponse },
+    { name: "BulkGet", options: {}, I: BulkGetRequest, O: BulkGetResponse },
     { name: "GetHistory", options: {}, I: GetHistoryRequest, O: GetHistoryResponse },
     { name: "Update", options: {}, I: UpdateRequest, O: UpdateResponse },
     { name: "BulkUpdate", options: {}, I: BulkUpdateRequest, O: BulkUpdateResponse },

@@ -89,6 +89,8 @@ import type { UpdateResponse } from "./service";
 import type { UpdateRequest } from "./service";
 import type { GetHistoryResponse } from "./service";
 import type { GetHistoryRequest } from "./service";
+import type { BulkGetResponse } from "./service";
+import type { BulkGetRequest } from "./service";
 import { stackIntercept } from "@protobuf-ts/runtime-rpc";
 import type { GetDocumentResponse } from "./service";
 import type { GetDocumentRequest } from "./service";
@@ -104,6 +106,12 @@ export interface IDocumentsClient {
      * @generated from protobuf rpc: Get(elephant.repository.GetDocumentRequest) returns (elephant.repository.GetDocumentResponse);
      */
     get(input: GetDocumentRequest, options?: RpcOptions): UnaryCall<GetDocumentRequest, GetDocumentResponse>;
+    /**
+     * BulkGet loads multiple documents in a single request.
+     *
+     * @generated from protobuf rpc: BulkGet(elephant.repository.BulkGetRequest) returns (elephant.repository.BulkGetResponse);
+     */
+    bulkGet(input: BulkGetRequest, options?: RpcOptions): UnaryCall<BulkGetRequest, BulkGetResponse>;
     /**
      * GetHistory lists the document version history.
      *
@@ -230,12 +238,21 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
         return stackIntercept<GetDocumentRequest, GetDocumentResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * BulkGet loads multiple documents in a single request.
+     *
+     * @generated from protobuf rpc: BulkGet(elephant.repository.BulkGetRequest) returns (elephant.repository.BulkGetResponse);
+     */
+    bulkGet(input: BulkGetRequest, options?: RpcOptions): UnaryCall<BulkGetRequest, BulkGetResponse> {
+        const method = this.methods[1], opt = this._transport.mergeOptions(options);
+        return stackIntercept<BulkGetRequest, BulkGetResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * GetHistory lists the document version history.
      *
      * @generated from protobuf rpc: GetHistory(elephant.repository.GetHistoryRequest) returns (elephant.repository.GetHistoryResponse);
      */
     getHistory(input: GetHistoryRequest, options?: RpcOptions): UnaryCall<GetHistoryRequest, GetHistoryResponse> {
-        const method = this.methods[1], opt = this._transport.mergeOptions(options);
+        const method = this.methods[2], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetHistoryRequest, GetHistoryResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -244,7 +261,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: Update(elephant.repository.UpdateRequest) returns (elephant.repository.UpdateResponse);
      */
     update(input: UpdateRequest, options?: RpcOptions): UnaryCall<UpdateRequest, UpdateResponse> {
-        const method = this.methods[2], opt = this._transport.mergeOptions(options);
+        const method = this.methods[3], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateRequest, UpdateResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -253,7 +270,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: BulkUpdate(elephant.repository.BulkUpdateRequest) returns (elephant.repository.BulkUpdateResponse);
      */
     bulkUpdate(input: BulkUpdateRequest, options?: RpcOptions): UnaryCall<BulkUpdateRequest, BulkUpdateResponse> {
-        const method = this.methods[3], opt = this._transport.mergeOptions(options);
+        const method = this.methods[4], opt = this._transport.mergeOptions(options);
         return stackIntercept<BulkUpdateRequest, BulkUpdateResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -263,7 +280,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: Validate(elephant.repository.ValidateRequest) returns (elephant.repository.ValidateResponse);
      */
     validate(input: ValidateRequest, options?: RpcOptions): UnaryCall<ValidateRequest, ValidateResponse> {
-        const method = this.methods[4], opt = this._transport.mergeOptions(options);
+        const method = this.methods[5], opt = this._transport.mergeOptions(options);
         return stackIntercept<ValidateRequest, ValidateResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -272,7 +289,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: Delete(elephant.repository.DeleteDocumentRequest) returns (elephant.repository.DeleteDocumentResponse);
      */
     delete(input: DeleteDocumentRequest, options?: RpcOptions): UnaryCall<DeleteDocumentRequest, DeleteDocumentResponse> {
-        const method = this.methods[5], opt = this._transport.mergeOptions(options);
+        const method = this.methods[6], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteDocumentRequest, DeleteDocumentResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -281,7 +298,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: ListDeleted(elephant.repository.ListDeletedRequest) returns (elephant.repository.ListDeletedResponse);
      */
     listDeleted(input: ListDeletedRequest, options?: RpcOptions): UnaryCall<ListDeletedRequest, ListDeletedResponse> {
-        const method = this.methods[6], opt = this._transport.mergeOptions(options);
+        const method = this.methods[7], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListDeletedRequest, ListDeletedResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -290,7 +307,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: Restore(elephant.repository.RestoreRequest) returns (elephant.repository.RestoreResponse);
      */
     restore(input: RestoreRequest, options?: RpcOptions): UnaryCall<RestoreRequest, RestoreResponse> {
-        const method = this.methods[7], opt = this._transport.mergeOptions(options);
+        const method = this.methods[8], opt = this._transport.mergeOptions(options);
         return stackIntercept<RestoreRequest, RestoreResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -299,7 +316,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: Purge(elephant.repository.PurgeRequest) returns (elephant.repository.PurgeResponse);
      */
     purge(input: PurgeRequest, options?: RpcOptions): UnaryCall<PurgeRequest, PurgeResponse> {
-        const method = this.methods[8], opt = this._transport.mergeOptions(options);
+        const method = this.methods[9], opt = this._transport.mergeOptions(options);
         return stackIntercept<PurgeRequest, PurgeResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -309,7 +326,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: GetMeta(elephant.repository.GetMetaRequest) returns (elephant.repository.GetMetaResponse);
      */
     getMeta(input: GetMetaRequest, options?: RpcOptions): UnaryCall<GetMetaRequest, GetMetaResponse> {
-        const method = this.methods[9], opt = this._transport.mergeOptions(options);
+        const method = this.methods[10], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetMetaRequest, GetMetaResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -318,7 +335,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: Eventlog(elephant.repository.GetEventlogRequest) returns (elephant.repository.GetEventlogResponse);
      */
     eventlog(input: GetEventlogRequest, options?: RpcOptions): UnaryCall<GetEventlogRequest, GetEventlogResponse> {
-        const method = this.methods[10], opt = this._transport.mergeOptions(options);
+        const method = this.methods[11], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetEventlogRequest, GetEventlogResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -328,7 +345,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: CompactedEventlog(elephant.repository.GetCompactedEventlogRequest) returns (elephant.repository.GetCompactedEventlogResponse);
      */
     compactedEventlog(input: GetCompactedEventlogRequest, options?: RpcOptions): UnaryCall<GetCompactedEventlogRequest, GetCompactedEventlogResponse> {
-        const method = this.methods[11], opt = this._transport.mergeOptions(options);
+        const method = this.methods[12], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetCompactedEventlogRequest, GetCompactedEventlogResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -337,7 +354,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: GetStatusHistory(elephant.repository.GetStatusHistoryRequest) returns (elephant.repository.GetStatusHistoryReponse);
      */
     getStatusHistory(input: GetStatusHistoryRequest, options?: RpcOptions): UnaryCall<GetStatusHistoryRequest, GetStatusHistoryReponse> {
-        const method = this.methods[12], opt = this._transport.mergeOptions(options);
+        const method = this.methods[13], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetStatusHistoryRequest, GetStatusHistoryReponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -347,7 +364,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: GetStatusOverview(elephant.repository.GetStatusOverviewRequest) returns (elephant.repository.GetStatusOverviewResponse);
      */
     getStatusOverview(input: GetStatusOverviewRequest, options?: RpcOptions): UnaryCall<GetStatusOverviewRequest, GetStatusOverviewResponse> {
-        const method = this.methods[13], opt = this._transport.mergeOptions(options);
+        const method = this.methods[14], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetStatusOverviewRequest, GetStatusOverviewResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -356,7 +373,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: GetPermissions(elephant.repository.GetPermissionsRequest) returns (elephant.repository.GetPermissionsResponse);
      */
     getPermissions(input: GetPermissionsRequest, options?: RpcOptions): UnaryCall<GetPermissionsRequest, GetPermissionsResponse> {
-        const method = this.methods[14], opt = this._transport.mergeOptions(options);
+        const method = this.methods[15], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetPermissionsRequest, GetPermissionsResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -365,7 +382,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: Lock(elephant.repository.LockRequest) returns (elephant.repository.LockResponse);
      */
     lock(input: LockRequest, options?: RpcOptions): UnaryCall<LockRequest, LockResponse> {
-        const method = this.methods[15], opt = this._transport.mergeOptions(options);
+        const method = this.methods[16], opt = this._transport.mergeOptions(options);
         return stackIntercept<LockRequest, LockResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -374,7 +391,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: ExtendLock(elephant.repository.ExtendLockRequest) returns (elephant.repository.LockResponse);
      */
     extendLock(input: ExtendLockRequest, options?: RpcOptions): UnaryCall<ExtendLockRequest, LockResponse> {
-        const method = this.methods[16], opt = this._transport.mergeOptions(options);
+        const method = this.methods[17], opt = this._transport.mergeOptions(options);
         return stackIntercept<ExtendLockRequest, LockResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -383,7 +400,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: Unlock(elephant.repository.UnlockRequest) returns (elephant.repository.UnlockResponse);
      */
     unlock(input: UnlockRequest, options?: RpcOptions): UnaryCall<UnlockRequest, UnlockResponse> {
-        const method = this.methods[17], opt = this._transport.mergeOptions(options);
+        const method = this.methods[18], opt = this._transport.mergeOptions(options);
         return stackIntercept<UnlockRequest, UnlockResponse>("unary", this._transport, method, opt, input);
     }
 }

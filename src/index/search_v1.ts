@@ -12,6 +12,7 @@ import { UnknownFieldHandler } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
+import { Document } from "../newsdoc/newsdoc";
 /**
  * @generated from protobuf message elephant.index.QueryRequestV1
  */
@@ -52,6 +53,13 @@ export interface QueryRequestV1 {
      * @generated from protobuf field: repeated string search_after = 9;
      */
     searchAfter: string[];
+    /**
+     * LoadDocument will load the current version of the document from the
+     * repository and include it with the search response.
+     *
+     * @generated from protobuf field: bool load_document = 10;
+     */
+    loadDocument: boolean;
 }
 /**
  * @generated from protobuf message elephant.index.QueryV1
@@ -353,6 +361,10 @@ export interface HitV1 {
      * @generated from protobuf field: repeated string sort = 5;
      */
     sort: string[];
+    /**
+     * @generated from protobuf field: newsdoc.Document document = 6;
+     */
+    document?: Document;
 }
 /**
  * @generated from protobuf message elephant.index.FieldValuesV1
@@ -375,7 +387,8 @@ class QueryRequestV1$Type extends MessageType<QueryRequestV1> {
             { no: 6, name: "source", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 7, name: "from", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
             { no: 8, name: "size", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
-            { no: 9, name: "search_after", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+            { no: 9, name: "search_after", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "load_document", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value?: PartialMessage<QueryRequestV1>): QueryRequestV1 {
@@ -388,6 +401,7 @@ class QueryRequestV1$Type extends MessageType<QueryRequestV1> {
         message.from = 0n;
         message.size = 0n;
         message.searchAfter = [];
+        message.loadDocument = false;
         if (value !== undefined)
             reflectionMergePartial<QueryRequestV1>(this, message, value);
         return message;
@@ -423,6 +437,9 @@ class QueryRequestV1$Type extends MessageType<QueryRequestV1> {
                     break;
                 case /* repeated string search_after */ 9:
                     message.searchAfter.push(reader.string());
+                    break;
+                case /* bool load_document */ 10:
+                    message.loadDocument = reader.bool();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -463,6 +480,9 @@ class QueryRequestV1$Type extends MessageType<QueryRequestV1> {
         /* repeated string search_after = 9; */
         for (let i = 0; i < message.searchAfter.length; i++)
             writer.tag(9, WireType.LengthDelimited).string(message.searchAfter[i]);
+        /* bool load_document = 10; */
+        if (message.loadDocument !== false)
+            writer.tag(10, WireType.Varint).bool(message.loadDocument);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1383,7 +1403,8 @@ class HitV1$Type extends MessageType<HitV1> {
             { no: 2, name: "score", kind: "scalar", T: 2 /*ScalarType.FLOAT*/ },
             { no: 3, name: "fields", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => FieldValuesV1 } },
             { no: 4, name: "source", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => FieldValuesV1 } },
-            { no: 5, name: "sort", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+            { no: 5, name: "sort", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "document", kind: "message", T: () => Document }
         ]);
     }
     create(value?: PartialMessage<HitV1>): HitV1 {
@@ -1416,6 +1437,9 @@ class HitV1$Type extends MessageType<HitV1> {
                     break;
                 case /* repeated string sort */ 5:
                     message.sort.push(reader.string());
+                    break;
+                case /* newsdoc.Document document */ 6:
+                    message.document = Document.internalBinaryRead(reader, reader.uint32(), options, message.document);
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -1484,6 +1508,9 @@ class HitV1$Type extends MessageType<HitV1> {
         /* repeated string sort = 5; */
         for (let i = 0; i < message.sort.length; i++)
             writer.tag(5, WireType.LengthDelimited).string(message.sort[i]);
+        /* newsdoc.Document document = 6; */
+        if (message.document)
+            Document.internalBinaryWrite(message.document, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
