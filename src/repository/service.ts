@@ -554,7 +554,11 @@ export interface GetStatusesRequest {
  */
 export interface WorkflowStatus {
     /**
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string type = 1;
+     */
+    type: string;
+    /**
+     * @generated from protobuf field: string name = 2;
      */
     name: string;
 }
@@ -572,16 +576,22 @@ export interface GetStatusesResponse {
  */
 export interface UpdateStatusRequest {
     /**
+     * Type that the status is valid for.
+     *
+     * @generated from protobuf field: string type = 1;
+     */
+    type: string;
+    /**
      * Name of the status.
      *
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string name = 2;
      */
     name: string;
     /**
      * Disabled disables the status so that it cannot be used when setting new
      * statuses.
      *
-     * @generated from protobuf field: bool disabled = 2;
+     * @generated from protobuf field: bool disabled = 3;
      */
     disabled: boolean;
 }
@@ -604,27 +614,39 @@ export interface CreateStatusRuleRequest {
  */
 export interface StatusRule {
     /**
-     * @generated from protobuf field: string name = 1;
+     * Type that the status rule applies to.
+     *
+     * @generated from protobuf field: string type = 1;
+     */
+    type: string;
+    /**
+     * Name of the rule.
+     *
+     * @generated from protobuf field: string name = 2;
      */
     name: string;
     /**
-     * @generated from protobuf field: string description = 2;
+     * Description of the rule.
+     *
+     * @generated from protobuf field: string description = 3;
      */
     description: string;
     /**
-     * @generated from protobuf field: bool access_rule = 3;
+     * AccessRule whether this rule acts as access control.
+     *
+     * @generated from protobuf field: bool access_rule = 4;
      */
     accessRule: boolean;
     /**
-     * @generated from protobuf field: repeated string applies_to = 4;
+     * AppliesTo is a list of statuses that this rule applies to.
+     *
+     * @generated from protobuf field: repeated string applies_to = 5;
      */
     appliesTo: string[];
     /**
-     * @generated from protobuf field: repeated string for_types = 5;
-     */
-    forTypes: string[];
-    /**
-     * @generated from protobuf field: string expression = 6;
+     * Expression that is evaluated for the rule.
+     *
+     * @generated from protobuf field: string expression = 7;
      */
     expression: string;
 }
@@ -638,7 +660,11 @@ export interface CreateStatusRuleResponse {
  */
 export interface DeleteStatusRuleRequest {
     /**
-     * @generated from protobuf field: string name = 1;
+     * @generated from protobuf field: string type = 1;
+     */
+    type: string;
+    /**
+     * @generated from protobuf field: string name = 2;
      */
     name: string;
 }
@@ -3699,11 +3725,13 @@ export const GetStatusesRequest = new GetStatusesRequest$Type();
 class WorkflowStatus$Type extends MessageType<WorkflowStatus> {
     constructor() {
         super("elephant.repository.WorkflowStatus", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<WorkflowStatus>): WorkflowStatus {
         const message = globalThis.Object.create((this.messagePrototype!));
+        message.type = "";
         message.name = "";
         if (value !== undefined)
             reflectionMergePartial<WorkflowStatus>(this, message, value);
@@ -3714,7 +3742,10 @@ class WorkflowStatus$Type extends MessageType<WorkflowStatus> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string name */ 1:
+                case /* string type */ 1:
+                    message.type = reader.string();
+                    break;
+                case /* string name */ 2:
                     message.name = reader.string();
                     break;
                 default:
@@ -3729,9 +3760,12 @@ class WorkflowStatus$Type extends MessageType<WorkflowStatus> {
         return message;
     }
     internalBinaryWrite(message: WorkflowStatus, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name = 1; */
+        /* string type = 1; */
+        if (message.type !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.type);
+        /* string name = 2; */
         if (message.name !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.name);
+            writer.tag(2, WireType.LengthDelimited).string(message.name);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3793,12 +3827,14 @@ export const GetStatusesResponse = new GetStatusesResponse$Type();
 class UpdateStatusRequest$Type extends MessageType<UpdateStatusRequest> {
     constructor() {
         super("elephant.repository.UpdateStatusRequest", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "disabled", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "disabled", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value?: PartialMessage<UpdateStatusRequest>): UpdateStatusRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
+        message.type = "";
         message.name = "";
         message.disabled = false;
         if (value !== undefined)
@@ -3810,10 +3846,13 @@ class UpdateStatusRequest$Type extends MessageType<UpdateStatusRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string name */ 1:
+                case /* string type */ 1:
+                    message.type = reader.string();
+                    break;
+                case /* string name */ 2:
                     message.name = reader.string();
                     break;
-                case /* bool disabled */ 2:
+                case /* bool disabled */ 3:
                     message.disabled = reader.bool();
                     break;
                 default:
@@ -3828,12 +3867,15 @@ class UpdateStatusRequest$Type extends MessageType<UpdateStatusRequest> {
         return message;
     }
     internalBinaryWrite(message: UpdateStatusRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name = 1; */
+        /* string type = 1; */
+        if (message.type !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.type);
+        /* string name = 2; */
         if (message.name !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.name);
-        /* bool disabled = 2; */
+            writer.tag(2, WireType.LengthDelimited).string(message.name);
+        /* bool disabled = 3; */
         if (message.disabled !== false)
-            writer.tag(2, WireType.Varint).bool(message.disabled);
+            writer.tag(3, WireType.Varint).bool(message.disabled);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3919,21 +3961,21 @@ export const CreateStatusRuleRequest = new CreateStatusRuleRequest$Type();
 class StatusRule$Type extends MessageType<StatusRule> {
     constructor() {
         super("elephant.repository.StatusRule", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "access_rule", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 4, name: "applies_to", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 5, name: "for_types", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 6, name: "expression", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "access_rule", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 5, name: "applies_to", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "expression", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<StatusRule>): StatusRule {
         const message = globalThis.Object.create((this.messagePrototype!));
+        message.type = "";
         message.name = "";
         message.description = "";
         message.accessRule = false;
         message.appliesTo = [];
-        message.forTypes = [];
         message.expression = "";
         if (value !== undefined)
             reflectionMergePartial<StatusRule>(this, message, value);
@@ -3944,22 +3986,22 @@ class StatusRule$Type extends MessageType<StatusRule> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string name */ 1:
+                case /* string type */ 1:
+                    message.type = reader.string();
+                    break;
+                case /* string name */ 2:
                     message.name = reader.string();
                     break;
-                case /* string description */ 2:
+                case /* string description */ 3:
                     message.description = reader.string();
                     break;
-                case /* bool access_rule */ 3:
+                case /* bool access_rule */ 4:
                     message.accessRule = reader.bool();
                     break;
-                case /* repeated string applies_to */ 4:
+                case /* repeated string applies_to */ 5:
                     message.appliesTo.push(reader.string());
                     break;
-                case /* repeated string for_types */ 5:
-                    message.forTypes.push(reader.string());
-                    break;
-                case /* string expression */ 6:
+                case /* string expression */ 7:
                     message.expression = reader.string();
                     break;
                 default:
@@ -3974,24 +4016,24 @@ class StatusRule$Type extends MessageType<StatusRule> {
         return message;
     }
     internalBinaryWrite(message: StatusRule, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name = 1; */
+        /* string type = 1; */
+        if (message.type !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.type);
+        /* string name = 2; */
         if (message.name !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.name);
-        /* string description = 2; */
+            writer.tag(2, WireType.LengthDelimited).string(message.name);
+        /* string description = 3; */
         if (message.description !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.description);
-        /* bool access_rule = 3; */
+            writer.tag(3, WireType.LengthDelimited).string(message.description);
+        /* bool access_rule = 4; */
         if (message.accessRule !== false)
-            writer.tag(3, WireType.Varint).bool(message.accessRule);
-        /* repeated string applies_to = 4; */
+            writer.tag(4, WireType.Varint).bool(message.accessRule);
+        /* repeated string applies_to = 5; */
         for (let i = 0; i < message.appliesTo.length; i++)
-            writer.tag(4, WireType.LengthDelimited).string(message.appliesTo[i]);
-        /* repeated string for_types = 5; */
-        for (let i = 0; i < message.forTypes.length; i++)
-            writer.tag(5, WireType.LengthDelimited).string(message.forTypes[i]);
-        /* string expression = 6; */
+            writer.tag(5, WireType.LengthDelimited).string(message.appliesTo[i]);
+        /* string expression = 7; */
         if (message.expression !== "")
-            writer.tag(6, WireType.LengthDelimited).string(message.expression);
+            writer.tag(7, WireType.LengthDelimited).string(message.expression);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -4031,11 +4073,13 @@ export const CreateStatusRuleResponse = new CreateStatusRuleResponse$Type();
 class DeleteStatusRuleRequest$Type extends MessageType<DeleteStatusRuleRequest> {
     constructor() {
         super("elephant.repository.DeleteStatusRuleRequest", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<DeleteStatusRuleRequest>): DeleteStatusRuleRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
+        message.type = "";
         message.name = "";
         if (value !== undefined)
             reflectionMergePartial<DeleteStatusRuleRequest>(this, message, value);
@@ -4046,7 +4090,10 @@ class DeleteStatusRuleRequest$Type extends MessageType<DeleteStatusRuleRequest> 
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string name */ 1:
+                case /* string type */ 1:
+                    message.type = reader.string();
+                    break;
+                case /* string name */ 2:
                     message.name = reader.string();
                     break;
                 default:
@@ -4061,9 +4108,12 @@ class DeleteStatusRuleRequest$Type extends MessageType<DeleteStatusRuleRequest> 
         return message;
     }
     internalBinaryWrite(message: DeleteStatusRuleRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name = 1; */
+        /* string type = 1; */
+        if (message.type !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.type);
+        /* string name = 2; */
         if (message.name !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.name);
+            writer.tag(2, WireType.LengthDelimited).string(message.name);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

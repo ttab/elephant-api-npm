@@ -15,10 +15,15 @@
       "import": "./dist/newsdoc/newsdoc.js",
       "require": "./dist/newsdoc/newsdoc.cjs"
     },
-    "./ndex": {
+    "./index": {
       "types": "./dist/index/index.d.ts",
       "import": "./dist/index/index.js",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index/index.cjs"
+    },
+    "./spell": {
+      "types": "./dist/spell/index.d.ts",
+      "import": "./dist/spell/index.js",
+      "require": "./dist/spell/index.cjs"
     },
     "./package.json": "./package.json"
   },
@@ -34,7 +39,8 @@
     "build:repository": "tsup ./src/repository/index.ts --format cjs,esm --dts --outDir ./dist/repository",
     "build:newsdoc": "tsup ./src/newsdoc/newsdoc.ts --format cjs,esm --dts --outDir ./dist/newsdoc",
     "build:index": "tsup ./src/index/index.ts --format cjs,esm --dts --outDir ./dist/index",
-    "build": "npm run build:repository && npm run build:newsdoc && npm run build:index",
+    "build:spell": "tsup ./src/spell/index.ts --format cjs,esm --dts --outDir ./dist/spell",
+    "build": "npm run build:repository && npm run build:newsdoc && npm run build:index && npm run build:spell",
     "update": "bash .github/workflows/update.sh",
     "prepublish": "npm run build"
   },
