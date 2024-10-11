@@ -52,9 +52,9 @@ export interface MisspelledEntry {
     /**
      * Suggestions for replacements.
      *
-     * @generated from protobuf field: repeated string suggestions = 2;
+     * @generated from protobuf field: repeated elephant.spell.Suggestion suggestions = 2;
      */
-    suggestions: string[];
+    suggestions: Suggestion[];
 }
 /**
  * @generated from protobuf message elephant.spell.Suggestion
@@ -347,7 +347,7 @@ class MisspelledEntry$Type extends MessageType<MisspelledEntry> {
     constructor() {
         super("elephant.spell.MisspelledEntry", [
             { no: 1, name: "text", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "suggestions", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "suggestions", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Suggestion }
         ]);
     }
     create(value?: PartialMessage<MisspelledEntry>): MisspelledEntry {
@@ -366,8 +366,8 @@ class MisspelledEntry$Type extends MessageType<MisspelledEntry> {
                 case /* string text */ 1:
                     message.text = reader.string();
                     break;
-                case /* repeated string suggestions */ 2:
-                    message.suggestions.push(reader.string());
+                case /* repeated elephant.spell.Suggestion suggestions */ 2:
+                    message.suggestions.push(Suggestion.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -384,9 +384,9 @@ class MisspelledEntry$Type extends MessageType<MisspelledEntry> {
         /* string text = 1; */
         if (message.text !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.text);
-        /* repeated string suggestions = 2; */
+        /* repeated elephant.spell.Suggestion suggestions = 2; */
         for (let i = 0; i < message.suggestions.length; i++)
-            writer.tag(2, WireType.LengthDelimited).string(message.suggestions[i]);
+            Suggestion.internalBinaryWrite(message.suggestions[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
