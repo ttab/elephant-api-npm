@@ -20,9 +20,9 @@ export interface TextRequest {
     /**
      * Text to spellcheck.
      *
-     * @generated from protobuf field: string text = 1;
+     * @generated from protobuf field: repeated string text = 1;
      */
-    text: string;
+    text: string[];
     /**
      * Language to check the text for.
      *
@@ -35,9 +35,18 @@ export interface TextRequest {
  */
 export interface TextResponse {
     /**
-     * @generated from protobuf field: repeated elephant.spell.MisspelledEntry misspelled = 1;
+     * @generated from protobuf field: repeated elephant.spell.Misspelled misspelled = 1;
      */
-    misspelled: MisspelledEntry[];
+    misspelled: Misspelled[];
+}
+/**
+ * @generated from protobuf message elephant.spell.Misspelled
+ */
+export interface Misspelled {
+    /**
+     * @generated from protobuf field: repeated elephant.spell.MisspelledEntry entries = 1;
+     */
+    entries: MisspelledEntry[];
 }
 /**
  * @generated from protobuf message elephant.spell.MisspelledEntry
@@ -244,13 +253,13 @@ export interface DeleteEntryResponse {
 class TextRequest$Type extends MessageType<TextRequest> {
     constructor() {
         super("elephant.spell.TextRequest", [
-            { no: 1, name: "text", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 1, name: "text", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "language", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<TextRequest>): TextRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
-        message.text = "";
+        message.text = [];
         message.language = "";
         if (value !== undefined)
             reflectionMergePartial<TextRequest>(this, message, value);
@@ -261,8 +270,8 @@ class TextRequest$Type extends MessageType<TextRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string text */ 1:
-                    message.text = reader.string();
+                case /* repeated string text */ 1:
+                    message.text.push(reader.string());
                     break;
                 case /* string language */ 2:
                     message.language = reader.string();
@@ -279,9 +288,9 @@ class TextRequest$Type extends MessageType<TextRequest> {
         return message;
     }
     internalBinaryWrite(message: TextRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string text = 1; */
-        if (message.text !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.text);
+        /* repeated string text = 1; */
+        for (let i = 0; i < message.text.length; i++)
+            writer.tag(1, WireType.LengthDelimited).string(message.text[i]);
         /* string language = 2; */
         if (message.language !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.language);
@@ -299,7 +308,7 @@ export const TextRequest = new TextRequest$Type();
 class TextResponse$Type extends MessageType<TextResponse> {
     constructor() {
         super("elephant.spell.TextResponse", [
-            { no: 1, name: "misspelled", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => MisspelledEntry }
+            { no: 1, name: "misspelled", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Misspelled }
         ]);
     }
     create(value?: PartialMessage<TextResponse>): TextResponse {
@@ -314,8 +323,8 @@ class TextResponse$Type extends MessageType<TextResponse> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated elephant.spell.MisspelledEntry misspelled */ 1:
-                    message.misspelled.push(MisspelledEntry.internalBinaryRead(reader, reader.uint32(), options));
+                case /* repeated elephant.spell.Misspelled misspelled */ 1:
+                    message.misspelled.push(Misspelled.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -329,9 +338,9 @@ class TextResponse$Type extends MessageType<TextResponse> {
         return message;
     }
     internalBinaryWrite(message: TextResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* repeated elephant.spell.MisspelledEntry misspelled = 1; */
+        /* repeated elephant.spell.Misspelled misspelled = 1; */
         for (let i = 0; i < message.misspelled.length; i++)
-            MisspelledEntry.internalBinaryWrite(message.misspelled[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+            Misspelled.internalBinaryWrite(message.misspelled[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -342,6 +351,53 @@ class TextResponse$Type extends MessageType<TextResponse> {
  * @generated MessageType for protobuf message elephant.spell.TextResponse
  */
 export const TextResponse = new TextResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class Misspelled$Type extends MessageType<Misspelled> {
+    constructor() {
+        super("elephant.spell.Misspelled", [
+            { no: 1, name: "entries", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => MisspelledEntry }
+        ]);
+    }
+    create(value?: PartialMessage<Misspelled>): Misspelled {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.entries = [];
+        if (value !== undefined)
+            reflectionMergePartial<Misspelled>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Misspelled): Misspelled {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.spell.MisspelledEntry entries */ 1:
+                    message.entries.push(MisspelledEntry.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: Misspelled, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.spell.MisspelledEntry entries = 1; */
+        for (let i = 0; i < message.entries.length; i++)
+            MisspelledEntry.internalBinaryWrite(message.entries[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.spell.Misspelled
+ */
+export const Misspelled = new Misspelled$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class MisspelledEntry$Type extends MessageType<MisspelledEntry> {
     constructor() {
