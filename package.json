@@ -48,7 +48,7 @@
   "description": "",
   "devDependencies": {
     "@protobuf-ts/plugin": "^2.9.4",
-    "tsup": "^8.3.0"
+    "tsup": "^8.3.5"
   },
   "files": [
     "dist"
