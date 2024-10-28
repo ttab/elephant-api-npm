@@ -2,7 +2,7 @@
   "name": "@ttab/elephant-api",
   "private": false,
   "license": "MIT",
-  "version": "0.17.1",
+  "version": "0.17.2",
   "type": "module",
   "exports": {
     "./repository": {
