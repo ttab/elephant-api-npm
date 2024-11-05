@@ -375,6 +375,71 @@ export interface FieldValuesV1 {
      */
     values: string[];
 }
+/**
+ * @generated from protobuf message elephant.index.GetMappingsRequestV1
+ */
+export interface GetMappingsRequestV1 {
+    /**
+     * @generated from protobuf field: string document_type = 1;
+     */
+    documentType: string;
+}
+/**
+ * @generated from protobuf message elephant.index.GetMappingsResponseV1
+ */
+export interface GetMappingsResponseV1 {
+    /**
+     * @generated from protobuf field: repeated elephant.index.MappingPropertyV1 properties = 1;
+     */
+    properties: MappingPropertyV1[];
+}
+/**
+ * @generated from protobuf message elephant.index.MappingPropertyV1
+ */
+export interface MappingPropertyV1 {
+    /**
+     * Name of the property.
+     *
+     * @generated from protobuf field: string name = 1;
+     */
+    name: string;
+    /**
+     * Type of the property.
+     *
+     * @generated from protobuf field: string type = 2;
+     */
+    type: string;
+    /**
+     * Path used for alias properties.
+     *
+     * @generated from protobuf field: string path = 3;
+     */
+    path: string;
+    /**
+     * Fields used for alternate indexing metods for the property.
+     *
+     * @generated from protobuf field: repeated elephant.index.MappingFieldV1 fields = 4;
+     */
+    fields: MappingFieldV1[];
+}
+/**
+ * @generated from protobuf message elephant.index.MappingFieldV1
+ */
+export interface MappingFieldV1 {
+    /**
+     * Name of the field.
+     *
+     * @generated from protobuf field: string name = 1;
+     */
+    name: string;
+    /**
+     * Type of the field. Does not exactly correspond to Open Search types, but
+     * represents the logical type.
+     *
+     * @generated from protobuf field: string type = 2;
+     */
+    type: string;
+}
 // @generated message type with reflection information, may provide speed optimized methods
 class QueryRequestV1$Type extends MessageType<QueryRequestV1> {
     constructor() {
@@ -1568,3 +1633,223 @@ class FieldValuesV1$Type extends MessageType<FieldValuesV1> {
  * @generated MessageType for protobuf message elephant.index.FieldValuesV1
  */
 export const FieldValuesV1 = new FieldValuesV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetMappingsRequestV1$Type extends MessageType<GetMappingsRequestV1> {
+    constructor() {
+        super("elephant.index.GetMappingsRequestV1", [
+            { no: 1, name: "document_type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetMappingsRequestV1>): GetMappingsRequestV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.documentType = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetMappingsRequestV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetMappingsRequestV1): GetMappingsRequestV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string document_type */ 1:
+                    message.documentType = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetMappingsRequestV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string document_type = 1; */
+        if (message.documentType !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.documentType);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.GetMappingsRequestV1
+ */
+export const GetMappingsRequestV1 = new GetMappingsRequestV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetMappingsResponseV1$Type extends MessageType<GetMappingsResponseV1> {
+    constructor() {
+        super("elephant.index.GetMappingsResponseV1", [
+            { no: 1, name: "properties", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => MappingPropertyV1 }
+        ]);
+    }
+    create(value?: PartialMessage<GetMappingsResponseV1>): GetMappingsResponseV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.properties = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetMappingsResponseV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetMappingsResponseV1): GetMappingsResponseV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.index.MappingPropertyV1 properties */ 1:
+                    message.properties.push(MappingPropertyV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetMappingsResponseV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.index.MappingPropertyV1 properties = 1; */
+        for (let i = 0; i < message.properties.length; i++)
+            MappingPropertyV1.internalBinaryWrite(message.properties[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.GetMappingsResponseV1
+ */
+export const GetMappingsResponseV1 = new GetMappingsResponseV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MappingPropertyV1$Type extends MessageType<MappingPropertyV1> {
+    constructor() {
+        super("elephant.index.MappingPropertyV1", [
+            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "path", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "fields", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => MappingFieldV1 }
+        ]);
+    }
+    create(value?: PartialMessage<MappingPropertyV1>): MappingPropertyV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.name = "";
+        message.type = "";
+        message.path = "";
+        message.fields = [];
+        if (value !== undefined)
+            reflectionMergePartial<MappingPropertyV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MappingPropertyV1): MappingPropertyV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string name */ 1:
+                    message.name = reader.string();
+                    break;
+                case /* string type */ 2:
+                    message.type = reader.string();
+                    break;
+                case /* string path */ 3:
+                    message.path = reader.string();
+                    break;
+                case /* repeated elephant.index.MappingFieldV1 fields */ 4:
+                    message.fields.push(MappingFieldV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MappingPropertyV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string name = 1; */
+        if (message.name !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.name);
+        /* string type = 2; */
+        if (message.type !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.type);
+        /* string path = 3; */
+        if (message.path !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.path);
+        /* repeated elephant.index.MappingFieldV1 fields = 4; */
+        for (let i = 0; i < message.fields.length; i++)
+            MappingFieldV1.internalBinaryWrite(message.fields[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.MappingPropertyV1
+ */
+export const MappingPropertyV1 = new MappingPropertyV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MappingFieldV1$Type extends MessageType<MappingFieldV1> {
+    constructor() {
+        super("elephant.index.MappingFieldV1", [
+            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<MappingFieldV1>): MappingFieldV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.name = "";
+        message.type = "";
+        if (value !== undefined)
+            reflectionMergePartial<MappingFieldV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MappingFieldV1): MappingFieldV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string name */ 1:
+                    message.name = reader.string();
+                    break;
+                case /* string type */ 2:
+                    message.type = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MappingFieldV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string name = 1; */
+        if (message.name !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.name);
+        /* string type = 2; */
+        if (message.type !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.type);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.MappingFieldV1
+ */
+export const MappingFieldV1 = new MappingFieldV1$Type();

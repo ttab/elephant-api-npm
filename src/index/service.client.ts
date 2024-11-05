@@ -4,6 +4,8 @@
 // tslint:disable
 // @ts-nocheck
 import { SearchV1 } from "./service";
+import type { GetMappingsResponseV1 } from "./search_v1";
+import type { GetMappingsRequestV1 } from "./search_v1";
 import type { QueryResponseV1 } from "./search_v1";
 import type { QueryRequestV1 } from "./search_v1";
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
@@ -179,6 +181,10 @@ export interface ISearchV1Client {
      * @generated from protobuf rpc: Query(elephant.index.QueryRequestV1) returns (elephant.index.QueryResponseV1);
      */
     query(input: QueryRequestV1, options?: RpcOptions): UnaryCall<QueryRequestV1, QueryResponseV1>;
+    /**
+     * @generated from protobuf rpc: GetMappings(elephant.index.GetMappingsRequestV1) returns (elephant.index.GetMappingsResponseV1);
+     */
+    getMappings(input: GetMappingsRequestV1, options?: RpcOptions): UnaryCall<GetMappingsRequestV1, GetMappingsResponseV1>;
 }
 /**
  * @generated from protobuf service elephant.index.SearchV1
@@ -195,5 +201,12 @@ export class SearchV1Client implements ISearchV1Client, ServiceInfo {
     query(input: QueryRequestV1, options?: RpcOptions): UnaryCall<QueryRequestV1, QueryResponseV1> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);
         return stackIntercept<QueryRequestV1, QueryResponseV1>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: GetMappings(elephant.index.GetMappingsRequestV1) returns (elephant.index.GetMappingsResponseV1);
+     */
+    getMappings(input: GetMappingsRequestV1, options?: RpcOptions): UnaryCall<GetMappingsRequestV1, GetMappingsResponseV1> {
+        const method = this.methods[1], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetMappingsRequestV1, GetMappingsResponseV1>("unary", this._transport, method, opt, input);
     }
 }

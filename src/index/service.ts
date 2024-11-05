@@ -3,6 +3,8 @@
 // @generated from protobuf file "index/service.proto" (package "elephant.index", syntax proto3)
 // tslint:disable
 // @ts-nocheck
+import { GetMappingsResponseV1 } from "./search_v1";
+import { GetMappingsRequestV1 } from "./search_v1";
 import { QueryResponseV1 } from "./search_v1";
 import { QueryRequestV1 } from "./search_v1";
 import { ServiceType } from "@protobuf-ts/runtime-rpc";
@@ -1286,5 +1288,6 @@ export const Management = new ServiceType("elephant.index.Management", [
  * @generated ServiceType for protobuf service elephant.index.SearchV1
  */
 export const SearchV1 = new ServiceType("elephant.index.SearchV1", [
-    { name: "Query", options: {}, I: QueryRequestV1, O: QueryResponseV1 }
+    { name: "Query", options: {}, I: QueryRequestV1, O: QueryResponseV1 },
+    { name: "GetMappings", options: {}, I: GetMappingsRequestV1, O: GetMappingsResponseV1 }
 ]);
