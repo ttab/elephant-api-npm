@@ -15,6 +15,38 @@ import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
 import { Document } from "../newsdoc/newsdoc";
 /**
+ * @generated from protobuf message elephant.repository.GetStatusRequest
+ */
+export interface GetStatusRequest {
+    /**
+     * UUID of the document to get the status history for.
+     *
+     * @generated from protobuf field: string uuid = 1;
+     */
+    uuid: string;
+    /**
+     * Name of the status to get.
+     *
+     * @generated from protobuf field: string name = 2;
+     */
+    name: string;
+    /**
+     * ID of the status to get. Optional, will default to the latest status.
+     *
+     * @generated from protobuf field: int64 id = 3;
+     */
+    id: bigint;
+}
+/**
+ * @generated from protobuf message elephant.repository.GetStatusResponse
+ */
+export interface GetStatusResponse {
+    /**
+     * @generated from protobuf field: elephant.repository.Status status = 1;
+     */
+    status?: Status;
+}
+/**
  * @generated from protobuf message elephant.repository.GetStatusHistoryRequest
  */
 export interface GetStatusHistoryRequest {
@@ -1827,6 +1859,49 @@ export interface RegisterMetricRequest {
 export interface RegisterMetricResponse {
 }
 /**
+ * @generated from protobuf message elephant.repository.GetMetricsRequest
+ */
+export interface GetMetricsRequest {
+    /**
+     * @generated from protobuf field: string uuid = 1;
+     */
+    uuid: string;
+    /**
+     * @generated from protobuf field: string kind = 2;
+     */
+    kind: string;
+    /**
+     * @generated from protobuf field: string label = 3;
+     */
+    label: string;
+}
+/**
+ * @generated from protobuf message elephant.repository.GetMetricsResponse
+ */
+export interface GetMetricsResponse {
+    /**
+     * @generated from protobuf field: repeated elephant.repository.Metric metrics = 2;
+     */
+    metrics: Metric[];
+}
+/**
+ * @generated from protobuf message elephant.repository.Metric
+ */
+export interface Metric {
+    /**
+     * @generated from protobuf field: string kind = 1;
+     */
+    kind: string;
+    /**
+     * @generated from protobuf field: string label = 2;
+     */
+    label: string;
+    /**
+     * @generated from protobuf field: int64 value = 3;
+     */
+    value: bigint;
+}
+/**
  * @generated from protobuf message elephant.repository.LockRequest
  */
 export interface LockRequest {
@@ -1951,6 +2026,115 @@ export enum MetricAggregation {
      */
     INCREMENT = 2
 }
+// @generated message type with reflection information, may provide speed optimized methods
+class GetStatusRequest$Type extends MessageType<GetStatusRequest> {
+    constructor() {
+        super("elephant.repository.GetStatusRequest", [
+            { no: 1, name: "uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "id", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetStatusRequest>): GetStatusRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.uuid = "";
+        message.name = "";
+        message.id = 0n;
+        if (value !== undefined)
+            reflectionMergePartial<GetStatusRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetStatusRequest): GetStatusRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string uuid */ 1:
+                    message.uuid = reader.string();
+                    break;
+                case /* string name */ 2:
+                    message.name = reader.string();
+                    break;
+                case /* int64 id */ 3:
+                    message.id = reader.int64().toBigInt();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetStatusRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string uuid = 1; */
+        if (message.uuid !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.uuid);
+        /* string name = 2; */
+        if (message.name !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.name);
+        /* int64 id = 3; */
+        if (message.id !== 0n)
+            writer.tag(3, WireType.Varint).int64(message.id);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetStatusRequest
+ */
+export const GetStatusRequest = new GetStatusRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetStatusResponse$Type extends MessageType<GetStatusResponse> {
+    constructor() {
+        super("elephant.repository.GetStatusResponse", [
+            { no: 1, name: "status", kind: "message", T: () => Status }
+        ]);
+    }
+    create(value?: PartialMessage<GetStatusResponse>): GetStatusResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<GetStatusResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetStatusResponse): GetStatusResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* elephant.repository.Status status */ 1:
+                    message.status = Status.internalBinaryRead(reader, reader.uint32(), options, message.status);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetStatusResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* elephant.repository.Status status = 1; */
+        if (message.status)
+            Status.internalBinaryWrite(message.status, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetStatusResponse
+ */
+export const GetStatusResponse = new GetStatusResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class GetStatusHistoryRequest$Type extends MessageType<GetStatusHistoryRequest> {
     constructor() {
@@ -7698,6 +7882,179 @@ class RegisterMetricResponse$Type extends MessageType<RegisterMetricResponse> {
  */
 export const RegisterMetricResponse = new RegisterMetricResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class GetMetricsRequest$Type extends MessageType<GetMetricsRequest> {
+    constructor() {
+        super("elephant.repository.GetMetricsRequest", [
+            { no: 1, name: "uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "kind", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "label", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetMetricsRequest>): GetMetricsRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.uuid = "";
+        message.kind = "";
+        message.label = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetMetricsRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetMetricsRequest): GetMetricsRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string uuid */ 1:
+                    message.uuid = reader.string();
+                    break;
+                case /* string kind */ 2:
+                    message.kind = reader.string();
+                    break;
+                case /* string label */ 3:
+                    message.label = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetMetricsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string uuid = 1; */
+        if (message.uuid !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.uuid);
+        /* string kind = 2; */
+        if (message.kind !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.kind);
+        /* string label = 3; */
+        if (message.label !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.label);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetMetricsRequest
+ */
+export const GetMetricsRequest = new GetMetricsRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetMetricsResponse$Type extends MessageType<GetMetricsResponse> {
+    constructor() {
+        super("elephant.repository.GetMetricsResponse", [
+            { no: 2, name: "metrics", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Metric }
+        ]);
+    }
+    create(value?: PartialMessage<GetMetricsResponse>): GetMetricsResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.metrics = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetMetricsResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetMetricsResponse): GetMetricsResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.repository.Metric metrics */ 2:
+                    message.metrics.push(Metric.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetMetricsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.repository.Metric metrics = 2; */
+        for (let i = 0; i < message.metrics.length; i++)
+            Metric.internalBinaryWrite(message.metrics[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetMetricsResponse
+ */
+export const GetMetricsResponse = new GetMetricsResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class Metric$Type extends MessageType<Metric> {
+    constructor() {
+        super("elephant.repository.Metric", [
+            { no: 1, name: "kind", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "label", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "value", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<Metric>): Metric {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.kind = "";
+        message.label = "";
+        message.value = 0n;
+        if (value !== undefined)
+            reflectionMergePartial<Metric>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Metric): Metric {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string kind */ 1:
+                    message.kind = reader.string();
+                    break;
+                case /* string label */ 2:
+                    message.label = reader.string();
+                    break;
+                case /* int64 value */ 3:
+                    message.value = reader.int64().toBigInt();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: Metric, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string kind = 1; */
+        if (message.kind !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.kind);
+        /* string label = 2; */
+        if (message.label !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.label);
+        /* int64 value = 3; */
+        if (message.value !== 0n)
+            writer.tag(3, WireType.Varint).int64(message.value);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.Metric
+ */
+export const Metric = new Metric$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class LockRequest$Type extends MessageType<LockRequest> {
     constructor() {
         super("elephant.repository.LockRequest", [
@@ -7983,6 +8340,7 @@ export const Documents = new ServiceType("elephant.repository.Documents", [
     { name: "GetMeta", options: {}, I: GetMetaRequest, O: GetMetaResponse },
     { name: "Eventlog", options: {}, I: GetEventlogRequest, O: GetEventlogResponse },
     { name: "CompactedEventlog", options: {}, I: GetCompactedEventlogRequest, O: GetCompactedEventlogResponse },
+    { name: "GetStatus", options: {}, I: GetStatusRequest, O: GetStatusResponse },
     { name: "GetStatusHistory", options: {}, I: GetStatusHistoryRequest, O: GetStatusHistoryReponse },
     { name: "GetStatusOverview", options: {}, I: GetStatusOverviewRequest, O: GetStatusOverviewResponse },
     { name: "GetPermissions", options: {}, I: GetPermissionsRequest, O: GetPermissionsResponse },
@@ -8031,5 +8389,6 @@ export const Metrics = new ServiceType("elephant.repository.Metrics", [
     { name: "RegisterKind", options: {}, I: RegisterMetricKindRequest, O: RegisterMetricKindResponse },
     { name: "DeleteKind", options: {}, I: DeleteMetricKindRequest, O: DeleteMetricKindResponse },
     { name: "GetKinds", options: {}, I: GetMetricKindsRequest, O: GetMetricKindsResponse },
-    { name: "RegisterMetric", options: {}, I: RegisterMetricRequest, O: RegisterMetricResponse }
+    { name: "RegisterMetric", options: {}, I: RegisterMetricRequest, O: RegisterMetricResponse },
+    { name: "GetMetrics", options: {}, I: GetMetricsRequest, O: GetMetricsResponse }
 ]);

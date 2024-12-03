@@ -4,15 +4,42 @@
 // tslint:disable
 // @ts-nocheck
 import { ServiceType } from "@protobuf-ts/runtime-rpc";
+import { WireType } from "@protobuf-ts/runtime";
 import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
 import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
+import { UnknownFieldHandler } from "@protobuf-ts/runtime";
 import type { BinaryReadOptions } from "@protobuf-ts/runtime";
 import type { IBinaryReader } from "@protobuf-ts/runtime";
-import { UnknownFieldHandler } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
+/**
+ * @generated from protobuf message elephant.spell.SupportedLanguagesRequest
+ */
+export interface SupportedLanguagesRequest {
+}
+/**
+ * @generated from protobuf message elephant.spell.SupportedLanguagesResponse
+ */
+export interface SupportedLanguagesResponse {
+    /**
+     * Languages that can be used for spellchecking.
+     *
+     * @generated from protobuf field: repeated elephant.spell.Language languages = 1;
+     */
+    languages: Language[];
+}
+/**
+ * @generated from protobuf message elephant.spell.Language
+ */
+export interface Language {
+    /**
+     * Code for the language.
+     *
+     * @generated from protobuf field: string code = 1;
+     */
+    code: string;
+}
 /**
  * @generated from protobuf message elephant.spell.TextRequest
  */
@@ -249,6 +276,125 @@ export interface DeleteEntryRequest {
  */
 export interface DeleteEntryResponse {
 }
+// @generated message type with reflection information, may provide speed optimized methods
+class SupportedLanguagesRequest$Type extends MessageType<SupportedLanguagesRequest> {
+    constructor() {
+        super("elephant.spell.SupportedLanguagesRequest", []);
+    }
+    create(value?: PartialMessage<SupportedLanguagesRequest>): SupportedLanguagesRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<SupportedLanguagesRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SupportedLanguagesRequest): SupportedLanguagesRequest {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: SupportedLanguagesRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.spell.SupportedLanguagesRequest
+ */
+export const SupportedLanguagesRequest = new SupportedLanguagesRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SupportedLanguagesResponse$Type extends MessageType<SupportedLanguagesResponse> {
+    constructor() {
+        super("elephant.spell.SupportedLanguagesResponse", [
+            { no: 1, name: "languages", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Language }
+        ]);
+    }
+    create(value?: PartialMessage<SupportedLanguagesResponse>): SupportedLanguagesResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.languages = [];
+        if (value !== undefined)
+            reflectionMergePartial<SupportedLanguagesResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SupportedLanguagesResponse): SupportedLanguagesResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.spell.Language languages */ 1:
+                    message.languages.push(Language.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SupportedLanguagesResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.spell.Language languages = 1; */
+        for (let i = 0; i < message.languages.length; i++)
+            Language.internalBinaryWrite(message.languages[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.spell.SupportedLanguagesResponse
+ */
+export const SupportedLanguagesResponse = new SupportedLanguagesResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class Language$Type extends MessageType<Language> {
+    constructor() {
+        super("elephant.spell.Language", [
+            { no: 1, name: "code", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<Language>): Language {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.code = "";
+        if (value !== undefined)
+            reflectionMergePartial<Language>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Language): Language {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string code */ 1:
+                    message.code = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: Language, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string code = 1; */
+        if (message.code !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.code);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.spell.Language
+ */
+export const Language = new Language$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class TextRequest$Type extends MessageType<TextRequest> {
     constructor() {
@@ -1094,6 +1240,7 @@ export const Check = new ServiceType("elephant.spell.Check", [
  * @generated ServiceType for protobuf service elephant.spell.Dictionaries
  */
 export const Dictionaries = new ServiceType("elephant.spell.Dictionaries", [
+    { name: "SupportedLanguages", options: {}, I: SupportedLanguagesRequest, O: SupportedLanguagesResponse },
     { name: "ListDictionaries", options: {}, I: ListDictionariesRequest, O: ListDictionariesResponse },
     { name: "ListEntries", options: {}, I: ListEntriesRequest, O: ListEntriesResponse },
     { name: "GetEntry", options: {}, I: GetEntryRequest, O: GetEntryResponse },

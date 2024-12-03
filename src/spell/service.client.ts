@@ -14,6 +14,8 @@ import type { ListEntriesResponse } from "./service";
 import type { ListEntriesRequest } from "./service";
 import type { ListDictionariesResponse } from "./service";
 import type { ListDictionariesRequest } from "./service";
+import type { SupportedLanguagesResponse } from "./service";
+import type { SupportedLanguagesRequest } from "./service";
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { Check } from "./service";
@@ -64,6 +66,12 @@ export class CheckClient implements ICheckClient, ServiceInfo {
  */
 export interface IDictionariesClient {
     /**
+     * SupportedLanguages returns a list of supported languages.
+     *
+     * @generated from protobuf rpc: SupportedLanguages(elephant.spell.SupportedLanguagesRequest) returns (elephant.spell.SupportedLanguagesResponse);
+     */
+    supportedLanguages(input: SupportedLanguagesRequest, options?: RpcOptions): UnaryCall<SupportedLanguagesRequest, SupportedLanguagesResponse>;
+    /**
      * ListDictionaries lists the currently available custom dictionaries.
      *
      * @generated from protobuf rpc: ListDictionaries(elephant.spell.ListDictionariesRequest) returns (elephant.spell.ListDictionariesResponse);
@@ -107,12 +115,21 @@ export class DictionariesClient implements IDictionariesClient, ServiceInfo {
     constructor(private readonly _transport: RpcTransport) {
     }
     /**
+     * SupportedLanguages returns a list of supported languages.
+     *
+     * @generated from protobuf rpc: SupportedLanguages(elephant.spell.SupportedLanguagesRequest) returns (elephant.spell.SupportedLanguagesResponse);
+     */
+    supportedLanguages(input: SupportedLanguagesRequest, options?: RpcOptions): UnaryCall<SupportedLanguagesRequest, SupportedLanguagesResponse> {
+        const method = this.methods[0], opt = this._transport.mergeOptions(options);
+        return stackIntercept<SupportedLanguagesRequest, SupportedLanguagesResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * ListDictionaries lists the currently available custom dictionaries.
      *
      * @generated from protobuf rpc: ListDictionaries(elephant.spell.ListDictionariesRequest) returns (elephant.spell.ListDictionariesResponse);
      */
     listDictionaries(input: ListDictionariesRequest, options?: RpcOptions): UnaryCall<ListDictionariesRequest, ListDictionariesResponse> {
-        const method = this.methods[0], opt = this._transport.mergeOptions(options);
+        const method = this.methods[1], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListDictionariesRequest, ListDictionariesResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -121,7 +138,7 @@ export class DictionariesClient implements IDictionariesClient, ServiceInfo {
      * @generated from protobuf rpc: ListEntries(elephant.spell.ListEntriesRequest) returns (elephant.spell.ListEntriesResponse);
      */
     listEntries(input: ListEntriesRequest, options?: RpcOptions): UnaryCall<ListEntriesRequest, ListEntriesResponse> {
-        const method = this.methods[1], opt = this._transport.mergeOptions(options);
+        const method = this.methods[2], opt = this._transport.mergeOptions(options);
         return stackIntercept<ListEntriesRequest, ListEntriesResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -130,7 +147,7 @@ export class DictionariesClient implements IDictionariesClient, ServiceInfo {
      * @generated from protobuf rpc: GetEntry(elephant.spell.GetEntryRequest) returns (elephant.spell.GetEntryResponse);
      */
     getEntry(input: GetEntryRequest, options?: RpcOptions): UnaryCall<GetEntryRequest, GetEntryResponse> {
-        const method = this.methods[2], opt = this._transport.mergeOptions(options);
+        const method = this.methods[3], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetEntryRequest, GetEntryResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -139,7 +156,7 @@ export class DictionariesClient implements IDictionariesClient, ServiceInfo {
      * @generated from protobuf rpc: SetEntry(elephant.spell.SetEntryRequest) returns (elephant.spell.SetEntryResponse);
      */
     setEntry(input: SetEntryRequest, options?: RpcOptions): UnaryCall<SetEntryRequest, SetEntryResponse> {
-        const method = this.methods[3], opt = this._transport.mergeOptions(options);
+        const method = this.methods[4], opt = this._transport.mergeOptions(options);
         return stackIntercept<SetEntryRequest, SetEntryResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -148,7 +165,7 @@ export class DictionariesClient implements IDictionariesClient, ServiceInfo {
      * @generated from protobuf rpc: DeleteEntry(elephant.spell.DeleteEntryRequest) returns (elephant.spell.DeleteEntryResponse);
      */
     deleteEntry(input: DeleteEntryRequest, options?: RpcOptions): UnaryCall<DeleteEntryRequest, DeleteEntryResponse> {
-        const method = this.methods[4], opt = this._transport.mergeOptions(options);
+        const method = this.methods[5], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteEntryRequest, DeleteEntryResponse>("unary", this._transport, method, opt, input);
     }
 }

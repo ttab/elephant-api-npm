@@ -4,6 +4,8 @@
 // tslint:disable
 // @ts-nocheck
 import { Metrics } from "./service";
+import type { GetMetricsResponse } from "./service";
+import type { GetMetricsRequest } from "./service";
 import type { RegisterMetricResponse } from "./service";
 import type { RegisterMetricRequest } from "./service";
 import type { GetMetricKindsResponse } from "./service";
@@ -67,6 +69,8 @@ import type { GetStatusOverviewResponse } from "./service";
 import type { GetStatusOverviewRequest } from "./service";
 import type { GetStatusHistoryReponse } from "./service";
 import type { GetStatusHistoryRequest } from "./service";
+import type { GetStatusResponse } from "./service";
+import type { GetStatusRequest } from "./service";
 import type { GetCompactedEventlogResponse } from "./service";
 import type { GetCompactedEventlogRequest } from "./service";
 import type { GetEventlogResponse } from "./service";
@@ -181,6 +185,12 @@ export interface IDocumentsClient {
      * @generated from protobuf rpc: CompactedEventlog(elephant.repository.GetCompactedEventlogRequest) returns (elephant.repository.GetCompactedEventlogResponse);
      */
     compactedEventlog(input: GetCompactedEventlogRequest, options?: RpcOptions): UnaryCall<GetCompactedEventlogRequest, GetCompactedEventlogResponse>;
+    /**
+     * GetStatus returns a single status for a document.
+     *
+     * @generated from protobuf rpc: GetStatus(elephant.repository.GetStatusRequest) returns (elephant.repository.GetStatusResponse);
+     */
+    getStatus(input: GetStatusRequest, options?: RpcOptions): UnaryCall<GetStatusRequest, GetStatusResponse>;
     /**
      * GetStatusHistory returns the history of a status for a document.
      *
@@ -349,12 +359,21 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
         return stackIntercept<GetCompactedEventlogRequest, GetCompactedEventlogResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * GetStatus returns a single status for a document.
+     *
+     * @generated from protobuf rpc: GetStatus(elephant.repository.GetStatusRequest) returns (elephant.repository.GetStatusResponse);
+     */
+    getStatus(input: GetStatusRequest, options?: RpcOptions): UnaryCall<GetStatusRequest, GetStatusResponse> {
+        const method = this.methods[13], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetStatusRequest, GetStatusResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * GetStatusHistory returns the history of a status for a document.
      *
      * @generated from protobuf rpc: GetStatusHistory(elephant.repository.GetStatusHistoryRequest) returns (elephant.repository.GetStatusHistoryReponse);
      */
     getStatusHistory(input: GetStatusHistoryRequest, options?: RpcOptions): UnaryCall<GetStatusHistoryRequest, GetStatusHistoryReponse> {
-        const method = this.methods[13], opt = this._transport.mergeOptions(options);
+        const method = this.methods[14], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetStatusHistoryRequest, GetStatusHistoryReponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -364,7 +383,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: GetStatusOverview(elephant.repository.GetStatusOverviewRequest) returns (elephant.repository.GetStatusOverviewResponse);
      */
     getStatusOverview(input: GetStatusOverviewRequest, options?: RpcOptions): UnaryCall<GetStatusOverviewRequest, GetStatusOverviewResponse> {
-        const method = this.methods[14], opt = this._transport.mergeOptions(options);
+        const method = this.methods[15], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetStatusOverviewRequest, GetStatusOverviewResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -373,7 +392,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: GetPermissions(elephant.repository.GetPermissionsRequest) returns (elephant.repository.GetPermissionsResponse);
      */
     getPermissions(input: GetPermissionsRequest, options?: RpcOptions): UnaryCall<GetPermissionsRequest, GetPermissionsResponse> {
-        const method = this.methods[15], opt = this._transport.mergeOptions(options);
+        const method = this.methods[16], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetPermissionsRequest, GetPermissionsResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -382,7 +401,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: Lock(elephant.repository.LockRequest) returns (elephant.repository.LockResponse);
      */
     lock(input: LockRequest, options?: RpcOptions): UnaryCall<LockRequest, LockResponse> {
-        const method = this.methods[16], opt = this._transport.mergeOptions(options);
+        const method = this.methods[17], opt = this._transport.mergeOptions(options);
         return stackIntercept<LockRequest, LockResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -391,7 +410,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: ExtendLock(elephant.repository.ExtendLockRequest) returns (elephant.repository.LockResponse);
      */
     extendLock(input: ExtendLockRequest, options?: RpcOptions): UnaryCall<ExtendLockRequest, LockResponse> {
-        const method = this.methods[17], opt = this._transport.mergeOptions(options);
+        const method = this.methods[18], opt = this._transport.mergeOptions(options);
         return stackIntercept<ExtendLockRequest, LockResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -400,7 +419,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: Unlock(elephant.repository.UnlockRequest) returns (elephant.repository.UnlockResponse);
      */
     unlock(input: UnlockRequest, options?: RpcOptions): UnaryCall<UnlockRequest, UnlockResponse> {
-        const method = this.methods[18], opt = this._transport.mergeOptions(options);
+        const method = this.methods[19], opt = this._transport.mergeOptions(options);
         return stackIntercept<UnlockRequest, UnlockResponse>("unary", this._transport, method, opt, input);
     }
 }
@@ -766,6 +785,12 @@ export interface IMetricsClient {
      * @generated from protobuf rpc: RegisterMetric(elephant.repository.RegisterMetricRequest) returns (elephant.repository.RegisterMetricResponse);
      */
     registerMetric(input: RegisterMetricRequest, options?: RpcOptions): UnaryCall<RegisterMetricRequest, RegisterMetricResponse>;
+    /**
+     * GetMetrics returns metrics related to a document.
+     *
+     * @generated from protobuf rpc: GetMetrics(elephant.repository.GetMetricsRequest) returns (elephant.repository.GetMetricsResponse);
+     */
+    getMetrics(input: GetMetricsRequest, options?: RpcOptions): UnaryCall<GetMetricsRequest, GetMetricsResponse>;
 }
 /**
  * @generated from protobuf service elephant.repository.Metrics
@@ -811,5 +836,14 @@ export class MetricsClient implements IMetricsClient, ServiceInfo {
     registerMetric(input: RegisterMetricRequest, options?: RpcOptions): UnaryCall<RegisterMetricRequest, RegisterMetricResponse> {
         const method = this.methods[3], opt = this._transport.mergeOptions(options);
         return stackIntercept<RegisterMetricRequest, RegisterMetricResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * GetMetrics returns metrics related to a document.
+     *
+     * @generated from protobuf rpc: GetMetrics(elephant.repository.GetMetricsRequest) returns (elephant.repository.GetMetricsResponse);
+     */
+    getMetrics(input: GetMetricsRequest, options?: RpcOptions): UnaryCall<GetMetricsRequest, GetMetricsResponse> {
+        const method = this.methods[4], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetMetricsRequest, GetMetricsResponse>("unary", this._transport, method, opt, input);
     }
 }
