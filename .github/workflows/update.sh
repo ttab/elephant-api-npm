@@ -76,12 +76,15 @@ for service in ${services[@]}; do
            --proto_path /usr/src/proto \
            $service/service.proto
 
-    tee src/$service/index.ts <<'EOF' >/dev/null
+    if [ ! -f src/$service/index.ts ]; then
+        tee src/$service/index.ts <<'EOF' >/dev/null
 export * from './service.client.ts'
 export * from './service.ts'
 EOF
+    fi
 done
 
 npm run build
-npm version $tag
 
+echo Updated to $tag
+echo Finish up and tag a new release with: npm version $tag
