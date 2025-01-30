@@ -353,6 +353,18 @@ export interface EventlogItem {
      * @generated from protobuf field: string system_state = 14;
      */
     systemState: string;
+    /**
+     * WorkflowState that the document is in.
+     *
+     * @generated from protobuf field: string workflow_state = 15;
+     */
+    workflowState: string;
+    /**
+     * WorkflowCheckpoint that the document reached most recently.
+     *
+     * @generated from protobuf field: string workflow_checkpoint = 16;
+     */
+    workflowCheckpoint: string;
 }
 /**
  * @generated from protobuf message elephant.repository.RunReportRequest
@@ -580,6 +592,110 @@ export interface GetStatusRulesResponse {
  * @generated from protobuf message elephant.repository.GetStatusesRequest
  */
 export interface GetStatusesRequest {
+}
+/**
+ * @generated from protobuf message elephant.repository.SetWorkflowRequest
+ */
+export interface SetWorkflowRequest {
+    /**
+     * Type of the document that this workflow is for.
+     *
+     * @generated from protobuf field: string type = 1;
+     */
+    type: string;
+    /**
+     * Workflow declaration.
+     *
+     * @generated from protobuf field: elephant.repository.DocumentWorkflow workflow = 2;
+     */
+    workflow?: DocumentWorkflow;
+}
+/**
+ * @generated from protobuf message elephant.repository.DocumentWorkflow
+ */
+export interface DocumentWorkflow {
+    /**
+     * StepZero is the step that the state begins in, or reverts to after a
+     * checkpoint.
+     *
+     * @generated from protobuf field: string step_zero = 1;
+     */
+    stepZero: string;
+    /**
+     * Checkpoint is the status that should be used as the state checkpoint.
+     *
+     * @generated from protobuf field: string checkpoint = 2;
+     */
+    checkpoint: string;
+    /**
+     * NegativeCheckpoint is the state that should be used when the checkpoint
+     * status is set using a negative version.
+     *
+     * @generated from protobuf field: string negative_checkpoint = 3;
+     */
+    negativeCheckpoint: string;
+    /**
+     * Steps are the names of statuses that should be used as steps between
+     * checkpoints.
+     *
+     * @generated from protobuf field: repeated string steps = 4;
+     */
+    steps: string[];
+}
+/**
+ * @generated from protobuf message elephant.repository.SetWorkflowResponse
+ */
+export interface SetWorkflowResponse {
+}
+/**
+ * @generated from protobuf message elephant.repository.GetWorkflowRequest
+ */
+export interface GetWorkflowRequest {
+    /**
+     * Type of the document to get workflow for.
+     *
+     * @generated from protobuf field: string type = 1;
+     */
+    type: string;
+}
+/**
+ * @generated from protobuf message elephant.repository.GetWorkflowResponse
+ */
+export interface GetWorkflowResponse {
+    /**
+     * Workflow declaration.
+     *
+     * @generated from protobuf field: elephant.repository.DocumentWorkflow workflow = 1;
+     */
+    workflow?: DocumentWorkflow;
+    /**
+     * UpdaterURI identifies the user that last updated the workflow.
+     *
+     * @generated from protobuf field: string updater_uri = 2;
+     */
+    updaterUri: string;
+    /**
+     * Updated is the update time as a RFC3339 timestamp.
+     *
+     * @generated from protobuf field: string updated = 3;
+     */
+    updated: string;
+}
+/**
+ * @generated from protobuf message elephant.repository.DeleteWorkflowRequest
+ */
+export interface DeleteWorkflowRequest {
+    /**
+     * Type of the document to remove the workflow for.
+     *
+     * @generated from protobuf field: string type = 1;
+     */
+    type: string;
+}
+/**
+ * @generated from protobuf message elephant.repository.DeleteWorkflowResponse
+ */
+export interface DeleteWorkflowResponse {
 }
 /**
  * @generated from protobuf message elephant.repository.WorkflowStatus
@@ -1448,6 +1564,18 @@ export interface DocumentMeta {
      * @generated from protobuf field: string main_document = 8;
      */
     mainDocument: string;
+    /**
+     * WorkflowState that the document is in.
+     *
+     * @generated from protobuf field: string workflow_state = 9;
+     */
+    workflowState: string;
+    /**
+     * WorkflowCheckpoint that the document reached most recently.
+     *
+     * @generated from protobuf field: string workflow_checkpoint = 10;
+     */
+    workflowCheckpoint: string;
 }
 /**
  * @generated from protobuf message elephant.repository.Status
@@ -2817,7 +2945,9 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
             { no: 11, name: "language", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "old_language", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 13, name: "main_document", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 14, name: "system_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 14, name: "system_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 15, name: "workflow_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 16, name: "workflow_checkpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<EventlogItem>): EventlogItem {
@@ -2836,6 +2966,8 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
         message.oldLanguage = "";
         message.mainDocument = "";
         message.systemState = "";
+        message.workflowState = "";
+        message.workflowCheckpoint = "";
         if (value !== undefined)
             reflectionMergePartial<EventlogItem>(this, message, value);
         return message;
@@ -2886,6 +3018,12 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
                     break;
                 case /* string system_state */ 14:
                     message.systemState = reader.string();
+                    break;
+                case /* string workflow_state */ 15:
+                    message.workflowState = reader.string();
+                    break;
+                case /* string workflow_checkpoint */ 16:
+                    message.workflowCheckpoint = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -2941,6 +3079,12 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
         /* string system_state = 14; */
         if (message.systemState !== "")
             writer.tag(14, WireType.LengthDelimited).string(message.systemState);
+        /* string workflow_state = 15; */
+        if (message.workflowState !== "")
+            writer.tag(15, WireType.LengthDelimited).string(message.workflowState);
+        /* string workflow_checkpoint = 16; */
+        if (message.workflowCheckpoint !== "")
+            writer.tag(16, WireType.LengthDelimited).string(message.workflowCheckpoint);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3905,6 +4049,337 @@ class GetStatusesRequest$Type extends MessageType<GetStatusesRequest> {
  * @generated MessageType for protobuf message elephant.repository.GetStatusesRequest
  */
 export const GetStatusesRequest = new GetStatusesRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SetWorkflowRequest$Type extends MessageType<SetWorkflowRequest> {
+    constructor() {
+        super("elephant.repository.SetWorkflowRequest", [
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "workflow", kind: "message", T: () => DocumentWorkflow }
+        ]);
+    }
+    create(value?: PartialMessage<SetWorkflowRequest>): SetWorkflowRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.type = "";
+        if (value !== undefined)
+            reflectionMergePartial<SetWorkflowRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SetWorkflowRequest): SetWorkflowRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string type */ 1:
+                    message.type = reader.string();
+                    break;
+                case /* elephant.repository.DocumentWorkflow workflow */ 2:
+                    message.workflow = DocumentWorkflow.internalBinaryRead(reader, reader.uint32(), options, message.workflow);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SetWorkflowRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string type = 1; */
+        if (message.type !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.type);
+        /* elephant.repository.DocumentWorkflow workflow = 2; */
+        if (message.workflow)
+            DocumentWorkflow.internalBinaryWrite(message.workflow, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.SetWorkflowRequest
+ */
+export const SetWorkflowRequest = new SetWorkflowRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DocumentWorkflow$Type extends MessageType<DocumentWorkflow> {
+    constructor() {
+        super("elephant.repository.DocumentWorkflow", [
+            { no: 1, name: "step_zero", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "checkpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "negative_checkpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "steps", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DocumentWorkflow>): DocumentWorkflow {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.stepZero = "";
+        message.checkpoint = "";
+        message.negativeCheckpoint = "";
+        message.steps = [];
+        if (value !== undefined)
+            reflectionMergePartial<DocumentWorkflow>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DocumentWorkflow): DocumentWorkflow {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string step_zero */ 1:
+                    message.stepZero = reader.string();
+                    break;
+                case /* string checkpoint */ 2:
+                    message.checkpoint = reader.string();
+                    break;
+                case /* string negative_checkpoint */ 3:
+                    message.negativeCheckpoint = reader.string();
+                    break;
+                case /* repeated string steps */ 4:
+                    message.steps.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DocumentWorkflow, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string step_zero = 1; */
+        if (message.stepZero !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.stepZero);
+        /* string checkpoint = 2; */
+        if (message.checkpoint !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.checkpoint);
+        /* string negative_checkpoint = 3; */
+        if (message.negativeCheckpoint !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.negativeCheckpoint);
+        /* repeated string steps = 4; */
+        for (let i = 0; i < message.steps.length; i++)
+            writer.tag(4, WireType.LengthDelimited).string(message.steps[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.DocumentWorkflow
+ */
+export const DocumentWorkflow = new DocumentWorkflow$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SetWorkflowResponse$Type extends MessageType<SetWorkflowResponse> {
+    constructor() {
+        super("elephant.repository.SetWorkflowResponse", []);
+    }
+    create(value?: PartialMessage<SetWorkflowResponse>): SetWorkflowResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<SetWorkflowResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SetWorkflowResponse): SetWorkflowResponse {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: SetWorkflowResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.SetWorkflowResponse
+ */
+export const SetWorkflowResponse = new SetWorkflowResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetWorkflowRequest$Type extends MessageType<GetWorkflowRequest> {
+    constructor() {
+        super("elephant.repository.GetWorkflowRequest", [
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetWorkflowRequest>): GetWorkflowRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.type = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetWorkflowRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetWorkflowRequest): GetWorkflowRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string type */ 1:
+                    message.type = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetWorkflowRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string type = 1; */
+        if (message.type !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.type);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetWorkflowRequest
+ */
+export const GetWorkflowRequest = new GetWorkflowRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetWorkflowResponse$Type extends MessageType<GetWorkflowResponse> {
+    constructor() {
+        super("elephant.repository.GetWorkflowResponse", [
+            { no: 1, name: "workflow", kind: "message", T: () => DocumentWorkflow },
+            { no: 2, name: "updater_uri", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "updated", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetWorkflowResponse>): GetWorkflowResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.updaterUri = "";
+        message.updated = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetWorkflowResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetWorkflowResponse): GetWorkflowResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* elephant.repository.DocumentWorkflow workflow */ 1:
+                    message.workflow = DocumentWorkflow.internalBinaryRead(reader, reader.uint32(), options, message.workflow);
+                    break;
+                case /* string updater_uri */ 2:
+                    message.updaterUri = reader.string();
+                    break;
+                case /* string updated */ 3:
+                    message.updated = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetWorkflowResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* elephant.repository.DocumentWorkflow workflow = 1; */
+        if (message.workflow)
+            DocumentWorkflow.internalBinaryWrite(message.workflow, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* string updater_uri = 2; */
+        if (message.updaterUri !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.updaterUri);
+        /* string updated = 3; */
+        if (message.updated !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.updated);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetWorkflowResponse
+ */
+export const GetWorkflowResponse = new GetWorkflowResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeleteWorkflowRequest$Type extends MessageType<DeleteWorkflowRequest> {
+    constructor() {
+        super("elephant.repository.DeleteWorkflowRequest", [
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeleteWorkflowRequest>): DeleteWorkflowRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.type = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeleteWorkflowRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteWorkflowRequest): DeleteWorkflowRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string type */ 1:
+                    message.type = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeleteWorkflowRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string type = 1; */
+        if (message.type !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.type);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.DeleteWorkflowRequest
+ */
+export const DeleteWorkflowRequest = new DeleteWorkflowRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeleteWorkflowResponse$Type extends MessageType<DeleteWorkflowResponse> {
+    constructor() {
+        super("elephant.repository.DeleteWorkflowResponse", []);
+    }
+    create(value?: PartialMessage<DeleteWorkflowResponse>): DeleteWorkflowResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<DeleteWorkflowResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteWorkflowResponse): DeleteWorkflowResponse {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: DeleteWorkflowResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.DeleteWorkflowResponse
+ */
+export const DeleteWorkflowResponse = new DeleteWorkflowResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class WorkflowStatus$Type extends MessageType<WorkflowStatus> {
     constructor() {
@@ -6318,7 +6793,9 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
             { no: 5, name: "acl", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ACLEntry },
             { no: 6, name: "lock", kind: "message", T: () => Lock },
             { no: 7, name: "is_meta_document", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 8, name: "main_document", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 8, name: "main_document", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 9, name: "workflow_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "workflow_checkpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<DocumentMeta>): DocumentMeta {
@@ -6330,6 +6807,8 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
         message.acl = [];
         message.isMetaDocument = false;
         message.mainDocument = "";
+        message.workflowState = "";
+        message.workflowCheckpoint = "";
         if (value !== undefined)
             reflectionMergePartial<DocumentMeta>(this, message, value);
         return message;
@@ -6362,6 +6841,12 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
                     break;
                 case /* string main_document */ 8:
                     message.mainDocument = reader.string();
+                    break;
+                case /* string workflow_state */ 9:
+                    message.workflowState = reader.string();
+                    break;
+                case /* string workflow_checkpoint */ 10:
+                    message.workflowCheckpoint = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -6419,6 +6904,12 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
         /* string main_document = 8; */
         if (message.mainDocument !== "")
             writer.tag(8, WireType.LengthDelimited).string(message.mainDocument);
+        /* string workflow_state = 9; */
+        if (message.workflowState !== "")
+            writer.tag(9, WireType.LengthDelimited).string(message.workflowState);
+        /* string workflow_checkpoint = 10; */
+        if (message.workflowCheckpoint !== "")
+            writer.tag(10, WireType.LengthDelimited).string(message.workflowCheckpoint);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -8369,7 +8860,10 @@ export const Workflows = new ServiceType("elephant.repository.Workflows", [
     { name: "GetStatuses", options: {}, I: GetStatusesRequest, O: GetStatusesResponse },
     { name: "CreateStatusRule", options: {}, I: CreateStatusRuleRequest, O: CreateStatusRuleResponse },
     { name: "DeleteStatusRule", options: {}, I: DeleteStatusRuleRequest, O: DeleteStatusRuleResponse },
-    { name: "GetStatusRules", options: {}, I: GetStatusRulesRequest, O: GetStatusRulesResponse }
+    { name: "GetStatusRules", options: {}, I: GetStatusRulesRequest, O: GetStatusRulesResponse },
+    { name: "SetWorkflow", options: {}, I: SetWorkflowRequest, O: SetWorkflowResponse },
+    { name: "GetWorkflow", options: {}, I: GetWorkflowRequest, O: GetWorkflowResponse },
+    { name: "DeleteWorkflow", options: {}, I: DeleteWorkflowRequest, O: DeleteWorkflowResponse }
 ]);
 /**
  * @generated ServiceType for protobuf service elephant.repository.Reports

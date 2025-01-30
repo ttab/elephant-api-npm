@@ -28,6 +28,12 @@ import type { UpdateReportRequest } from "./service";
 import type { ListReportsResponse } from "./service";
 import type { ListReportsRequest } from "./service";
 import { Workflows } from "./service";
+import type { DeleteWorkflowResponse } from "./service";
+import type { DeleteWorkflowRequest } from "./service";
+import type { GetWorkflowResponse } from "./service";
+import type { GetWorkflowRequest } from "./service";
+import type { SetWorkflowResponse } from "./service";
+import type { SetWorkflowRequest } from "./service";
 import type { GetStatusRulesResponse } from "./service";
 import type { GetStatusRulesRequest } from "./service";
 import type { DeleteStatusRuleResponse } from "./service";
@@ -593,6 +599,24 @@ export interface IWorkflowsClient {
      * @generated from protobuf rpc: GetStatusRules(elephant.repository.GetStatusRulesRequest) returns (elephant.repository.GetStatusRulesResponse);
      */
     getStatusRules(input: GetStatusRulesRequest, options?: RpcOptions): UnaryCall<GetStatusRulesRequest, GetStatusRulesResponse>;
+    /**
+     * SetWorkflow configures a workflow for a document type.
+     *
+     * @generated from protobuf rpc: SetWorkflow(elephant.repository.SetWorkflowRequest) returns (elephant.repository.SetWorkflowResponse);
+     */
+    setWorkflow(input: SetWorkflowRequest, options?: RpcOptions): UnaryCall<SetWorkflowRequest, SetWorkflowResponse>;
+    /**
+     * GetWorkflow for a document type.
+     *
+     * @generated from protobuf rpc: GetWorkflow(elephant.repository.GetWorkflowRequest) returns (elephant.repository.GetWorkflowResponse);
+     */
+    getWorkflow(input: GetWorkflowRequest, options?: RpcOptions): UnaryCall<GetWorkflowRequest, GetWorkflowResponse>;
+    /**
+     * DeleteWorkflow removes the workflow configuration for a document type.
+     *
+     * @generated from protobuf rpc: DeleteWorkflow(elephant.repository.DeleteWorkflowRequest) returns (elephant.repository.DeleteWorkflowResponse);
+     */
+    deleteWorkflow(input: DeleteWorkflowRequest, options?: RpcOptions): UnaryCall<DeleteWorkflowRequest, DeleteWorkflowResponse>;
 }
 /**
  * @generated from protobuf service elephant.repository.Workflows
@@ -648,6 +672,33 @@ export class WorkflowsClient implements IWorkflowsClient, ServiceInfo {
     getStatusRules(input: GetStatusRulesRequest, options?: RpcOptions): UnaryCall<GetStatusRulesRequest, GetStatusRulesResponse> {
         const method = this.methods[4], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetStatusRulesRequest, GetStatusRulesResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * SetWorkflow configures a workflow for a document type.
+     *
+     * @generated from protobuf rpc: SetWorkflow(elephant.repository.SetWorkflowRequest) returns (elephant.repository.SetWorkflowResponse);
+     */
+    setWorkflow(input: SetWorkflowRequest, options?: RpcOptions): UnaryCall<SetWorkflowRequest, SetWorkflowResponse> {
+        const method = this.methods[5], opt = this._transport.mergeOptions(options);
+        return stackIntercept<SetWorkflowRequest, SetWorkflowResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * GetWorkflow for a document type.
+     *
+     * @generated from protobuf rpc: GetWorkflow(elephant.repository.GetWorkflowRequest) returns (elephant.repository.GetWorkflowResponse);
+     */
+    getWorkflow(input: GetWorkflowRequest, options?: RpcOptions): UnaryCall<GetWorkflowRequest, GetWorkflowResponse> {
+        const method = this.methods[6], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetWorkflowRequest, GetWorkflowResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * DeleteWorkflow removes the workflow configuration for a document type.
+     *
+     * @generated from protobuf rpc: DeleteWorkflow(elephant.repository.DeleteWorkflowRequest) returns (elephant.repository.DeleteWorkflowResponse);
+     */
+    deleteWorkflow(input: DeleteWorkflowRequest, options?: RpcOptions): UnaryCall<DeleteWorkflowRequest, DeleteWorkflowResponse> {
+        const method = this.methods[7], opt = this._transport.mergeOptions(options);
+        return stackIntercept<DeleteWorkflowRequest, DeleteWorkflowResponse>("unary", this._transport, method, opt, input);
     }
 }
 /**
