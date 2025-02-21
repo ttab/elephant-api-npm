@@ -3,10 +3,6 @@
 // @generated from protobuf file "index/service.proto" (package "elephant.index", syntax proto3)
 // tslint:disable
 // @ts-nocheck
-import { GetMappingsResponseV1 } from "./search_v1";
-import { GetMappingsRequestV1 } from "./search_v1";
-import { QueryResponseV1 } from "./search_v1";
-import { QueryRequestV1 } from "./search_v1";
 import { ServiceType } from "@protobuf-ts/runtime-rpc";
 import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
 import type { IBinaryWriter } from "@protobuf-ts/runtime";
@@ -17,6 +13,7 @@ import { UnknownFieldHandler } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
+import { Document } from "../newsdoc/newsdoc";
 /**
  * @generated from protobuf message elephant.index.RegisterClusterRequest
  */
@@ -306,6 +303,554 @@ export interface IndexSet {
      * @generated from protobuf field: int64 position = 5;
      */
     position: bigint;
+}
+/**
+ * @generated from protobuf message elephant.index.QueryRequestV1
+ */
+export interface QueryRequestV1 {
+    /**
+     * @generated from protobuf field: string document_type = 1;
+     */
+    documentType: string;
+    /**
+     * @generated from protobuf field: string language = 2;
+     */
+    language: string;
+    /**
+     * @generated from protobuf field: elephant.index.QueryV1 query = 3;
+     */
+    query?: QueryV1;
+    /**
+     * @generated from protobuf field: repeated string fields = 4;
+     */
+    fields: string[];
+    /**
+     * @generated from protobuf field: repeated elephant.index.SortingV1 sort = 5;
+     */
+    sort: SortingV1[];
+    /**
+     * @generated from protobuf field: bool source = 6;
+     */
+    source: boolean;
+    /**
+     * @generated from protobuf field: int64 from = 7;
+     */
+    from: bigint;
+    /**
+     * @generated from protobuf field: int64 size = 8;
+     */
+    size: bigint;
+    /**
+     * @generated from protobuf field: repeated string search_after = 9;
+     */
+    searchAfter: string[];
+    /**
+     * LoadDocument will load the current version of the document from the
+     * repository and include it with the search response.
+     *
+     * @generated from protobuf field: bool load_document = 10;
+     */
+    loadDocument: boolean;
+    /**
+     * Subscribe starts a subscription for the query.
+     *
+     * @generated from protobuf field: bool subscribe = 11;
+     */
+    subscribe: boolean;
+    /**
+     * Shared performs the query without the identity of the user, allows for
+     * better query caching and shared subscriptions.
+     *
+     * @generated from protobuf field: bool shared = 12;
+     */
+    shared: boolean;
+}
+/**
+ * @generated from protobuf message elephant.index.QueryV1
+ */
+export interface QueryV1 {
+    /**
+     * @generated from protobuf oneof: conditions
+     */
+    conditions: {
+        oneofKind: "bool";
+        /**
+         * @generated from protobuf field: elephant.index.BoolQueryV1 bool = 1;
+         */
+        bool: BoolQueryV1;
+    } | {
+        oneofKind: "range";
+        /**
+         * @generated from protobuf field: elephant.index.RangeQueryV1 range = 2;
+         */
+        range: RangeQueryV1;
+    } | {
+        oneofKind: "exists";
+        /**
+         * @generated from protobuf field: string exists = 3;
+         */
+        exists: string;
+    } | {
+        oneofKind: "matchAll";
+        /**
+         * @generated from protobuf field: elephant.index.MatchAllQueryV1 match_all = 4;
+         */
+        matchAll: MatchAllQueryV1;
+    } | {
+        oneofKind: "term";
+        /**
+         * @generated from protobuf field: elephant.index.TermQueryV1 term = 5;
+         */
+        term: TermQueryV1;
+    } | {
+        oneofKind: "terms";
+        /**
+         * @generated from protobuf field: elephant.index.TermsQueryV1 terms = 6;
+         */
+        terms: TermsQueryV1;
+    } | {
+        oneofKind: "match";
+        /**
+         * @generated from protobuf field: elephant.index.MatchQueryV1 match = 7;
+         */
+        match: MatchQueryV1;
+    } | {
+        oneofKind: "matchPhrase";
+        /**
+         * @generated from protobuf field: elephant.index.MatchPhraseQueryV1 match_phrase = 8;
+         */
+        matchPhrase: MatchPhraseQueryV1;
+    } | {
+        oneofKind: "queryString";
+        /**
+         * @generated from protobuf field: string query_string = 9;
+         */
+        queryString: string;
+    } | {
+        oneofKind: "prefix";
+        /**
+         * @generated from protobuf field: elephant.index.PrefixQueryV1 prefix = 10;
+         */
+        prefix: PrefixQueryV1;
+    } | {
+        oneofKind: undefined;
+    };
+}
+/**
+ * @generated from protobuf message elephant.index.BoolQueryV1
+ */
+export interface BoolQueryV1 {
+    /**
+     * @generated from protobuf field: repeated elephant.index.QueryV1 must = 1;
+     */
+    must: QueryV1[];
+    /**
+     * @generated from protobuf field: repeated elephant.index.QueryV1 must_not = 2;
+     */
+    mustNot: QueryV1[];
+    /**
+     * @generated from protobuf field: repeated elephant.index.QueryV1 should = 3;
+     */
+    should: QueryV1[];
+    /**
+     * @generated from protobuf field: repeated elephant.index.QueryV1 filter = 4;
+     */
+    filter: QueryV1[];
+}
+/**
+ * @generated from protobuf message elephant.index.RangeQueryV1
+ */
+export interface RangeQueryV1 {
+    /**
+     * @generated from protobuf field: string field = 1;
+     */
+    field: string;
+    /**
+     * @generated from protobuf field: string gt = 2;
+     */
+    gt: string;
+    /**
+     * @generated from protobuf field: string gte = 3;
+     */
+    gte: string;
+    /**
+     * @generated from protobuf field: string lt = 4;
+     */
+    lt: string;
+    /**
+     * @generated from protobuf field: string lte = 5;
+     */
+    lte: string;
+}
+/**
+ * @generated from protobuf message elephant.index.MatchAllQueryV1
+ */
+export interface MatchAllQueryV1 {
+}
+/**
+ * @generated from protobuf message elephant.index.TermQueryV1
+ */
+export interface TermQueryV1 {
+    /**
+     * @generated from protobuf field: string field = 1;
+     */
+    field: string;
+    /**
+     * @generated from protobuf field: string value = 2;
+     */
+    value: string;
+    /**
+     * @generated from protobuf field: double boost = 3;
+     */
+    boost: number;
+}
+/**
+ * @generated from protobuf message elephant.index.TermsQueryV1
+ */
+export interface TermsQueryV1 {
+    /**
+     * @generated from protobuf field: string field = 1;
+     */
+    field: string;
+    /**
+     * @generated from protobuf field: repeated string values = 2;
+     */
+    values: string[];
+    /**
+     * @generated from protobuf field: double boost = 3;
+     */
+    boost: number;
+}
+/**
+ * @generated from protobuf message elephant.index.MatchQueryV1
+ */
+export interface MatchQueryV1 {
+    /**
+     * @generated from protobuf field: string field = 1;
+     */
+    field: string;
+    /**
+     * @generated from protobuf field: string value = 2;
+     */
+    value: string;
+    /**
+     * @generated from protobuf field: double boost = 3;
+     */
+    boost: number;
+}
+/**
+ * @generated from protobuf message elephant.index.MatchPhraseQueryV1
+ */
+export interface MatchPhraseQueryV1 {
+    /**
+     * @generated from protobuf field: string field = 1;
+     */
+    field: string;
+    /**
+     * @generated from protobuf field: string value = 2;
+     */
+    value: string;
+}
+/**
+ * @generated from protobuf message elephant.index.PrefixQueryV1
+ */
+export interface PrefixQueryV1 {
+    /**
+     * @generated from protobuf field: string field = 1;
+     */
+    field: string;
+    /**
+     * @generated from protobuf field: string value = 2;
+     */
+    value: string;
+    /**
+     * @generated from protobuf field: bool case_insensitive = 3;
+     */
+    caseInsensitive: boolean;
+    /**
+     * @generated from protobuf field: double boost = 4;
+     */
+    boost: number;
+}
+/**
+ * @generated from protobuf message elephant.index.SortingV1
+ */
+export interface SortingV1 {
+    /**
+     * @generated from protobuf field: string field = 1;
+     */
+    field: string;
+    /**
+     * @generated from protobuf field: bool desc = 2;
+     */
+    desc: boolean;
+}
+/**
+ * @generated from protobuf message elephant.index.QueryResponseV1
+ */
+export interface QueryResponseV1 {
+    /**
+     * @generated from protobuf field: int64 took = 1;
+     */
+    took: bigint;
+    /**
+     * @generated from protobuf field: bool timed_out = 2;
+     */
+    timedOut: boolean;
+    /**
+     * @generated from protobuf field: elephant.index.ShardsV1 shards = 3;
+     */
+    shards?: ShardsV1;
+    /**
+     * @generated from protobuf field: elephant.index.HitsV1 hits = 4;
+     */
+    hits?: HitsV1;
+    /**
+     * Subsciption for search results, if any was started.
+     *
+     * @generated from protobuf field: elephant.index.SubscriptionReference subscription = 5;
+     */
+    subscription?: SubscriptionReference;
+}
+/**
+ * @generated from protobuf message elephant.index.ShardsV1
+ */
+export interface ShardsV1 {
+    /**
+     * @generated from protobuf field: int32 total = 1;
+     */
+    total: number;
+    /**
+     * @generated from protobuf field: int32 successful = 2;
+     */
+    successful: number;
+    /**
+     * @generated from protobuf field: int32 skipped = 3;
+     */
+    skipped: number;
+    /**
+     * @generated from protobuf field: int32 failed = 4;
+     */
+    failed: number;
+}
+/**
+ * @generated from protobuf message elephant.index.HitsV1
+ */
+export interface HitsV1 {
+    /**
+     * @generated from protobuf field: elephant.index.HitsTotalV1 total = 1;
+     */
+    total?: HitsTotalV1;
+    /**
+     * @generated from protobuf field: float max_score = 2;
+     */
+    maxScore: number;
+    /**
+     * @generated from protobuf field: repeated elephant.index.HitV1 hits = 3;
+     */
+    hits: HitV1[];
+}
+/**
+ * @generated from protobuf message elephant.index.HitsTotalV1
+ */
+export interface HitsTotalV1 {
+    /**
+     * @generated from protobuf field: int64 value = 1;
+     */
+    value: bigint;
+    /**
+     * @generated from protobuf field: string relation = 2;
+     */
+    relation: string;
+}
+/**
+ * @generated from protobuf message elephant.index.HitV1
+ */
+export interface HitV1 {
+    /**
+     * @generated from protobuf field: string id = 1;
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: float score = 2;
+     */
+    score: number;
+    /**
+     * @generated from protobuf field: map<string, elephant.index.FieldValuesV1> fields = 3;
+     */
+    fields: {
+        [key: string]: FieldValuesV1;
+    };
+    /**
+     * @generated from protobuf field: map<string, elephant.index.FieldValuesV1> source = 4;
+     */
+    source: {
+        [key: string]: FieldValuesV1;
+    };
+    /**
+     * @generated from protobuf field: repeated string sort = 5;
+     */
+    sort: string[];
+    /**
+     * @generated from protobuf field: newsdoc.Document document = 6;
+     */
+    document?: Document;
+}
+/**
+ * @generated from protobuf message elephant.index.FieldValuesV1
+ */
+export interface FieldValuesV1 {
+    /**
+     * @generated from protobuf field: repeated string values = 1;
+     */
+    values: string[];
+}
+/**
+ * @generated from protobuf message elephant.index.GetMappingsRequestV1
+ */
+export interface GetMappingsRequestV1 {
+    /**
+     * @generated from protobuf field: string document_type = 1;
+     */
+    documentType: string;
+}
+/**
+ * @generated from protobuf message elephant.index.GetMappingsResponseV1
+ */
+export interface GetMappingsResponseV1 {
+    /**
+     * @generated from protobuf field: repeated elephant.index.MappingPropertyV1 properties = 1;
+     */
+    properties: MappingPropertyV1[];
+}
+/**
+ * @generated from protobuf message elephant.index.MappingPropertyV1
+ */
+export interface MappingPropertyV1 {
+    /**
+     * Name of the property.
+     *
+     * @generated from protobuf field: string name = 1;
+     */
+    name: string;
+    /**
+     * Type of the property.
+     *
+     * @generated from protobuf field: string type = 2;
+     */
+    type: string;
+    /**
+     * Path used for alias properties.
+     *
+     * @generated from protobuf field: string path = 3;
+     */
+    path: string;
+    /**
+     * Fields used for alternate indexing metods for the property.
+     *
+     * @generated from protobuf field: repeated elephant.index.MappingFieldV1 fields = 4;
+     */
+    fields: MappingFieldV1[];
+}
+/**
+ * @generated from protobuf message elephant.index.MappingFieldV1
+ */
+export interface MappingFieldV1 {
+    /**
+     * Name of the field.
+     *
+     * @generated from protobuf field: string name = 1;
+     */
+    name: string;
+    /**
+     * Type of the field. Does not exactly correspond to Open Search types, but
+     * represents the logical type.
+     *
+     * @generated from protobuf field: string type = 2;
+     */
+    type: string;
+}
+/**
+ * @generated from protobuf message elephant.index.PollSubscriptionRequest
+ */
+export interface PollSubscriptionRequest {
+    /**
+     * Subscriptions to poll.
+     *
+     * @generated from protobuf field: repeated elephant.index.SubscriptionReference subscriptions = 1;
+     */
+    subscriptions: SubscriptionReference[];
+    /**
+     * MaxWaitMS is the maximum time to wait before returning an empty response.
+     *
+     * @generated from protobuf field: int64 max_wait_ms = 2;
+     */
+    maxWaitMs: bigint;
+    /**
+     * BatchDelayMS is the number of milliseconds to wait for more items after the first.
+     *
+     * @generated from protobuf field: int64 batch_delay_ms = 3;
+     */
+    batchDelayMs: bigint;
+}
+/**
+ * @generated from protobuf message elephant.index.SubscriptionReference
+ */
+export interface SubscriptionReference {
+    /**
+     * ID of the subscription.
+     *
+     * @generated from protobuf field: int64 id = 1;
+     */
+    id: bigint;
+    /**
+     * Cursor for current subscription position.
+     *
+     * @generated from protobuf field: int64 cursor = 2;
+     */
+    cursor: bigint;
+}
+/**
+ * @generated from protobuf message elephant.index.PollSubscriptionResponse
+ */
+export interface PollSubscriptionResponse {
+    /**
+     * Results will be empty if the poll timed out.
+     *
+     * @generated from protobuf field: repeated elephant.index.SubscriptionPollResult result = 1;
+     */
+    result: SubscriptionPollResult[];
+}
+/**
+ * @generated from protobuf message elephant.index.SubscriptionPollResult
+ */
+export interface SubscriptionPollResult {
+    /**
+     * Subsciption reference with current cursor position.
+     *
+     * @generated from protobuf field: repeated elephant.index.SubscriptionReference subscription = 1;
+     */
+    subscription: SubscriptionReference[];
+    /**
+     * Items that matched the subscription.
+     *
+     * @generated from protobuf field: repeated elephant.index.HitV1 items = 2;
+     */
+    items: HitV1[];
+}
+/**
+ * @generated from protobuf message elephant.index.EndSubscriptionRequest
+ */
+export interface EndSubscriptionRequest {
+    /**
+     * @generated from protobuf field: int64 id = 1;
+     */
+    id: bigint;
+}
+/**
+ * @generated from protobuf message elephant.index.EndSubscriptionResponse
+ */
+export interface EndSubscriptionResponse {
 }
 /**
  * @generated from protobuf enum elephant.index.EnabledFilter
@@ -1271,6 +1816,1774 @@ class IndexSet$Type extends MessageType<IndexSet> {
  * @generated MessageType for protobuf message elephant.index.IndexSet
  */
 export const IndexSet = new IndexSet$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class QueryRequestV1$Type extends MessageType<QueryRequestV1> {
+    constructor() {
+        super("elephant.index.QueryRequestV1", [
+            { no: 1, name: "document_type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "language", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "query", kind: "message", T: () => QueryV1 },
+            { no: 4, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "sort", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => SortingV1 },
+            { no: 6, name: "source", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 7, name: "from", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 8, name: "size", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 9, name: "search_after", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "load_document", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 11, name: "subscribe", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 12, name: "shared", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        ]);
+    }
+    create(value?: PartialMessage<QueryRequestV1>): QueryRequestV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.documentType = "";
+        message.language = "";
+        message.fields = [];
+        message.sort = [];
+        message.source = false;
+        message.from = 0n;
+        message.size = 0n;
+        message.searchAfter = [];
+        message.loadDocument = false;
+        message.subscribe = false;
+        message.shared = false;
+        if (value !== undefined)
+            reflectionMergePartial<QueryRequestV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: QueryRequestV1): QueryRequestV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string document_type */ 1:
+                    message.documentType = reader.string();
+                    break;
+                case /* string language */ 2:
+                    message.language = reader.string();
+                    break;
+                case /* elephant.index.QueryV1 query */ 3:
+                    message.query = QueryV1.internalBinaryRead(reader, reader.uint32(), options, message.query);
+                    break;
+                case /* repeated string fields */ 4:
+                    message.fields.push(reader.string());
+                    break;
+                case /* repeated elephant.index.SortingV1 sort */ 5:
+                    message.sort.push(SortingV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* bool source */ 6:
+                    message.source = reader.bool();
+                    break;
+                case /* int64 from */ 7:
+                    message.from = reader.int64().toBigInt();
+                    break;
+                case /* int64 size */ 8:
+                    message.size = reader.int64().toBigInt();
+                    break;
+                case /* repeated string search_after */ 9:
+                    message.searchAfter.push(reader.string());
+                    break;
+                case /* bool load_document */ 10:
+                    message.loadDocument = reader.bool();
+                    break;
+                case /* bool subscribe */ 11:
+                    message.subscribe = reader.bool();
+                    break;
+                case /* bool shared */ 12:
+                    message.shared = reader.bool();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: QueryRequestV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string document_type = 1; */
+        if (message.documentType !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.documentType);
+        /* string language = 2; */
+        if (message.language !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.language);
+        /* elephant.index.QueryV1 query = 3; */
+        if (message.query)
+            QueryV1.internalBinaryWrite(message.query, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        /* repeated string fields = 4; */
+        for (let i = 0; i < message.fields.length; i++)
+            writer.tag(4, WireType.LengthDelimited).string(message.fields[i]);
+        /* repeated elephant.index.SortingV1 sort = 5; */
+        for (let i = 0; i < message.sort.length; i++)
+            SortingV1.internalBinaryWrite(message.sort[i], writer.tag(5, WireType.LengthDelimited).fork(), options).join();
+        /* bool source = 6; */
+        if (message.source !== false)
+            writer.tag(6, WireType.Varint).bool(message.source);
+        /* int64 from = 7; */
+        if (message.from !== 0n)
+            writer.tag(7, WireType.Varint).int64(message.from);
+        /* int64 size = 8; */
+        if (message.size !== 0n)
+            writer.tag(8, WireType.Varint).int64(message.size);
+        /* repeated string search_after = 9; */
+        for (let i = 0; i < message.searchAfter.length; i++)
+            writer.tag(9, WireType.LengthDelimited).string(message.searchAfter[i]);
+        /* bool load_document = 10; */
+        if (message.loadDocument !== false)
+            writer.tag(10, WireType.Varint).bool(message.loadDocument);
+        /* bool subscribe = 11; */
+        if (message.subscribe !== false)
+            writer.tag(11, WireType.Varint).bool(message.subscribe);
+        /* bool shared = 12; */
+        if (message.shared !== false)
+            writer.tag(12, WireType.Varint).bool(message.shared);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.QueryRequestV1
+ */
+export const QueryRequestV1 = new QueryRequestV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class QueryV1$Type extends MessageType<QueryV1> {
+    constructor() {
+        super("elephant.index.QueryV1", [
+            { no: 1, name: "bool", kind: "message", oneof: "conditions", T: () => BoolQueryV1 },
+            { no: 2, name: "range", kind: "message", oneof: "conditions", T: () => RangeQueryV1 },
+            { no: 3, name: "exists", kind: "scalar", oneof: "conditions", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "match_all", kind: "message", oneof: "conditions", T: () => MatchAllQueryV1 },
+            { no: 5, name: "term", kind: "message", oneof: "conditions", T: () => TermQueryV1 },
+            { no: 6, name: "terms", kind: "message", oneof: "conditions", T: () => TermsQueryV1 },
+            { no: 7, name: "match", kind: "message", oneof: "conditions", T: () => MatchQueryV1 },
+            { no: 8, name: "match_phrase", kind: "message", oneof: "conditions", T: () => MatchPhraseQueryV1 },
+            { no: 9, name: "query_string", kind: "scalar", oneof: "conditions", T: 9 /*ScalarType.STRING*/ },
+            { no: 10, name: "prefix", kind: "message", oneof: "conditions", T: () => PrefixQueryV1 }
+        ]);
+    }
+    create(value?: PartialMessage<QueryV1>): QueryV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.conditions = { oneofKind: undefined };
+        if (value !== undefined)
+            reflectionMergePartial<QueryV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: QueryV1): QueryV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* elephant.index.BoolQueryV1 bool */ 1:
+                    message.conditions = {
+                        oneofKind: "bool",
+                        bool: BoolQueryV1.internalBinaryRead(reader, reader.uint32(), options, (message.conditions as any).bool)
+                    };
+                    break;
+                case /* elephant.index.RangeQueryV1 range */ 2:
+                    message.conditions = {
+                        oneofKind: "range",
+                        range: RangeQueryV1.internalBinaryRead(reader, reader.uint32(), options, (message.conditions as any).range)
+                    };
+                    break;
+                case /* string exists */ 3:
+                    message.conditions = {
+                        oneofKind: "exists",
+                        exists: reader.string()
+                    };
+                    break;
+                case /* elephant.index.MatchAllQueryV1 match_all */ 4:
+                    message.conditions = {
+                        oneofKind: "matchAll",
+                        matchAll: MatchAllQueryV1.internalBinaryRead(reader, reader.uint32(), options, (message.conditions as any).matchAll)
+                    };
+                    break;
+                case /* elephant.index.TermQueryV1 term */ 5:
+                    message.conditions = {
+                        oneofKind: "term",
+                        term: TermQueryV1.internalBinaryRead(reader, reader.uint32(), options, (message.conditions as any).term)
+                    };
+                    break;
+                case /* elephant.index.TermsQueryV1 terms */ 6:
+                    message.conditions = {
+                        oneofKind: "terms",
+                        terms: TermsQueryV1.internalBinaryRead(reader, reader.uint32(), options, (message.conditions as any).terms)
+                    };
+                    break;
+                case /* elephant.index.MatchQueryV1 match */ 7:
+                    message.conditions = {
+                        oneofKind: "match",
+                        match: MatchQueryV1.internalBinaryRead(reader, reader.uint32(), options, (message.conditions as any).match)
+                    };
+                    break;
+                case /* elephant.index.MatchPhraseQueryV1 match_phrase */ 8:
+                    message.conditions = {
+                        oneofKind: "matchPhrase",
+                        matchPhrase: MatchPhraseQueryV1.internalBinaryRead(reader, reader.uint32(), options, (message.conditions as any).matchPhrase)
+                    };
+                    break;
+                case /* string query_string */ 9:
+                    message.conditions = {
+                        oneofKind: "queryString",
+                        queryString: reader.string()
+                    };
+                    break;
+                case /* elephant.index.PrefixQueryV1 prefix */ 10:
+                    message.conditions = {
+                        oneofKind: "prefix",
+                        prefix: PrefixQueryV1.internalBinaryRead(reader, reader.uint32(), options, (message.conditions as any).prefix)
+                    };
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: QueryV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* elephant.index.BoolQueryV1 bool = 1; */
+        if (message.conditions.oneofKind === "bool")
+            BoolQueryV1.internalBinaryWrite(message.conditions.bool, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* elephant.index.RangeQueryV1 range = 2; */
+        if (message.conditions.oneofKind === "range")
+            RangeQueryV1.internalBinaryWrite(message.conditions.range, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* string exists = 3; */
+        if (message.conditions.oneofKind === "exists")
+            writer.tag(3, WireType.LengthDelimited).string(message.conditions.exists);
+        /* elephant.index.MatchAllQueryV1 match_all = 4; */
+        if (message.conditions.oneofKind === "matchAll")
+            MatchAllQueryV1.internalBinaryWrite(message.conditions.matchAll, writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        /* elephant.index.TermQueryV1 term = 5; */
+        if (message.conditions.oneofKind === "term")
+            TermQueryV1.internalBinaryWrite(message.conditions.term, writer.tag(5, WireType.LengthDelimited).fork(), options).join();
+        /* elephant.index.TermsQueryV1 terms = 6; */
+        if (message.conditions.oneofKind === "terms")
+            TermsQueryV1.internalBinaryWrite(message.conditions.terms, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
+        /* elephant.index.MatchQueryV1 match = 7; */
+        if (message.conditions.oneofKind === "match")
+            MatchQueryV1.internalBinaryWrite(message.conditions.match, writer.tag(7, WireType.LengthDelimited).fork(), options).join();
+        /* elephant.index.MatchPhraseQueryV1 match_phrase = 8; */
+        if (message.conditions.oneofKind === "matchPhrase")
+            MatchPhraseQueryV1.internalBinaryWrite(message.conditions.matchPhrase, writer.tag(8, WireType.LengthDelimited).fork(), options).join();
+        /* string query_string = 9; */
+        if (message.conditions.oneofKind === "queryString")
+            writer.tag(9, WireType.LengthDelimited).string(message.conditions.queryString);
+        /* elephant.index.PrefixQueryV1 prefix = 10; */
+        if (message.conditions.oneofKind === "prefix")
+            PrefixQueryV1.internalBinaryWrite(message.conditions.prefix, writer.tag(10, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.QueryV1
+ */
+export const QueryV1 = new QueryV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class BoolQueryV1$Type extends MessageType<BoolQueryV1> {
+    constructor() {
+        super("elephant.index.BoolQueryV1", [
+            { no: 1, name: "must", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => QueryV1 },
+            { no: 2, name: "must_not", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => QueryV1 },
+            { no: 3, name: "should", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => QueryV1 },
+            { no: 4, name: "filter", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => QueryV1 }
+        ]);
+    }
+    create(value?: PartialMessage<BoolQueryV1>): BoolQueryV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.must = [];
+        message.mustNot = [];
+        message.should = [];
+        message.filter = [];
+        if (value !== undefined)
+            reflectionMergePartial<BoolQueryV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: BoolQueryV1): BoolQueryV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.index.QueryV1 must */ 1:
+                    message.must.push(QueryV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* repeated elephant.index.QueryV1 must_not */ 2:
+                    message.mustNot.push(QueryV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* repeated elephant.index.QueryV1 should */ 3:
+                    message.should.push(QueryV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* repeated elephant.index.QueryV1 filter */ 4:
+                    message.filter.push(QueryV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: BoolQueryV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.index.QueryV1 must = 1; */
+        for (let i = 0; i < message.must.length; i++)
+            QueryV1.internalBinaryWrite(message.must[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* repeated elephant.index.QueryV1 must_not = 2; */
+        for (let i = 0; i < message.mustNot.length; i++)
+            QueryV1.internalBinaryWrite(message.mustNot[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* repeated elephant.index.QueryV1 should = 3; */
+        for (let i = 0; i < message.should.length; i++)
+            QueryV1.internalBinaryWrite(message.should[i], writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        /* repeated elephant.index.QueryV1 filter = 4; */
+        for (let i = 0; i < message.filter.length; i++)
+            QueryV1.internalBinaryWrite(message.filter[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.BoolQueryV1
+ */
+export const BoolQueryV1 = new BoolQueryV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class RangeQueryV1$Type extends MessageType<RangeQueryV1> {
+    constructor() {
+        super("elephant.index.RangeQueryV1", [
+            { no: 1, name: "field", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "gt", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "gte", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "lt", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "lte", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<RangeQueryV1>): RangeQueryV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.field = "";
+        message.gt = "";
+        message.gte = "";
+        message.lt = "";
+        message.lte = "";
+        if (value !== undefined)
+            reflectionMergePartial<RangeQueryV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: RangeQueryV1): RangeQueryV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string field */ 1:
+                    message.field = reader.string();
+                    break;
+                case /* string gt */ 2:
+                    message.gt = reader.string();
+                    break;
+                case /* string gte */ 3:
+                    message.gte = reader.string();
+                    break;
+                case /* string lt */ 4:
+                    message.lt = reader.string();
+                    break;
+                case /* string lte */ 5:
+                    message.lte = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: RangeQueryV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string field = 1; */
+        if (message.field !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.field);
+        /* string gt = 2; */
+        if (message.gt !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.gt);
+        /* string gte = 3; */
+        if (message.gte !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.gte);
+        /* string lt = 4; */
+        if (message.lt !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.lt);
+        /* string lte = 5; */
+        if (message.lte !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.lte);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.RangeQueryV1
+ */
+export const RangeQueryV1 = new RangeQueryV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MatchAllQueryV1$Type extends MessageType<MatchAllQueryV1> {
+    constructor() {
+        super("elephant.index.MatchAllQueryV1", []);
+    }
+    create(value?: PartialMessage<MatchAllQueryV1>): MatchAllQueryV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<MatchAllQueryV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MatchAllQueryV1): MatchAllQueryV1 {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: MatchAllQueryV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.MatchAllQueryV1
+ */
+export const MatchAllQueryV1 = new MatchAllQueryV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TermQueryV1$Type extends MessageType<TermQueryV1> {
+    constructor() {
+        super("elephant.index.TermQueryV1", [
+            { no: 1, name: "field", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "value", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "boost", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
+        ]);
+    }
+    create(value?: PartialMessage<TermQueryV1>): TermQueryV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.field = "";
+        message.value = "";
+        message.boost = 0;
+        if (value !== undefined)
+            reflectionMergePartial<TermQueryV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TermQueryV1): TermQueryV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string field */ 1:
+                    message.field = reader.string();
+                    break;
+                case /* string value */ 2:
+                    message.value = reader.string();
+                    break;
+                case /* double boost */ 3:
+                    message.boost = reader.double();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: TermQueryV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string field = 1; */
+        if (message.field !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.field);
+        /* string value = 2; */
+        if (message.value !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.value);
+        /* double boost = 3; */
+        if (message.boost !== 0)
+            writer.tag(3, WireType.Bit64).double(message.boost);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.TermQueryV1
+ */
+export const TermQueryV1 = new TermQueryV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TermsQueryV1$Type extends MessageType<TermsQueryV1> {
+    constructor() {
+        super("elephant.index.TermsQueryV1", [
+            { no: 1, name: "field", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "values", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "boost", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
+        ]);
+    }
+    create(value?: PartialMessage<TermsQueryV1>): TermsQueryV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.field = "";
+        message.values = [];
+        message.boost = 0;
+        if (value !== undefined)
+            reflectionMergePartial<TermsQueryV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TermsQueryV1): TermsQueryV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string field */ 1:
+                    message.field = reader.string();
+                    break;
+                case /* repeated string values */ 2:
+                    message.values.push(reader.string());
+                    break;
+                case /* double boost */ 3:
+                    message.boost = reader.double();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: TermsQueryV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string field = 1; */
+        if (message.field !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.field);
+        /* repeated string values = 2; */
+        for (let i = 0; i < message.values.length; i++)
+            writer.tag(2, WireType.LengthDelimited).string(message.values[i]);
+        /* double boost = 3; */
+        if (message.boost !== 0)
+            writer.tag(3, WireType.Bit64).double(message.boost);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.TermsQueryV1
+ */
+export const TermsQueryV1 = new TermsQueryV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MatchQueryV1$Type extends MessageType<MatchQueryV1> {
+    constructor() {
+        super("elephant.index.MatchQueryV1", [
+            { no: 1, name: "field", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "value", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "boost", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
+        ]);
+    }
+    create(value?: PartialMessage<MatchQueryV1>): MatchQueryV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.field = "";
+        message.value = "";
+        message.boost = 0;
+        if (value !== undefined)
+            reflectionMergePartial<MatchQueryV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MatchQueryV1): MatchQueryV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string field */ 1:
+                    message.field = reader.string();
+                    break;
+                case /* string value */ 2:
+                    message.value = reader.string();
+                    break;
+                case /* double boost */ 3:
+                    message.boost = reader.double();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MatchQueryV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string field = 1; */
+        if (message.field !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.field);
+        /* string value = 2; */
+        if (message.value !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.value);
+        /* double boost = 3; */
+        if (message.boost !== 0)
+            writer.tag(3, WireType.Bit64).double(message.boost);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.MatchQueryV1
+ */
+export const MatchQueryV1 = new MatchQueryV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MatchPhraseQueryV1$Type extends MessageType<MatchPhraseQueryV1> {
+    constructor() {
+        super("elephant.index.MatchPhraseQueryV1", [
+            { no: 1, name: "field", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "value", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<MatchPhraseQueryV1>): MatchPhraseQueryV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.field = "";
+        message.value = "";
+        if (value !== undefined)
+            reflectionMergePartial<MatchPhraseQueryV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MatchPhraseQueryV1): MatchPhraseQueryV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string field */ 1:
+                    message.field = reader.string();
+                    break;
+                case /* string value */ 2:
+                    message.value = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MatchPhraseQueryV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string field = 1; */
+        if (message.field !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.field);
+        /* string value = 2; */
+        if (message.value !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.value);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.MatchPhraseQueryV1
+ */
+export const MatchPhraseQueryV1 = new MatchPhraseQueryV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class PrefixQueryV1$Type extends MessageType<PrefixQueryV1> {
+    constructor() {
+        super("elephant.index.PrefixQueryV1", [
+            { no: 1, name: "field", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "value", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "case_insensitive", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 4, name: "boost", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
+        ]);
+    }
+    create(value?: PartialMessage<PrefixQueryV1>): PrefixQueryV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.field = "";
+        message.value = "";
+        message.caseInsensitive = false;
+        message.boost = 0;
+        if (value !== undefined)
+            reflectionMergePartial<PrefixQueryV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PrefixQueryV1): PrefixQueryV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string field */ 1:
+                    message.field = reader.string();
+                    break;
+                case /* string value */ 2:
+                    message.value = reader.string();
+                    break;
+                case /* bool case_insensitive */ 3:
+                    message.caseInsensitive = reader.bool();
+                    break;
+                case /* double boost */ 4:
+                    message.boost = reader.double();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: PrefixQueryV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string field = 1; */
+        if (message.field !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.field);
+        /* string value = 2; */
+        if (message.value !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.value);
+        /* bool case_insensitive = 3; */
+        if (message.caseInsensitive !== false)
+            writer.tag(3, WireType.Varint).bool(message.caseInsensitive);
+        /* double boost = 4; */
+        if (message.boost !== 0)
+            writer.tag(4, WireType.Bit64).double(message.boost);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.PrefixQueryV1
+ */
+export const PrefixQueryV1 = new PrefixQueryV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SortingV1$Type extends MessageType<SortingV1> {
+    constructor() {
+        super("elephant.index.SortingV1", [
+            { no: 1, name: "field", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "desc", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        ]);
+    }
+    create(value?: PartialMessage<SortingV1>): SortingV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.field = "";
+        message.desc = false;
+        if (value !== undefined)
+            reflectionMergePartial<SortingV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SortingV1): SortingV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string field */ 1:
+                    message.field = reader.string();
+                    break;
+                case /* bool desc */ 2:
+                    message.desc = reader.bool();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SortingV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string field = 1; */
+        if (message.field !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.field);
+        /* bool desc = 2; */
+        if (message.desc !== false)
+            writer.tag(2, WireType.Varint).bool(message.desc);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.SortingV1
+ */
+export const SortingV1 = new SortingV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class QueryResponseV1$Type extends MessageType<QueryResponseV1> {
+    constructor() {
+        super("elephant.index.QueryResponseV1", [
+            { no: 1, name: "took", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 2, name: "timed_out", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 3, name: "shards", kind: "message", T: () => ShardsV1 },
+            { no: 4, name: "hits", kind: "message", T: () => HitsV1 },
+            { no: 5, name: "subscription", kind: "message", T: () => SubscriptionReference }
+        ]);
+    }
+    create(value?: PartialMessage<QueryResponseV1>): QueryResponseV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.took = 0n;
+        message.timedOut = false;
+        if (value !== undefined)
+            reflectionMergePartial<QueryResponseV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: QueryResponseV1): QueryResponseV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int64 took */ 1:
+                    message.took = reader.int64().toBigInt();
+                    break;
+                case /* bool timed_out */ 2:
+                    message.timedOut = reader.bool();
+                    break;
+                case /* elephant.index.ShardsV1 shards */ 3:
+                    message.shards = ShardsV1.internalBinaryRead(reader, reader.uint32(), options, message.shards);
+                    break;
+                case /* elephant.index.HitsV1 hits */ 4:
+                    message.hits = HitsV1.internalBinaryRead(reader, reader.uint32(), options, message.hits);
+                    break;
+                case /* elephant.index.SubscriptionReference subscription */ 5:
+                    message.subscription = SubscriptionReference.internalBinaryRead(reader, reader.uint32(), options, message.subscription);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: QueryResponseV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int64 took = 1; */
+        if (message.took !== 0n)
+            writer.tag(1, WireType.Varint).int64(message.took);
+        /* bool timed_out = 2; */
+        if (message.timedOut !== false)
+            writer.tag(2, WireType.Varint).bool(message.timedOut);
+        /* elephant.index.ShardsV1 shards = 3; */
+        if (message.shards)
+            ShardsV1.internalBinaryWrite(message.shards, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        /* elephant.index.HitsV1 hits = 4; */
+        if (message.hits)
+            HitsV1.internalBinaryWrite(message.hits, writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        /* elephant.index.SubscriptionReference subscription = 5; */
+        if (message.subscription)
+            SubscriptionReference.internalBinaryWrite(message.subscription, writer.tag(5, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.QueryResponseV1
+ */
+export const QueryResponseV1 = new QueryResponseV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ShardsV1$Type extends MessageType<ShardsV1> {
+    constructor() {
+        super("elephant.index.ShardsV1", [
+            { no: 1, name: "total", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "successful", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 3, name: "skipped", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 4, name: "failed", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ShardsV1>): ShardsV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.total = 0;
+        message.successful = 0;
+        message.skipped = 0;
+        message.failed = 0;
+        if (value !== undefined)
+            reflectionMergePartial<ShardsV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ShardsV1): ShardsV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int32 total */ 1:
+                    message.total = reader.int32();
+                    break;
+                case /* int32 successful */ 2:
+                    message.successful = reader.int32();
+                    break;
+                case /* int32 skipped */ 3:
+                    message.skipped = reader.int32();
+                    break;
+                case /* int32 failed */ 4:
+                    message.failed = reader.int32();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ShardsV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int32 total = 1; */
+        if (message.total !== 0)
+            writer.tag(1, WireType.Varint).int32(message.total);
+        /* int32 successful = 2; */
+        if (message.successful !== 0)
+            writer.tag(2, WireType.Varint).int32(message.successful);
+        /* int32 skipped = 3; */
+        if (message.skipped !== 0)
+            writer.tag(3, WireType.Varint).int32(message.skipped);
+        /* int32 failed = 4; */
+        if (message.failed !== 0)
+            writer.tag(4, WireType.Varint).int32(message.failed);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.ShardsV1
+ */
+export const ShardsV1 = new ShardsV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class HitsV1$Type extends MessageType<HitsV1> {
+    constructor() {
+        super("elephant.index.HitsV1", [
+            { no: 1, name: "total", kind: "message", T: () => HitsTotalV1 },
+            { no: 2, name: "max_score", kind: "scalar", T: 2 /*ScalarType.FLOAT*/ },
+            { no: 3, name: "hits", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => HitV1 }
+        ]);
+    }
+    create(value?: PartialMessage<HitsV1>): HitsV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.maxScore = 0;
+        message.hits = [];
+        if (value !== undefined)
+            reflectionMergePartial<HitsV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: HitsV1): HitsV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* elephant.index.HitsTotalV1 total */ 1:
+                    message.total = HitsTotalV1.internalBinaryRead(reader, reader.uint32(), options, message.total);
+                    break;
+                case /* float max_score */ 2:
+                    message.maxScore = reader.float();
+                    break;
+                case /* repeated elephant.index.HitV1 hits */ 3:
+                    message.hits.push(HitV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: HitsV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* elephant.index.HitsTotalV1 total = 1; */
+        if (message.total)
+            HitsTotalV1.internalBinaryWrite(message.total, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* float max_score = 2; */
+        if (message.maxScore !== 0)
+            writer.tag(2, WireType.Bit32).float(message.maxScore);
+        /* repeated elephant.index.HitV1 hits = 3; */
+        for (let i = 0; i < message.hits.length; i++)
+            HitV1.internalBinaryWrite(message.hits[i], writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.HitsV1
+ */
+export const HitsV1 = new HitsV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class HitsTotalV1$Type extends MessageType<HitsTotalV1> {
+    constructor() {
+        super("elephant.index.HitsTotalV1", [
+            { no: 1, name: "value", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 2, name: "relation", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<HitsTotalV1>): HitsTotalV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.value = 0n;
+        message.relation = "";
+        if (value !== undefined)
+            reflectionMergePartial<HitsTotalV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: HitsTotalV1): HitsTotalV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int64 value */ 1:
+                    message.value = reader.int64().toBigInt();
+                    break;
+                case /* string relation */ 2:
+                    message.relation = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: HitsTotalV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int64 value = 1; */
+        if (message.value !== 0n)
+            writer.tag(1, WireType.Varint).int64(message.value);
+        /* string relation = 2; */
+        if (message.relation !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.relation);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.HitsTotalV1
+ */
+export const HitsTotalV1 = new HitsTotalV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class HitV1$Type extends MessageType<HitV1> {
+    constructor() {
+        super("elephant.index.HitV1", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "score", kind: "scalar", T: 2 /*ScalarType.FLOAT*/ },
+            { no: 3, name: "fields", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => FieldValuesV1 } },
+            { no: 4, name: "source", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => FieldValuesV1 } },
+            { no: 5, name: "sort", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "document", kind: "message", T: () => Document }
+        ]);
+    }
+    create(value?: PartialMessage<HitV1>): HitV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = "";
+        message.score = 0;
+        message.fields = {};
+        message.source = {};
+        message.sort = [];
+        if (value !== undefined)
+            reflectionMergePartial<HitV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: HitV1): HitV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* float score */ 2:
+                    message.score = reader.float();
+                    break;
+                case /* map<string, elephant.index.FieldValuesV1> fields */ 3:
+                    this.binaryReadMap3(message.fields, reader, options);
+                    break;
+                case /* map<string, elephant.index.FieldValuesV1> source */ 4:
+                    this.binaryReadMap4(message.source, reader, options);
+                    break;
+                case /* repeated string sort */ 5:
+                    message.sort.push(reader.string());
+                    break;
+                case /* newsdoc.Document document */ 6:
+                    message.document = Document.internalBinaryRead(reader, reader.uint32(), options, message.document);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap3(map: HitV1["fields"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof HitV1["fields"] | undefined, val: HitV1["fields"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = FieldValuesV1.internalBinaryRead(reader, reader.uint32(), options);
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field elephant.index.HitV1.fields");
+            }
+        }
+        map[key ?? ""] = val ?? FieldValuesV1.create();
+    }
+    private binaryReadMap4(map: HitV1["source"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof HitV1["source"] | undefined, val: HitV1["source"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = FieldValuesV1.internalBinaryRead(reader, reader.uint32(), options);
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field elephant.index.HitV1.source");
+            }
+        }
+        map[key ?? ""] = val ?? FieldValuesV1.create();
+    }
+    internalBinaryWrite(message: HitV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* float score = 2; */
+        if (message.score !== 0)
+            writer.tag(2, WireType.Bit32).float(message.score);
+        /* map<string, elephant.index.FieldValuesV1> fields = 3; */
+        for (let k of globalThis.Object.keys(message.fields)) {
+            writer.tag(3, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
+            writer.tag(2, WireType.LengthDelimited).fork();
+            FieldValuesV1.internalBinaryWrite(message.fields[k], writer, options);
+            writer.join().join();
+        }
+        /* map<string, elephant.index.FieldValuesV1> source = 4; */
+        for (let k of globalThis.Object.keys(message.source)) {
+            writer.tag(4, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
+            writer.tag(2, WireType.LengthDelimited).fork();
+            FieldValuesV1.internalBinaryWrite(message.source[k], writer, options);
+            writer.join().join();
+        }
+        /* repeated string sort = 5; */
+        for (let i = 0; i < message.sort.length; i++)
+            writer.tag(5, WireType.LengthDelimited).string(message.sort[i]);
+        /* newsdoc.Document document = 6; */
+        if (message.document)
+            Document.internalBinaryWrite(message.document, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.HitV1
+ */
+export const HitV1 = new HitV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FieldValuesV1$Type extends MessageType<FieldValuesV1> {
+    constructor() {
+        super("elephant.index.FieldValuesV1", [
+            { no: 1, name: "values", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<FieldValuesV1>): FieldValuesV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.values = [];
+        if (value !== undefined)
+            reflectionMergePartial<FieldValuesV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FieldValuesV1): FieldValuesV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated string values */ 1:
+                    message.values.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: FieldValuesV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated string values = 1; */
+        for (let i = 0; i < message.values.length; i++)
+            writer.tag(1, WireType.LengthDelimited).string(message.values[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.FieldValuesV1
+ */
+export const FieldValuesV1 = new FieldValuesV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetMappingsRequestV1$Type extends MessageType<GetMappingsRequestV1> {
+    constructor() {
+        super("elephant.index.GetMappingsRequestV1", [
+            { no: 1, name: "document_type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetMappingsRequestV1>): GetMappingsRequestV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.documentType = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetMappingsRequestV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetMappingsRequestV1): GetMappingsRequestV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string document_type */ 1:
+                    message.documentType = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetMappingsRequestV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string document_type = 1; */
+        if (message.documentType !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.documentType);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.GetMappingsRequestV1
+ */
+export const GetMappingsRequestV1 = new GetMappingsRequestV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetMappingsResponseV1$Type extends MessageType<GetMappingsResponseV1> {
+    constructor() {
+        super("elephant.index.GetMappingsResponseV1", [
+            { no: 1, name: "properties", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => MappingPropertyV1 }
+        ]);
+    }
+    create(value?: PartialMessage<GetMappingsResponseV1>): GetMappingsResponseV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.properties = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetMappingsResponseV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetMappingsResponseV1): GetMappingsResponseV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.index.MappingPropertyV1 properties */ 1:
+                    message.properties.push(MappingPropertyV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetMappingsResponseV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.index.MappingPropertyV1 properties = 1; */
+        for (let i = 0; i < message.properties.length; i++)
+            MappingPropertyV1.internalBinaryWrite(message.properties[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.GetMappingsResponseV1
+ */
+export const GetMappingsResponseV1 = new GetMappingsResponseV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MappingPropertyV1$Type extends MessageType<MappingPropertyV1> {
+    constructor() {
+        super("elephant.index.MappingPropertyV1", [
+            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "path", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "fields", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => MappingFieldV1 }
+        ]);
+    }
+    create(value?: PartialMessage<MappingPropertyV1>): MappingPropertyV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.name = "";
+        message.type = "";
+        message.path = "";
+        message.fields = [];
+        if (value !== undefined)
+            reflectionMergePartial<MappingPropertyV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MappingPropertyV1): MappingPropertyV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string name */ 1:
+                    message.name = reader.string();
+                    break;
+                case /* string type */ 2:
+                    message.type = reader.string();
+                    break;
+                case /* string path */ 3:
+                    message.path = reader.string();
+                    break;
+                case /* repeated elephant.index.MappingFieldV1 fields */ 4:
+                    message.fields.push(MappingFieldV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MappingPropertyV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string name = 1; */
+        if (message.name !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.name);
+        /* string type = 2; */
+        if (message.type !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.type);
+        /* string path = 3; */
+        if (message.path !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.path);
+        /* repeated elephant.index.MappingFieldV1 fields = 4; */
+        for (let i = 0; i < message.fields.length; i++)
+            MappingFieldV1.internalBinaryWrite(message.fields[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.MappingPropertyV1
+ */
+export const MappingPropertyV1 = new MappingPropertyV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MappingFieldV1$Type extends MessageType<MappingFieldV1> {
+    constructor() {
+        super("elephant.index.MappingFieldV1", [
+            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<MappingFieldV1>): MappingFieldV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.name = "";
+        message.type = "";
+        if (value !== undefined)
+            reflectionMergePartial<MappingFieldV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MappingFieldV1): MappingFieldV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string name */ 1:
+                    message.name = reader.string();
+                    break;
+                case /* string type */ 2:
+                    message.type = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MappingFieldV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string name = 1; */
+        if (message.name !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.name);
+        /* string type = 2; */
+        if (message.type !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.type);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.MappingFieldV1
+ */
+export const MappingFieldV1 = new MappingFieldV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class PollSubscriptionRequest$Type extends MessageType<PollSubscriptionRequest> {
+    constructor() {
+        super("elephant.index.PollSubscriptionRequest", [
+            { no: 1, name: "subscriptions", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => SubscriptionReference },
+            { no: 2, name: "max_wait_ms", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 3, name: "batch_delay_ms", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<PollSubscriptionRequest>): PollSubscriptionRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.subscriptions = [];
+        message.maxWaitMs = 0n;
+        message.batchDelayMs = 0n;
+        if (value !== undefined)
+            reflectionMergePartial<PollSubscriptionRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PollSubscriptionRequest): PollSubscriptionRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.index.SubscriptionReference subscriptions */ 1:
+                    message.subscriptions.push(SubscriptionReference.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* int64 max_wait_ms */ 2:
+                    message.maxWaitMs = reader.int64().toBigInt();
+                    break;
+                case /* int64 batch_delay_ms */ 3:
+                    message.batchDelayMs = reader.int64().toBigInt();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: PollSubscriptionRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.index.SubscriptionReference subscriptions = 1; */
+        for (let i = 0; i < message.subscriptions.length; i++)
+            SubscriptionReference.internalBinaryWrite(message.subscriptions[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* int64 max_wait_ms = 2; */
+        if (message.maxWaitMs !== 0n)
+            writer.tag(2, WireType.Varint).int64(message.maxWaitMs);
+        /* int64 batch_delay_ms = 3; */
+        if (message.batchDelayMs !== 0n)
+            writer.tag(3, WireType.Varint).int64(message.batchDelayMs);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.PollSubscriptionRequest
+ */
+export const PollSubscriptionRequest = new PollSubscriptionRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SubscriptionReference$Type extends MessageType<SubscriptionReference> {
+    constructor() {
+        super("elephant.index.SubscriptionReference", [
+            { no: 1, name: "id", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 2, name: "cursor", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<SubscriptionReference>): SubscriptionReference {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = 0n;
+        message.cursor = 0n;
+        if (value !== undefined)
+            reflectionMergePartial<SubscriptionReference>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SubscriptionReference): SubscriptionReference {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int64 id */ 1:
+                    message.id = reader.int64().toBigInt();
+                    break;
+                case /* int64 cursor */ 2:
+                    message.cursor = reader.int64().toBigInt();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SubscriptionReference, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int64 id = 1; */
+        if (message.id !== 0n)
+            writer.tag(1, WireType.Varint).int64(message.id);
+        /* int64 cursor = 2; */
+        if (message.cursor !== 0n)
+            writer.tag(2, WireType.Varint).int64(message.cursor);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.SubscriptionReference
+ */
+export const SubscriptionReference = new SubscriptionReference$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class PollSubscriptionResponse$Type extends MessageType<PollSubscriptionResponse> {
+    constructor() {
+        super("elephant.index.PollSubscriptionResponse", [
+            { no: 1, name: "result", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => SubscriptionPollResult }
+        ]);
+    }
+    create(value?: PartialMessage<PollSubscriptionResponse>): PollSubscriptionResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.result = [];
+        if (value !== undefined)
+            reflectionMergePartial<PollSubscriptionResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PollSubscriptionResponse): PollSubscriptionResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.index.SubscriptionPollResult result */ 1:
+                    message.result.push(SubscriptionPollResult.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: PollSubscriptionResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.index.SubscriptionPollResult result = 1; */
+        for (let i = 0; i < message.result.length; i++)
+            SubscriptionPollResult.internalBinaryWrite(message.result[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.PollSubscriptionResponse
+ */
+export const PollSubscriptionResponse = new PollSubscriptionResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SubscriptionPollResult$Type extends MessageType<SubscriptionPollResult> {
+    constructor() {
+        super("elephant.index.SubscriptionPollResult", [
+            { no: 1, name: "subscription", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => SubscriptionReference },
+            { no: 2, name: "items", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => HitV1 }
+        ]);
+    }
+    create(value?: PartialMessage<SubscriptionPollResult>): SubscriptionPollResult {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.subscription = [];
+        message.items = [];
+        if (value !== undefined)
+            reflectionMergePartial<SubscriptionPollResult>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SubscriptionPollResult): SubscriptionPollResult {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.index.SubscriptionReference subscription */ 1:
+                    message.subscription.push(SubscriptionReference.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* repeated elephant.index.HitV1 items */ 2:
+                    message.items.push(HitV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SubscriptionPollResult, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.index.SubscriptionReference subscription = 1; */
+        for (let i = 0; i < message.subscription.length; i++)
+            SubscriptionReference.internalBinaryWrite(message.subscription[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* repeated elephant.index.HitV1 items = 2; */
+        for (let i = 0; i < message.items.length; i++)
+            HitV1.internalBinaryWrite(message.items[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.SubscriptionPollResult
+ */
+export const SubscriptionPollResult = new SubscriptionPollResult$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class EndSubscriptionRequest$Type extends MessageType<EndSubscriptionRequest> {
+    constructor() {
+        super("elephant.index.EndSubscriptionRequest", [
+            { no: 1, name: "id", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<EndSubscriptionRequest>): EndSubscriptionRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = 0n;
+        if (value !== undefined)
+            reflectionMergePartial<EndSubscriptionRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: EndSubscriptionRequest): EndSubscriptionRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int64 id */ 1:
+                    message.id = reader.int64().toBigInt();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: EndSubscriptionRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int64 id = 1; */
+        if (message.id !== 0n)
+            writer.tag(1, WireType.Varint).int64(message.id);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.EndSubscriptionRequest
+ */
+export const EndSubscriptionRequest = new EndSubscriptionRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class EndSubscriptionResponse$Type extends MessageType<EndSubscriptionResponse> {
+    constructor() {
+        super("elephant.index.EndSubscriptionResponse", []);
+    }
+    create(value?: PartialMessage<EndSubscriptionResponse>): EndSubscriptionResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<EndSubscriptionResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: EndSubscriptionResponse): EndSubscriptionResponse {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: EndSubscriptionResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.EndSubscriptionResponse
+ */
+export const EndSubscriptionResponse = new EndSubscriptionResponse$Type();
 /**
  * @generated ServiceType for protobuf service elephant.index.Management
  */
@@ -1289,5 +3602,7 @@ export const Management = new ServiceType("elephant.index.Management", [
  */
 export const SearchV1 = new ServiceType("elephant.index.SearchV1", [
     { name: "Query", options: {}, I: QueryRequestV1, O: QueryResponseV1 },
-    { name: "GetMappings", options: {}, I: GetMappingsRequestV1, O: GetMappingsResponseV1 }
+    { name: "GetMappings", options: {}, I: GetMappingsRequestV1, O: GetMappingsResponseV1 },
+    { name: "PollSubscription", options: {}, I: PollSubscriptionRequest, O: PollSubscriptionResponse },
+    { name: "EndSubscription", options: {}, I: EndSubscriptionRequest, O: EndSubscriptionResponse }
 ]);

@@ -365,6 +365,13 @@ export interface EventlogItem {
      * @generated from protobuf field: string workflow_checkpoint = 16;
      */
     workflowCheckpoint: string;
+    /**
+     * MainDocumentType is the type of the main document if the document is a
+     * metadata document.
+     *
+     * @generated from protobuf field: string main_document_type = 17;
+     */
+    mainDocumentType: string;
 }
 /**
  * @generated from protobuf message elephant.repository.RunReportRequest
@@ -2947,7 +2954,8 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
             { no: 13, name: "main_document", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "system_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 15, name: "workflow_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 16, name: "workflow_checkpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 16, name: "workflow_checkpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 17, name: "main_document_type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<EventlogItem>): EventlogItem {
@@ -2968,6 +2976,7 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
         message.systemState = "";
         message.workflowState = "";
         message.workflowCheckpoint = "";
+        message.mainDocumentType = "";
         if (value !== undefined)
             reflectionMergePartial<EventlogItem>(this, message, value);
         return message;
@@ -3024,6 +3033,9 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
                     break;
                 case /* string workflow_checkpoint */ 16:
                     message.workflowCheckpoint = reader.string();
+                    break;
+                case /* string main_document_type */ 17:
+                    message.mainDocumentType = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -3085,6 +3097,9 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
         /* string workflow_checkpoint = 16; */
         if (message.workflowCheckpoint !== "")
             writer.tag(16, WireType.LengthDelimited).string(message.workflowCheckpoint);
+        /* string main_document_type = 17; */
+        if (message.mainDocumentType !== "")
+            writer.tag(17, WireType.LengthDelimited).string(message.mainDocumentType);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
