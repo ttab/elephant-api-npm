@@ -433,6 +433,12 @@ export interface QueryV1 {
          */
         prefix: PrefixQueryV1;
     } | {
+        oneofKind: "multiMatch";
+        /**
+         * @generated from protobuf field: elephant.index.MultiMatchQueryV1 multi_match = 11;
+         */
+        multiMatch: MultiMatchQueryV1;
+    } | {
         oneofKind: undefined;
     };
 }
@@ -537,6 +543,50 @@ export interface MatchQueryV1 {
      * @generated from protobuf field: double boost = 3;
      */
     boost: number;
+}
+/**
+ * @generated from protobuf message elephant.index.MultiMatchQueryV1
+ */
+export interface MultiMatchQueryV1 {
+    /**
+     * @generated from protobuf field: repeated string fields = 1;
+     */
+    fields: string[];
+    /**
+     * Type is the multi-match query type. Valid values are best_fields,
+     * most_fields, cross_fields, phrase, phrase_prefix, bool_prefix. Default is
+     * best_fields.
+     *
+     * @generated from protobuf field: string type = 2;
+     */
+    type: string;
+    /**
+     * @generated from protobuf field: string query = 3;
+     */
+    query: string;
+    /**
+     * @generated from protobuf field: double boost = 4;
+     */
+    boost: number;
+    /**
+     * BooleanAnd can be used to require all terms to match.
+     *
+     * @generated from protobuf field: bool boolean_and = 5;
+     */
+    booleanAnd: boolean;
+    /**
+     * MinimumShouldMatch if the query string contains multiple search terms and
+     * you use the or operator, the number of terms that need to match for the
+     * document to be considered a match. See
+     * https://opensearch.org/docs/latest/query-dsl/minimum-should-match/
+     *
+     * @generated from protobuf field: string minimum_should_match = 6;
+     */
+    minimumShouldMatch: string;
+    /**
+     * @generated from protobuf field: float tie_breaker = 7;
+     */
+    tieBreaker: number;
 }
 /**
  * @generated from protobuf message elephant.index.MatchPhraseQueryV1
@@ -1963,7 +2013,8 @@ class QueryV1$Type extends MessageType<QueryV1> {
             { no: 7, name: "match", kind: "message", oneof: "conditions", T: () => MatchQueryV1 },
             { no: 8, name: "match_phrase", kind: "message", oneof: "conditions", T: () => MatchPhraseQueryV1 },
             { no: 9, name: "query_string", kind: "scalar", oneof: "conditions", T: 9 /*ScalarType.STRING*/ },
-            { no: 10, name: "prefix", kind: "message", oneof: "conditions", T: () => PrefixQueryV1 }
+            { no: 10, name: "prefix", kind: "message", oneof: "conditions", T: () => PrefixQueryV1 },
+            { no: 11, name: "multi_match", kind: "message", oneof: "conditions", T: () => MultiMatchQueryV1 }
         ]);
     }
     create(value?: PartialMessage<QueryV1>): QueryV1 {
@@ -2038,6 +2089,12 @@ class QueryV1$Type extends MessageType<QueryV1> {
                         prefix: PrefixQueryV1.internalBinaryRead(reader, reader.uint32(), options, (message.conditions as any).prefix)
                     };
                     break;
+                case /* elephant.index.MultiMatchQueryV1 multi_match */ 11:
+                    message.conditions = {
+                        oneofKind: "multiMatch",
+                        multiMatch: MultiMatchQueryV1.internalBinaryRead(reader, reader.uint32(), options, (message.conditions as any).multiMatch)
+                    };
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -2080,6 +2137,9 @@ class QueryV1$Type extends MessageType<QueryV1> {
         /* elephant.index.PrefixQueryV1 prefix = 10; */
         if (message.conditions.oneofKind === "prefix")
             PrefixQueryV1.internalBinaryWrite(message.conditions.prefix, writer.tag(10, WireType.LengthDelimited).fork(), options).join();
+        /* elephant.index.MultiMatchQueryV1 multi_match = 11; */
+        if (message.conditions.oneofKind === "multiMatch")
+            MultiMatchQueryV1.internalBinaryWrite(message.conditions.multiMatch, writer.tag(11, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -2454,6 +2514,101 @@ class MatchQueryV1$Type extends MessageType<MatchQueryV1> {
  * @generated MessageType for protobuf message elephant.index.MatchQueryV1
  */
 export const MatchQueryV1 = new MatchQueryV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MultiMatchQueryV1$Type extends MessageType<MultiMatchQueryV1> {
+    constructor() {
+        super("elephant.index.MultiMatchQueryV1", [
+            { no: 1, name: "fields", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "query", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "boost", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
+            { no: 5, name: "boolean_and", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 6, name: "minimum_should_match", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "tie_breaker", kind: "scalar", T: 2 /*ScalarType.FLOAT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<MultiMatchQueryV1>): MultiMatchQueryV1 {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.fields = [];
+        message.type = "";
+        message.query = "";
+        message.boost = 0;
+        message.booleanAnd = false;
+        message.minimumShouldMatch = "";
+        message.tieBreaker = 0;
+        if (value !== undefined)
+            reflectionMergePartial<MultiMatchQueryV1>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MultiMatchQueryV1): MultiMatchQueryV1 {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated string fields */ 1:
+                    message.fields.push(reader.string());
+                    break;
+                case /* string type */ 2:
+                    message.type = reader.string();
+                    break;
+                case /* string query */ 3:
+                    message.query = reader.string();
+                    break;
+                case /* double boost */ 4:
+                    message.boost = reader.double();
+                    break;
+                case /* bool boolean_and */ 5:
+                    message.booleanAnd = reader.bool();
+                    break;
+                case /* string minimum_should_match */ 6:
+                    message.minimumShouldMatch = reader.string();
+                    break;
+                case /* float tie_breaker */ 7:
+                    message.tieBreaker = reader.float();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MultiMatchQueryV1, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated string fields = 1; */
+        for (let i = 0; i < message.fields.length; i++)
+            writer.tag(1, WireType.LengthDelimited).string(message.fields[i]);
+        /* string type = 2; */
+        if (message.type !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.type);
+        /* string query = 3; */
+        if (message.query !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.query);
+        /* double boost = 4; */
+        if (message.boost !== 0)
+            writer.tag(4, WireType.Bit64).double(message.boost);
+        /* bool boolean_and = 5; */
+        if (message.booleanAnd !== false)
+            writer.tag(5, WireType.Varint).bool(message.booleanAnd);
+        /* string minimum_should_match = 6; */
+        if (message.minimumShouldMatch !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.minimumShouldMatch);
+        /* float tie_breaker = 7; */
+        if (message.tieBreaker !== 0)
+            writer.tag(7, WireType.Bit32).float(message.tieBreaker);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.MultiMatchQueryV1
+ */
+export const MultiMatchQueryV1 = new MultiMatchQueryV1$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class MatchPhraseQueryV1$Type extends MessageType<MatchPhraseQueryV1> {
     constructor() {
