@@ -2,7 +2,7 @@
   "name": "@ttab/elephant-api",
   "private": false,
   "license": "MIT",
-  "version": "0.17.10",
+  "version": "0.17.14",
   "type": "module",
   "exports": {
     "./repository": {
@@ -24,6 +24,11 @@
       "types": "./dist/spell/index.d.ts",
       "import": "./dist/spell/index.js",
       "require": "./dist/spell/index.cjs"
+    },
+    "./user": {
+      "types": "./dist/user/index.d.ts",
+      "import": "./dist/user/index.js",
+      "require": "./dist/user/index.cjs"
     },
     "./package.json": "./package.json"
   },
