@@ -40,7 +40,8 @@
     "build:newsdoc": "tsup ./src/newsdoc/newsdoc.ts --format cjs,esm --dts --outDir ./dist/newsdoc",
     "build:index": "tsup ./src/index/index.ts --format cjs,esm --dts --outDir ./dist/index",
     "build:spell": "tsup ./src/spell/index.ts --format cjs,esm --dts --outDir ./dist/spell",
-    "build": "npm run build:repository && npm run build:newsdoc && npm run build:index && npm run build:spell",
+    "build:user": "tsup ./src/user/index.ts --format cjs,esm --dts --outDir ./dist/user",
+    "build": "npm run build:repository && npm run build:newsdoc && npm run build:index && npm run build:spell && npm run build:user",
     "update": "bash .github/workflows/update.sh",
     "prepublish": "npm run build"
   },
