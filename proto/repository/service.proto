@@ -353,7 +353,10 @@ message GetStatusRulesResponse {
   repeated StatusRule rules = 1;
 }
 
-message GetStatusesRequest {}
+message GetStatusesRequest {
+  // Type of documents to get statuses from.
+  string type = 1;
+}
 
 message SetWorkflowRequest {
   // Type of the document that this workflow is for.
@@ -760,6 +763,10 @@ message DocumentMeta {
   string workflow_state      = 9;
   // WorkflowCheckpoint that the document reached most recently.
   string workflow_checkpoint = 10;
+  // CreatorURI is the identity of the party that created the document.
+  string creator_uri         = 11;
+  // UpdaterURI is the identity of the party that last updated the document.
+  string updater_uri         = 12;
 }
 
 message Status {

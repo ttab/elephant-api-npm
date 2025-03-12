@@ -599,6 +599,12 @@ export interface GetStatusRulesResponse {
  * @generated from protobuf message elephant.repository.GetStatusesRequest
  */
 export interface GetStatusesRequest {
+    /**
+     * Type of documents to get statuses from.
+     *
+     * @generated from protobuf field: string type = 1;
+     */
+    type: string;
 }
 /**
  * @generated from protobuf message elephant.repository.SetWorkflowRequest
@@ -1583,6 +1589,18 @@ export interface DocumentMeta {
      * @generated from protobuf field: string workflow_checkpoint = 10;
      */
     workflowCheckpoint: string;
+    /**
+     * CreatorURI is the identity of the party that created the document.
+     *
+     * @generated from protobuf field: string creator_uri = 11;
+     */
+    creatorUri: string;
+    /**
+     * UpdaterURI is the identity of the party that last updated the document.
+     *
+     * @generated from protobuf field: string updater_uri = 12;
+     */
+    updaterUri: string;
 }
 /**
  * @generated from protobuf message elephant.repository.Status
@@ -4042,18 +4060,40 @@ export const GetStatusRulesResponse = new GetStatusRulesResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class GetStatusesRequest$Type extends MessageType<GetStatusesRequest> {
     constructor() {
-        super("elephant.repository.GetStatusesRequest", []);
+        super("elephant.repository.GetStatusesRequest", [
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
     }
     create(value?: PartialMessage<GetStatusesRequest>): GetStatusesRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
+        message.type = "";
         if (value !== undefined)
             reflectionMergePartial<GetStatusesRequest>(this, message, value);
         return message;
     }
     internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetStatusesRequest): GetStatusesRequest {
-        return target ?? this.create();
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string type */ 1:
+                    message.type = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
     }
     internalBinaryWrite(message: GetStatusesRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string type = 1; */
+        if (message.type !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.type);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -6810,7 +6850,9 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
             { no: 7, name: "is_meta_document", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 8, name: "main_document", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "workflow_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 10, name: "workflow_checkpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 10, name: "workflow_checkpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "creator_uri", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 12, name: "updater_uri", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<DocumentMeta>): DocumentMeta {
@@ -6824,6 +6866,8 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
         message.mainDocument = "";
         message.workflowState = "";
         message.workflowCheckpoint = "";
+        message.creatorUri = "";
+        message.updaterUri = "";
         if (value !== undefined)
             reflectionMergePartial<DocumentMeta>(this, message, value);
         return message;
@@ -6862,6 +6906,12 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
                     break;
                 case /* string workflow_checkpoint */ 10:
                     message.workflowCheckpoint = reader.string();
+                    break;
+                case /* string creator_uri */ 11:
+                    message.creatorUri = reader.string();
+                    break;
+                case /* string updater_uri */ 12:
+                    message.updaterUri = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -6925,6 +6975,12 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
         /* string workflow_checkpoint = 10; */
         if (message.workflowCheckpoint !== "")
             writer.tag(10, WireType.LengthDelimited).string(message.workflowCheckpoint);
+        /* string creator_uri = 11; */
+        if (message.creatorUri !== "")
+            writer.tag(11, WireType.LengthDelimited).string(message.creatorUri);
+        /* string updater_uri = 12; */
+        if (message.updaterUri !== "")
+            writer.tag(12, WireType.LengthDelimited).string(message.updaterUri);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

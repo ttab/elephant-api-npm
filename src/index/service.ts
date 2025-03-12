@@ -870,23 +870,58 @@ export interface PollSubscriptionResponse {
      * @generated from protobuf field: repeated elephant.index.SubscriptionPollResult result = 1;
      */
     result: SubscriptionPollResult[];
+    /**
+     * List of subscriptions that are unknown, have expired f.ex.
+     *
+     * @generated from protobuf field: repeated int64 unknown_subscriptions = 2;
+     */
+    unknownSubscriptions: bigint[];
 }
 /**
  * @generated from protobuf message elephant.index.SubscriptionPollResult
  */
 export interface SubscriptionPollResult {
     /**
-     * Subsciption reference with current cursor position.
+     * Subscription with current cursor position.
      *
-     * @generated from protobuf field: repeated elephant.index.SubscriptionReference subscription = 1;
+     * @generated from protobuf field: elephant.index.SubscriptionReference subscription = 1;
      */
-    subscription: SubscriptionReference[];
+    subscription?: SubscriptionReference;
     /**
-     * Items that matched the subscription.
+     * Items that matched or stopped matching the subscription.
      *
-     * @generated from protobuf field: repeated elephant.index.HitV1 items = 2;
+     * @generated from protobuf field: repeated elephant.index.SubscriptionItem items = 2;
      */
-    items: HitV1[];
+    items: SubscriptionItem[];
+}
+/**
+ * @generated from protobuf message elephant.index.SubscriptionItem
+ */
+export interface SubscriptionItem {
+    /**
+     * @generated from protobuf field: string id = 1;
+     */
+    id: string;
+    /**
+     * @generated from protobuf field: bool match = 2;
+     */
+    match: boolean;
+    /**
+     * @generated from protobuf field: map<string, elephant.index.FieldValuesV1> fields = 3;
+     */
+    fields: {
+        [key: string]: FieldValuesV1;
+    };
+    /**
+     * @generated from protobuf field: map<string, elephant.index.FieldValuesV1> source = 4;
+     */
+    source: {
+        [key: string]: FieldValuesV1;
+    };
+    /**
+     * @generated from protobuf field: newsdoc.Document document = 5;
+     */
+    document?: Document;
 }
 /**
  * @generated from protobuf message elephant.index.EndSubscriptionRequest
@@ -3569,12 +3604,14 @@ export const SubscriptionReference = new SubscriptionReference$Type();
 class PollSubscriptionResponse$Type extends MessageType<PollSubscriptionResponse> {
     constructor() {
         super("elephant.index.PollSubscriptionResponse", [
-            { no: 1, name: "result", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => SubscriptionPollResult }
+            { no: 1, name: "result", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => SubscriptionPollResult },
+            { no: 2, name: "unknown_subscriptions", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
         ]);
     }
     create(value?: PartialMessage<PollSubscriptionResponse>): PollSubscriptionResponse {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.result = [];
+        message.unknownSubscriptions = [];
         if (value !== undefined)
             reflectionMergePartial<PollSubscriptionResponse>(this, message, value);
         return message;
@@ -3586,6 +3623,13 @@ class PollSubscriptionResponse$Type extends MessageType<PollSubscriptionResponse
             switch (fieldNo) {
                 case /* repeated elephant.index.SubscriptionPollResult result */ 1:
                     message.result.push(SubscriptionPollResult.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* repeated int64 unknown_subscriptions */ 2:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.unknownSubscriptions.push(reader.int64().toBigInt());
+                    else
+                        message.unknownSubscriptions.push(reader.int64().toBigInt());
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -3602,6 +3646,13 @@ class PollSubscriptionResponse$Type extends MessageType<PollSubscriptionResponse
         /* repeated elephant.index.SubscriptionPollResult result = 1; */
         for (let i = 0; i < message.result.length; i++)
             SubscriptionPollResult.internalBinaryWrite(message.result[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* repeated int64 unknown_subscriptions = 2; */
+        if (message.unknownSubscriptions.length) {
+            writer.tag(2, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.unknownSubscriptions.length; i++)
+                writer.int64(message.unknownSubscriptions[i]);
+            writer.join();
+        }
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3616,13 +3667,12 @@ export const PollSubscriptionResponse = new PollSubscriptionResponse$Type();
 class SubscriptionPollResult$Type extends MessageType<SubscriptionPollResult> {
     constructor() {
         super("elephant.index.SubscriptionPollResult", [
-            { no: 1, name: "subscription", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => SubscriptionReference },
-            { no: 2, name: "items", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => HitV1 }
+            { no: 1, name: "subscription", kind: "message", T: () => SubscriptionReference },
+            { no: 2, name: "items", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => SubscriptionItem }
         ]);
     }
     create(value?: PartialMessage<SubscriptionPollResult>): SubscriptionPollResult {
         const message = globalThis.Object.create((this.messagePrototype!));
-        message.subscription = [];
         message.items = [];
         if (value !== undefined)
             reflectionMergePartial<SubscriptionPollResult>(this, message, value);
@@ -3633,11 +3683,11 @@ class SubscriptionPollResult$Type extends MessageType<SubscriptionPollResult> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated elephant.index.SubscriptionReference subscription */ 1:
-                    message.subscription.push(SubscriptionReference.internalBinaryRead(reader, reader.uint32(), options));
+                case /* elephant.index.SubscriptionReference subscription */ 1:
+                    message.subscription = SubscriptionReference.internalBinaryRead(reader, reader.uint32(), options, message.subscription);
                     break;
-                case /* repeated elephant.index.HitV1 items */ 2:
-                    message.items.push(HitV1.internalBinaryRead(reader, reader.uint32(), options));
+                case /* repeated elephant.index.SubscriptionItem items */ 2:
+                    message.items.push(SubscriptionItem.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -3651,12 +3701,12 @@ class SubscriptionPollResult$Type extends MessageType<SubscriptionPollResult> {
         return message;
     }
     internalBinaryWrite(message: SubscriptionPollResult, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* repeated elephant.index.SubscriptionReference subscription = 1; */
-        for (let i = 0; i < message.subscription.length; i++)
-            SubscriptionReference.internalBinaryWrite(message.subscription[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* repeated elephant.index.HitV1 items = 2; */
+        /* elephant.index.SubscriptionReference subscription = 1; */
+        if (message.subscription)
+            SubscriptionReference.internalBinaryWrite(message.subscription, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* repeated elephant.index.SubscriptionItem items = 2; */
         for (let i = 0; i < message.items.length; i++)
-            HitV1.internalBinaryWrite(message.items[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+            SubscriptionItem.internalBinaryWrite(message.items[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3667,6 +3717,124 @@ class SubscriptionPollResult$Type extends MessageType<SubscriptionPollResult> {
  * @generated MessageType for protobuf message elephant.index.SubscriptionPollResult
  */
 export const SubscriptionPollResult = new SubscriptionPollResult$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SubscriptionItem$Type extends MessageType<SubscriptionItem> {
+    constructor() {
+        super("elephant.index.SubscriptionItem", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "match", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 3, name: "fields", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => FieldValuesV1 } },
+            { no: 4, name: "source", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => FieldValuesV1 } },
+            { no: 5, name: "document", kind: "message", T: () => Document }
+        ]);
+    }
+    create(value?: PartialMessage<SubscriptionItem>): SubscriptionItem {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = "";
+        message.match = false;
+        message.fields = {};
+        message.source = {};
+        if (value !== undefined)
+            reflectionMergePartial<SubscriptionItem>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SubscriptionItem): SubscriptionItem {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* bool match */ 2:
+                    message.match = reader.bool();
+                    break;
+                case /* map<string, elephant.index.FieldValuesV1> fields */ 3:
+                    this.binaryReadMap3(message.fields, reader, options);
+                    break;
+                case /* map<string, elephant.index.FieldValuesV1> source */ 4:
+                    this.binaryReadMap4(message.source, reader, options);
+                    break;
+                case /* newsdoc.Document document */ 5:
+                    message.document = Document.internalBinaryRead(reader, reader.uint32(), options, message.document);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap3(map: SubscriptionItem["fields"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof SubscriptionItem["fields"] | undefined, val: SubscriptionItem["fields"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = FieldValuesV1.internalBinaryRead(reader, reader.uint32(), options);
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field elephant.index.SubscriptionItem.fields");
+            }
+        }
+        map[key ?? ""] = val ?? FieldValuesV1.create();
+    }
+    private binaryReadMap4(map: SubscriptionItem["source"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof SubscriptionItem["source"] | undefined, val: SubscriptionItem["source"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = FieldValuesV1.internalBinaryRead(reader, reader.uint32(), options);
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field elephant.index.SubscriptionItem.source");
+            }
+        }
+        map[key ?? ""] = val ?? FieldValuesV1.create();
+    }
+    internalBinaryWrite(message: SubscriptionItem, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* bool match = 2; */
+        if (message.match !== false)
+            writer.tag(2, WireType.Varint).bool(message.match);
+        /* map<string, elephant.index.FieldValuesV1> fields = 3; */
+        for (let k of globalThis.Object.keys(message.fields)) {
+            writer.tag(3, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
+            writer.tag(2, WireType.LengthDelimited).fork();
+            FieldValuesV1.internalBinaryWrite(message.fields[k], writer, options);
+            writer.join().join();
+        }
+        /* map<string, elephant.index.FieldValuesV1> source = 4; */
+        for (let k of globalThis.Object.keys(message.source)) {
+            writer.tag(4, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
+            writer.tag(2, WireType.LengthDelimited).fork();
+            FieldValuesV1.internalBinaryWrite(message.source[k], writer, options);
+            writer.join().join();
+        }
+        /* newsdoc.Document document = 5; */
+        if (message.document)
+            Document.internalBinaryWrite(message.document, writer.tag(5, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.SubscriptionItem
+ */
+export const SubscriptionItem = new SubscriptionItem$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class EndSubscriptionRequest$Type extends MessageType<EndSubscriptionRequest> {
     constructor() {

@@ -94,7 +94,16 @@ export interface PollMessagesRequest {
  */
 export interface PollMessagesResponse {
     /**
-     * @generated from protobuf field: repeated elephant.user.Message messages = 1;
+     * ID of the most recent message returned. Useful for subsequent polling requests.
+     * If no new messages are returned, it will reflect the "after_id" from the request.
+     *
+     * @generated from protobuf field: int64 last_id = 1;
+     */
+    lastId: bigint;
+    /**
+     * Messages sorted in descending order by id (reflects the created timestamp).
+     *
+     * @generated from protobuf field: repeated elephant.user.Message messages = 2;
      */
     messages: Message[];
 }
@@ -170,7 +179,16 @@ export interface PollInboxMessagesRequest {
  */
 export interface PollInboxMessagesResponse {
     /**
-     * @generated from protobuf field: repeated elephant.user.InboxMessage messages = 1;
+     * ID of the most recent message returned. Useful for subsequent polling requests.
+     * If no new messages are returned, it will reflect the "after_id" from the request.
+     *
+     * @generated from protobuf field: int64 last_id = 1;
+     */
+    lastId: bigint;
+    /**
+     * Messages sorted in descending order by id (reflects the created timestamp).
+     *
+     * @generated from protobuf field: repeated elephant.user.InboxMessage messages = 2;
      */
     messages: InboxMessage[];
 }
@@ -245,7 +263,21 @@ export interface ListInboxMessagesRequest {
  */
 export interface ListInboxMessagesResponse {
     /**
-     * @generated from protobuf field: repeated elephant.user.InboxMessage messages = 1;
+     * ID of the latest message returned. Useful for subsequent polling requests.
+     *
+     * @generated from protobuf field: int64 latest_id = 1;
+     */
+    latestId: bigint;
+    /**
+     * ID of the earliest message returned. Useful for paginating backward.
+     *
+     * @generated from protobuf field: int64 earliest_id = 2;
+     */
+    earliestId: bigint;
+    /**
+     * Messages sorted in descending order by id (reflects the created timestamp).
+     *
+     * @generated from protobuf field: repeated elephant.user.InboxMessage messages = 3;
      */
     messages: InboxMessage[];
 }
@@ -537,11 +569,13 @@ export const PollMessagesRequest = new PollMessagesRequest$Type();
 class PollMessagesResponse$Type extends MessageType<PollMessagesResponse> {
     constructor() {
         super("elephant.user.PollMessagesResponse", [
-            { no: 1, name: "messages", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Message }
+            { no: 1, name: "last_id", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 2, name: "messages", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Message }
         ]);
     }
     create(value?: PartialMessage<PollMessagesResponse>): PollMessagesResponse {
         const message = globalThis.Object.create((this.messagePrototype!));
+        message.lastId = 0n;
         message.messages = [];
         if (value !== undefined)
             reflectionMergePartial<PollMessagesResponse>(this, message, value);
@@ -552,7 +586,10 @@ class PollMessagesResponse$Type extends MessageType<PollMessagesResponse> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated elephant.user.Message messages */ 1:
+                case /* int64 last_id */ 1:
+                    message.lastId = reader.int64().toBigInt();
+                    break;
+                case /* repeated elephant.user.Message messages */ 2:
                     message.messages.push(Message.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
@@ -567,9 +604,12 @@ class PollMessagesResponse$Type extends MessageType<PollMessagesResponse> {
         return message;
     }
     internalBinaryWrite(message: PollMessagesResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* repeated elephant.user.Message messages = 1; */
+        /* int64 last_id = 1; */
+        if (message.lastId !== 0n)
+            writer.tag(1, WireType.Varint).int64(message.lastId);
+        /* repeated elephant.user.Message messages = 2; */
         for (let i = 0; i < message.messages.length; i++)
-            Message.internalBinaryWrite(message.messages[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+            Message.internalBinaryWrite(message.messages[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -750,11 +790,13 @@ export const PollInboxMessagesRequest = new PollInboxMessagesRequest$Type();
 class PollInboxMessagesResponse$Type extends MessageType<PollInboxMessagesResponse> {
     constructor() {
         super("elephant.user.PollInboxMessagesResponse", [
-            { no: 1, name: "messages", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => InboxMessage }
+            { no: 1, name: "last_id", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 2, name: "messages", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => InboxMessage }
         ]);
     }
     create(value?: PartialMessage<PollInboxMessagesResponse>): PollInboxMessagesResponse {
         const message = globalThis.Object.create((this.messagePrototype!));
+        message.lastId = 0n;
         message.messages = [];
         if (value !== undefined)
             reflectionMergePartial<PollInboxMessagesResponse>(this, message, value);
@@ -765,7 +807,10 @@ class PollInboxMessagesResponse$Type extends MessageType<PollInboxMessagesRespon
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated elephant.user.InboxMessage messages */ 1:
+                case /* int64 last_id */ 1:
+                    message.lastId = reader.int64().toBigInt();
+                    break;
+                case /* repeated elephant.user.InboxMessage messages */ 2:
                     message.messages.push(InboxMessage.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
@@ -780,9 +825,12 @@ class PollInboxMessagesResponse$Type extends MessageType<PollInboxMessagesRespon
         return message;
     }
     internalBinaryWrite(message: PollInboxMessagesResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* repeated elephant.user.InboxMessage messages = 1; */
+        /* int64 last_id = 1; */
+        if (message.lastId !== 0n)
+            writer.tag(1, WireType.Varint).int64(message.lastId);
+        /* repeated elephant.user.InboxMessage messages = 2; */
         for (let i = 0; i < message.messages.length; i++)
-            InboxMessage.internalBinaryWrite(message.messages[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+            InboxMessage.internalBinaryWrite(message.messages[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -946,11 +994,15 @@ export const ListInboxMessagesRequest = new ListInboxMessagesRequest$Type();
 class ListInboxMessagesResponse$Type extends MessageType<ListInboxMessagesResponse> {
     constructor() {
         super("elephant.user.ListInboxMessagesResponse", [
-            { no: 1, name: "messages", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => InboxMessage }
+            { no: 1, name: "latest_id", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 2, name: "earliest_id", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 3, name: "messages", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => InboxMessage }
         ]);
     }
     create(value?: PartialMessage<ListInboxMessagesResponse>): ListInboxMessagesResponse {
         const message = globalThis.Object.create((this.messagePrototype!));
+        message.latestId = 0n;
+        message.earliestId = 0n;
         message.messages = [];
         if (value !== undefined)
             reflectionMergePartial<ListInboxMessagesResponse>(this, message, value);
@@ -961,7 +1013,13 @@ class ListInboxMessagesResponse$Type extends MessageType<ListInboxMessagesRespon
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated elephant.user.InboxMessage messages */ 1:
+                case /* int64 latest_id */ 1:
+                    message.latestId = reader.int64().toBigInt();
+                    break;
+                case /* int64 earliest_id */ 2:
+                    message.earliestId = reader.int64().toBigInt();
+                    break;
+                case /* repeated elephant.user.InboxMessage messages */ 3:
                     message.messages.push(InboxMessage.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
@@ -976,9 +1034,15 @@ class ListInboxMessagesResponse$Type extends MessageType<ListInboxMessagesRespon
         return message;
     }
     internalBinaryWrite(message: ListInboxMessagesResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* repeated elephant.user.InboxMessage messages = 1; */
+        /* int64 latest_id = 1; */
+        if (message.latestId !== 0n)
+            writer.tag(1, WireType.Varint).int64(message.latestId);
+        /* int64 earliest_id = 2; */
+        if (message.earliestId !== 0n)
+            writer.tag(2, WireType.Varint).int64(message.earliestId);
+        /* repeated elephant.user.InboxMessage messages = 3; */
         for (let i = 0; i < message.messages.length; i++)
-            InboxMessage.internalBinaryWrite(message.messages[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+            InboxMessage.internalBinaryWrite(message.messages[i], writer.tag(3, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
