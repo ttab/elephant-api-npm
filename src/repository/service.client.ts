@@ -73,6 +73,8 @@ import type { GetPermissionsResponse } from "./service";
 import type { GetPermissionsRequest } from "./service";
 import type { GetStatusOverviewResponse } from "./service";
 import type { GetStatusOverviewRequest } from "./service";
+import type { GetNilStatusesResponse } from "./service";
+import type { GetNilStatusesRequest } from "./service";
 import type { GetStatusHistoryReponse } from "./service";
 import type { GetStatusHistoryRequest } from "./service";
 import type { GetStatusResponse } from "./service";
@@ -203,6 +205,12 @@ export interface IDocumentsClient {
      * @generated from protobuf rpc: GetStatusHistory(elephant.repository.GetStatusHistoryRequest) returns (elephant.repository.GetStatusHistoryReponse);
      */
     getStatusHistory(input: GetStatusHistoryRequest, options?: RpcOptions): UnaryCall<GetStatusHistoryRequest, GetStatusHistoryReponse>;
+    /**
+     * GetNilStatuses returns all the statuses for a document where version is -1.
+     *
+     * @generated from protobuf rpc: GetNilStatuses(elephant.repository.GetNilStatusesRequest) returns (elephant.repository.GetNilStatusesResponse);
+     */
+    getNilStatuses(input: GetNilStatusesRequest, options?: RpcOptions): UnaryCall<GetNilStatusesRequest, GetNilStatusesResponse>;
     /**
      * GetStatusOverview returns the current version and a set of statuses for a
      * gven list of documents.
@@ -383,13 +391,22 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
         return stackIntercept<GetStatusHistoryRequest, GetStatusHistoryReponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * GetNilStatuses returns all the statuses for a document where version is -1.
+     *
+     * @generated from protobuf rpc: GetNilStatuses(elephant.repository.GetNilStatusesRequest) returns (elephant.repository.GetNilStatusesResponse);
+     */
+    getNilStatuses(input: GetNilStatusesRequest, options?: RpcOptions): UnaryCall<GetNilStatusesRequest, GetNilStatusesResponse> {
+        const method = this.methods[15], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetNilStatusesRequest, GetNilStatusesResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * GetStatusOverview returns the current version and a set of statuses for a
      * gven list of documents.
      *
      * @generated from protobuf rpc: GetStatusOverview(elephant.repository.GetStatusOverviewRequest) returns (elephant.repository.GetStatusOverviewResponse);
      */
     getStatusOverview(input: GetStatusOverviewRequest, options?: RpcOptions): UnaryCall<GetStatusOverviewRequest, GetStatusOverviewResponse> {
-        const method = this.methods[15], opt = this._transport.mergeOptions(options);
+        const method = this.methods[16], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetStatusOverviewRequest, GetStatusOverviewResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -398,7 +415,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: GetPermissions(elephant.repository.GetPermissionsRequest) returns (elephant.repository.GetPermissionsResponse);
      */
     getPermissions(input: GetPermissionsRequest, options?: RpcOptions): UnaryCall<GetPermissionsRequest, GetPermissionsResponse> {
-        const method = this.methods[16], opt = this._transport.mergeOptions(options);
+        const method = this.methods[17], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetPermissionsRequest, GetPermissionsResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -407,7 +424,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: Lock(elephant.repository.LockRequest) returns (elephant.repository.LockResponse);
      */
     lock(input: LockRequest, options?: RpcOptions): UnaryCall<LockRequest, LockResponse> {
-        const method = this.methods[17], opt = this._transport.mergeOptions(options);
+        const method = this.methods[18], opt = this._transport.mergeOptions(options);
         return stackIntercept<LockRequest, LockResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -416,7 +433,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: ExtendLock(elephant.repository.ExtendLockRequest) returns (elephant.repository.LockResponse);
      */
     extendLock(input: ExtendLockRequest, options?: RpcOptions): UnaryCall<ExtendLockRequest, LockResponse> {
-        const method = this.methods[18], opt = this._transport.mergeOptions(options);
+        const method = this.methods[19], opt = this._transport.mergeOptions(options);
         return stackIntercept<ExtendLockRequest, LockResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -425,7 +442,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: Unlock(elephant.repository.UnlockRequest) returns (elephant.repository.UnlockResponse);
      */
     unlock(input: UnlockRequest, options?: RpcOptions): UnaryCall<UnlockRequest, UnlockResponse> {
-        const method = this.methods[19], opt = this._transport.mergeOptions(options);
+        const method = this.methods[20], opt = this._transport.mergeOptions(options);
         return stackIntercept<UnlockRequest, UnlockResponse>("unary", this._transport, method, opt, input);
     }
 }

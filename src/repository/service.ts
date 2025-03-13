@@ -80,6 +80,34 @@ export interface GetStatusHistoryReponse {
     statuses: Status[];
 }
 /**
+ * @generated from protobuf message elephant.repository.GetNilStatusesRequest
+ */
+export interface GetNilStatusesRequest {
+    /**
+     * UUID of the document to get the nil statuses for.
+     *
+     * @generated from protobuf field: string uuid = 1;
+     */
+    uuid: string;
+    /**
+     * Names of statuses to get, optional. Defaults to all statuses.
+     *
+     * @generated from protobuf field: repeated string names = 2;
+     */
+    names: string[];
+}
+/**
+ * @generated from protobuf message elephant.repository.GetNilStatusesResponse
+ */
+export interface GetNilStatusesResponse {
+    /**
+     * @generated from protobuf field: map<string, elephant.repository.DocumentStatuses> statuses = 1;
+     */
+    statuses: {
+        [key: string]: DocumentStatuses;
+    };
+}
+/**
  * @generated from protobuf message elephant.repository.GetStatusOverviewRequest
  */
 export interface GetStatusOverviewRequest {
@@ -1003,6 +1031,12 @@ export interface GetHistoryRequest {
      * @generated from protobuf field: int64 before = 2;
      */
     before: bigint;
+    /**
+     * LoadStatuses loads any statuses set on the document versions.
+     *
+     * @generated from protobuf field: bool load_statuses = 3;
+     */
+    loadStatuses: boolean;
 }
 /**
  * @generated from protobuf message elephant.repository.GetHistoryResponse
@@ -1044,6 +1078,23 @@ export interface DocumentVersion {
     meta: {
         [key: string]: string;
     };
+    /**
+     * Statuses that have been set for the document version.
+     *
+     * @generated from protobuf field: map<string, elephant.repository.DocumentStatuses> statuses = 5;
+     */
+    statuses: {
+        [key: string]: DocumentStatuses;
+    };
+}
+/**
+ * @generated from protobuf message elephant.repository.DocumentStatuses
+ */
+export interface DocumentStatuses {
+    /**
+     * @generated from protobuf field: repeated elephant.repository.Status items = 5;
+     */
+    items: Status[];
 }
 /**
  * UpdateRequest creates a new document version and/or sets statuses and ACLs
@@ -2398,6 +2449,128 @@ class GetStatusHistoryReponse$Type extends MessageType<GetStatusHistoryReponse> 
  * @generated MessageType for protobuf message elephant.repository.GetStatusHistoryReponse
  */
 export const GetStatusHistoryReponse = new GetStatusHistoryReponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetNilStatusesRequest$Type extends MessageType<GetNilStatusesRequest> {
+    constructor() {
+        super("elephant.repository.GetNilStatusesRequest", [
+            { no: 1, name: "uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "names", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetNilStatusesRequest>): GetNilStatusesRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.uuid = "";
+        message.names = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetNilStatusesRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetNilStatusesRequest): GetNilStatusesRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string uuid */ 1:
+                    message.uuid = reader.string();
+                    break;
+                case /* repeated string names */ 2:
+                    message.names.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetNilStatusesRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string uuid = 1; */
+        if (message.uuid !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.uuid);
+        /* repeated string names = 2; */
+        for (let i = 0; i < message.names.length; i++)
+            writer.tag(2, WireType.LengthDelimited).string(message.names[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetNilStatusesRequest
+ */
+export const GetNilStatusesRequest = new GetNilStatusesRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetNilStatusesResponse$Type extends MessageType<GetNilStatusesResponse> {
+    constructor() {
+        super("elephant.repository.GetNilStatusesResponse", [
+            { no: 1, name: "statuses", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => DocumentStatuses } }
+        ]);
+    }
+    create(value?: PartialMessage<GetNilStatusesResponse>): GetNilStatusesResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.statuses = {};
+        if (value !== undefined)
+            reflectionMergePartial<GetNilStatusesResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetNilStatusesResponse): GetNilStatusesResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* map<string, elephant.repository.DocumentStatuses> statuses */ 1:
+                    this.binaryReadMap1(message.statuses, reader, options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap1(map: GetNilStatusesResponse["statuses"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof GetNilStatusesResponse["statuses"] | undefined, val: GetNilStatusesResponse["statuses"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = DocumentStatuses.internalBinaryRead(reader, reader.uint32(), options);
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field elephant.repository.GetNilStatusesResponse.statuses");
+            }
+        }
+        map[key ?? ""] = val ?? DocumentStatuses.create();
+    }
+    internalBinaryWrite(message: GetNilStatusesResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* map<string, elephant.repository.DocumentStatuses> statuses = 1; */
+        for (let k of globalThis.Object.keys(message.statuses)) {
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
+            writer.tag(2, WireType.LengthDelimited).fork();
+            DocumentStatuses.internalBinaryWrite(message.statuses[k], writer, options);
+            writer.join().join();
+        }
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetNilStatusesResponse
+ */
+export const GetNilStatusesResponse = new GetNilStatusesResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class GetStatusOverviewRequest$Type extends MessageType<GetStatusOverviewRequest> {
     constructor() {
@@ -5288,13 +5461,15 @@ class GetHistoryRequest$Type extends MessageType<GetHistoryRequest> {
     constructor() {
         super("elephant.repository.GetHistoryRequest", [
             { no: 1, name: "uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "before", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+            { no: 2, name: "before", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 3, name: "load_statuses", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value?: PartialMessage<GetHistoryRequest>): GetHistoryRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.uuid = "";
         message.before = 0n;
+        message.loadStatuses = false;
         if (value !== undefined)
             reflectionMergePartial<GetHistoryRequest>(this, message, value);
         return message;
@@ -5309,6 +5484,9 @@ class GetHistoryRequest$Type extends MessageType<GetHistoryRequest> {
                     break;
                 case /* int64 before */ 2:
                     message.before = reader.int64().toBigInt();
+                    break;
+                case /* bool load_statuses */ 3:
+                    message.loadStatuses = reader.bool();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -5328,6 +5506,9 @@ class GetHistoryRequest$Type extends MessageType<GetHistoryRequest> {
         /* int64 before = 2; */
         if (message.before !== 0n)
             writer.tag(2, WireType.Varint).int64(message.before);
+        /* bool load_statuses = 3; */
+        if (message.loadStatuses !== false)
+            writer.tag(3, WireType.Varint).bool(message.loadStatuses);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -5392,7 +5573,8 @@ class DocumentVersion$Type extends MessageType<DocumentVersion> {
             { no: 1, name: "version", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
             { no: 2, name: "created", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "creator", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "meta", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
+            { no: 4, name: "meta", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
+            { no: 5, name: "statuses", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => DocumentStatuses } }
         ]);
     }
     create(value?: PartialMessage<DocumentVersion>): DocumentVersion {
@@ -5401,6 +5583,7 @@ class DocumentVersion$Type extends MessageType<DocumentVersion> {
         message.created = "";
         message.creator = "";
         message.meta = {};
+        message.statuses = {};
         if (value !== undefined)
             reflectionMergePartial<DocumentVersion>(this, message, value);
         return message;
@@ -5421,6 +5604,9 @@ class DocumentVersion$Type extends MessageType<DocumentVersion> {
                     break;
                 case /* map<string, string> meta */ 4:
                     this.binaryReadMap4(message.meta, reader, options);
+                    break;
+                case /* map<string, elephant.repository.DocumentStatuses> statuses */ 5:
+                    this.binaryReadMap5(message.statuses, reader, options);
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -5449,6 +5635,22 @@ class DocumentVersion$Type extends MessageType<DocumentVersion> {
         }
         map[key ?? ""] = val ?? "";
     }
+    private binaryReadMap5(map: DocumentVersion["statuses"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof DocumentVersion["statuses"] | undefined, val: DocumentVersion["statuses"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = DocumentStatuses.internalBinaryRead(reader, reader.uint32(), options);
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field elephant.repository.DocumentVersion.statuses");
+            }
+        }
+        map[key ?? ""] = val ?? DocumentStatuses.create();
+    }
     internalBinaryWrite(message: DocumentVersion, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* int64 version = 1; */
         if (message.version !== 0n)
@@ -5462,6 +5664,13 @@ class DocumentVersion$Type extends MessageType<DocumentVersion> {
         /* map<string, string> meta = 4; */
         for (let k of globalThis.Object.keys(message.meta))
             writer.tag(4, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.meta[k]).join();
+        /* map<string, elephant.repository.DocumentStatuses> statuses = 5; */
+        for (let k of globalThis.Object.keys(message.statuses)) {
+            writer.tag(5, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
+            writer.tag(2, WireType.LengthDelimited).fork();
+            DocumentStatuses.internalBinaryWrite(message.statuses[k], writer, options);
+            writer.join().join();
+        }
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -5472,6 +5681,53 @@ class DocumentVersion$Type extends MessageType<DocumentVersion> {
  * @generated MessageType for protobuf message elephant.repository.DocumentVersion
  */
 export const DocumentVersion = new DocumentVersion$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DocumentStatuses$Type extends MessageType<DocumentStatuses> {
+    constructor() {
+        super("elephant.repository.DocumentStatuses", [
+            { no: 5, name: "items", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Status }
+        ]);
+    }
+    create(value?: PartialMessage<DocumentStatuses>): DocumentStatuses {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.items = [];
+        if (value !== undefined)
+            reflectionMergePartial<DocumentStatuses>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DocumentStatuses): DocumentStatuses {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.repository.Status items */ 5:
+                    message.items.push(Status.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DocumentStatuses, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.repository.Status items = 5; */
+        for (let i = 0; i < message.items.length; i++)
+            Status.internalBinaryWrite(message.items[i], writer.tag(5, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.DocumentStatuses
+ */
+export const DocumentStatuses = new DocumentStatuses$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class UpdateRequest$Type extends MessageType<UpdateRequest> {
     constructor() {
@@ -8904,6 +9160,7 @@ export const Documents = new ServiceType("elephant.repository.Documents", [
     { name: "CompactedEventlog", options: {}, I: GetCompactedEventlogRequest, O: GetCompactedEventlogResponse },
     { name: "GetStatus", options: {}, I: GetStatusRequest, O: GetStatusResponse },
     { name: "GetStatusHistory", options: {}, I: GetStatusHistoryRequest, O: GetStatusHistoryReponse },
+    { name: "GetNilStatuses", options: {}, I: GetNilStatusesRequest, O: GetNilStatusesResponse },
     { name: "GetStatusOverview", options: {}, I: GetStatusOverviewRequest, O: GetStatusOverviewResponse },
     { name: "GetPermissions", options: {}, I: GetPermissionsRequest, O: GetPermissionsResponse },
     { name: "Lock", options: {}, I: LockRequest, O: LockResponse },
