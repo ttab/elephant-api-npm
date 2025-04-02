@@ -64,6 +64,8 @@ import type { RegisterSchemaRequest } from "./service";
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { Documents } from "./service";
+import type { GetWithheldResponse } from "./service";
+import type { GetWithheldRequest } from "./service";
 import type { UnlockResponse } from "./service";
 import type { UnlockRequest } from "./service";
 import type { ExtendLockRequest } from "./service";
@@ -242,6 +244,14 @@ export interface IDocumentsClient {
      * @generated from protobuf rpc: Unlock(elephant.repository.UnlockRequest) returns (elephant.repository.UnlockResponse);
      */
     unlock(input: UnlockRequest, options?: RpcOptions): UnaryCall<UnlockRequest, UnlockResponse>;
+    /**
+     * GetWithheld returns the next upcoming scheduled publish actions. This is
+     * not a complete list, but a list of the next N documents that are considered
+     * eligible for publishing.
+     *
+     * @generated from protobuf rpc: GetWithheld(elephant.repository.GetWithheldRequest) returns (elephant.repository.GetWithheldResponse);
+     */
+    getWithheld(input: GetWithheldRequest, options?: RpcOptions): UnaryCall<GetWithheldRequest, GetWithheldResponse>;
 }
 /**
  * @generated from protobuf service elephant.repository.Documents
@@ -444,6 +454,17 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
     unlock(input: UnlockRequest, options?: RpcOptions): UnaryCall<UnlockRequest, UnlockResponse> {
         const method = this.methods[20], opt = this._transport.mergeOptions(options);
         return stackIntercept<UnlockRequest, UnlockResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * GetWithheld returns the next upcoming scheduled publish actions. This is
+     * not a complete list, but a list of the next N documents that are considered
+     * eligible for publishing.
+     *
+     * @generated from protobuf rpc: GetWithheld(elephant.repository.GetWithheldRequest) returns (elephant.repository.GetWithheldResponse);
+     */
+    getWithheld(input: GetWithheldRequest, options?: RpcOptions): UnaryCall<GetWithheldRequest, GetWithheldResponse> {
+        const method = this.methods[21], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetWithheldRequest, GetWithheldResponse>("unary", this._transport, method, opt, input);
     }
 }
 /**

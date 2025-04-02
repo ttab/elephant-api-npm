@@ -1168,6 +1168,21 @@ export interface UpdateRequest {
      * @generated from protobuf field: bool update_meta_document = 9;
      */
     updateMetaDocument: boolean;
+    /**
+     * IfWorkflowState is used to only perform the update if it's in the specified
+     * workflow state.
+     *
+     * @generated from protobuf field: string if_workflow_state = 10;
+     */
+    ifWorkflowState: string;
+    /**
+     * IfStatusHeads is used to only perform the update if the status heads match.
+     *
+     * @generated from protobuf field: map<string, int64> if_status_heads = 11;
+     */
+    ifStatusHeads: {
+        [key: string]: bigint;
+    };
 }
 /**
  * ImportDirective can be used to preserve timestamps and authorship information
@@ -2067,22 +2082,37 @@ export interface RegisterMetricResponse {
  */
 export interface GetMetricsRequest {
     /**
-     * @generated from protobuf field: string uuid = 1;
+     * The documents to get metrics for.
+     *
+     * @generated from protobuf field: repeated string uuids = 1;
      */
-    uuid: string;
+    uuids: string[];
     /**
-     * @generated from protobuf field: string kind = 2;
+     * The metric kinds to get. Optional, defaults to all.
+     *
+     * @generated from protobuf field: repeated string kinds = 2;
      */
-    kind: string;
-    /**
-     * @generated from protobuf field: string label = 3;
-     */
-    label: string;
+    kinds: string[];
 }
 /**
  * @generated from protobuf message elephant.repository.GetMetricsResponse
  */
 export interface GetMetricsResponse {
+    /**
+     * @generated from protobuf field: map<string, elephant.repository.DocumentMetrics> documents = 1;
+     */
+    documents: {
+        [key: string]: DocumentMetrics;
+    };
+}
+/**
+ * @generated from protobuf message elephant.repository.DocumentMetrics
+ */
+export interface DocumentMetrics {
+    /**
+     * @generated from protobuf field: string uuid = 1;
+     */
+    uuid: string;
     /**
      * @generated from protobuf field: repeated elephant.repository.Metric metrics = 2;
      */
@@ -2195,6 +2225,73 @@ export interface UnlockRequest {
  * @generated from protobuf message elephant.repository.UnlockResponse
  */
 export interface UnlockResponse {
+}
+/**
+ * @generated from protobuf message elephant.repository.GetWithheldRequest
+ */
+export interface GetWithheldRequest {
+}
+/**
+ * @generated from protobuf message elephant.repository.GetWithheldResponse
+ */
+export interface GetWithheldResponse {
+    /**
+     * @generated from protobuf field: repeated elephant.repository.ScheduledDocument items = 1;
+     */
+    items: ScheduledDocument[];
+}
+/**
+ * @generated from protobuf message elephant.repository.ScheduledDocument
+ */
+export interface ScheduledDocument {
+    /**
+     * UUID is the ID of the scheduled document.
+     *
+     * @generated from protobuf field: string uuid = 1;
+     */
+    uuid: string;
+    /**
+     * Type of the scheduled document.
+     *
+     * @generated from protobuf field: string type = 2;
+     */
+    type: string;
+    /**
+     * StatusID is the last withheld status ID.
+     *
+     * @generated from protobuf field: int64 status_id = 3;
+     */
+    statusId: bigint;
+    /**
+     * DocumentVersion is the last version that was set as withheld.
+     *
+     * @generated from protobuf field: int64 document_version = 4;
+     */
+    documentVersion: bigint;
+    /**
+     * PlanningItem UUID.
+     *
+     * @generated from protobuf field: string planning_item = 5;
+     */
+    planningItem: string;
+    /**
+     * Assignment ID.
+     *
+     * @generated from protobuf field: string assignment = 6;
+     */
+    assignment: string;
+    /**
+     * Publish timestamp as RFC3339 set in the assignment.
+     *
+     * @generated from protobuf field: string publish = 7;
+     */
+    publish: string;
+    /**
+     * ScheduledBy is the sub of the user that set the withheld status.
+     *
+     * @generated from protobuf field: string scheduled_by = 8;
+     */
+    scheduledBy: string;
 }
 /**
  * @generated from protobuf enum elephant.repository.GetMetaDoc
@@ -5740,7 +5837,9 @@ class UpdateRequest$Type extends MessageType<UpdateRequest> {
             { no: 6, name: "acl", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ACLEntry },
             { no: 7, name: "import_directive", kind: "message", T: () => ImportDirective },
             { no: 8, name: "lockToken", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 9, name: "update_meta_document", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+            { no: 9, name: "update_meta_document", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 10, name: "if_workflow_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 11, name: "if_status_heads", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ } }
         ]);
     }
     create(value?: PartialMessage<UpdateRequest>): UpdateRequest {
@@ -5752,6 +5851,8 @@ class UpdateRequest$Type extends MessageType<UpdateRequest> {
         message.acl = [];
         message.lockToken = "";
         message.updateMetaDocument = false;
+        message.ifWorkflowState = "";
+        message.ifStatusHeads = {};
         if (value !== undefined)
             reflectionMergePartial<UpdateRequest>(this, message, value);
         return message;
@@ -5788,6 +5889,12 @@ class UpdateRequest$Type extends MessageType<UpdateRequest> {
                 case /* bool update_meta_document */ 9:
                     message.updateMetaDocument = reader.bool();
                     break;
+                case /* string if_workflow_state */ 10:
+                    message.ifWorkflowState = reader.string();
+                    break;
+                case /* map<string, int64> if_status_heads */ 11:
+                    this.binaryReadMap11(message.ifStatusHeads, reader, options);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -5814,6 +5921,22 @@ class UpdateRequest$Type extends MessageType<UpdateRequest> {
             }
         }
         map[key ?? ""] = val ?? "";
+    }
+    private binaryReadMap11(map: UpdateRequest["ifStatusHeads"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof UpdateRequest["ifStatusHeads"] | undefined, val: UpdateRequest["ifStatusHeads"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.int64().toBigInt();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field elephant.repository.UpdateRequest.if_status_heads");
+            }
+        }
+        map[key ?? ""] = val ?? 0n;
     }
     internalBinaryWrite(message: UpdateRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* string uuid = 1; */
@@ -5843,6 +5966,12 @@ class UpdateRequest$Type extends MessageType<UpdateRequest> {
         /* bool update_meta_document = 9; */
         if (message.updateMetaDocument !== false)
             writer.tag(9, WireType.Varint).bool(message.updateMetaDocument);
+        /* string if_workflow_state = 10; */
+        if (message.ifWorkflowState !== "")
+            writer.tag(10, WireType.LengthDelimited).string(message.ifWorkflowState);
+        /* map<string, int64> if_status_heads = 11; */
+        for (let k of globalThis.Object.keys(message.ifStatusHeads))
+            writer.tag(11, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.Varint).int64(message.ifStatusHeads[k]).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -8703,16 +8832,14 @@ export const RegisterMetricResponse = new RegisterMetricResponse$Type();
 class GetMetricsRequest$Type extends MessageType<GetMetricsRequest> {
     constructor() {
         super("elephant.repository.GetMetricsRequest", [
-            { no: 1, name: "uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "kind", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "label", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 1, name: "uuids", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "kinds", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<GetMetricsRequest>): GetMetricsRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
-        message.uuid = "";
-        message.kind = "";
-        message.label = "";
+        message.uuids = [];
+        message.kinds = [];
         if (value !== undefined)
             reflectionMergePartial<GetMetricsRequest>(this, message, value);
         return message;
@@ -8722,14 +8849,11 @@ class GetMetricsRequest$Type extends MessageType<GetMetricsRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* string uuid */ 1:
-                    message.uuid = reader.string();
+                case /* repeated string uuids */ 1:
+                    message.uuids.push(reader.string());
                     break;
-                case /* string kind */ 2:
-                    message.kind = reader.string();
-                    break;
-                case /* string label */ 3:
-                    message.label = reader.string();
+                case /* repeated string kinds */ 2:
+                    message.kinds.push(reader.string());
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -8743,15 +8867,12 @@ class GetMetricsRequest$Type extends MessageType<GetMetricsRequest> {
         return message;
     }
     internalBinaryWrite(message: GetMetricsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string uuid = 1; */
-        if (message.uuid !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.uuid);
-        /* string kind = 2; */
-        if (message.kind !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.kind);
-        /* string label = 3; */
-        if (message.label !== "")
-            writer.tag(3, WireType.LengthDelimited).string(message.label);
+        /* repeated string uuids = 1; */
+        for (let i = 0; i < message.uuids.length; i++)
+            writer.tag(1, WireType.LengthDelimited).string(message.uuids[i]);
+        /* repeated string kinds = 2; */
+        for (let i = 0; i < message.kinds.length; i++)
+            writer.tag(2, WireType.LengthDelimited).string(message.kinds[i]);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -8766,12 +8887,12 @@ export const GetMetricsRequest = new GetMetricsRequest$Type();
 class GetMetricsResponse$Type extends MessageType<GetMetricsResponse> {
     constructor() {
         super("elephant.repository.GetMetricsResponse", [
-            { no: 2, name: "metrics", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Metric }
+            { no: 1, name: "documents", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => DocumentMetrics } }
         ]);
     }
     create(value?: PartialMessage<GetMetricsResponse>): GetMetricsResponse {
         const message = globalThis.Object.create((this.messagePrototype!));
-        message.metrics = [];
+        message.documents = {};
         if (value !== undefined)
             reflectionMergePartial<GetMetricsResponse>(this, message, value);
         return message;
@@ -8781,6 +8902,78 @@ class GetMetricsResponse$Type extends MessageType<GetMetricsResponse> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
+                case /* map<string, elephant.repository.DocumentMetrics> documents */ 1:
+                    this.binaryReadMap1(message.documents, reader, options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap1(map: GetMetricsResponse["documents"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof GetMetricsResponse["documents"] | undefined, val: GetMetricsResponse["documents"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = DocumentMetrics.internalBinaryRead(reader, reader.uint32(), options);
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field elephant.repository.GetMetricsResponse.documents");
+            }
+        }
+        map[key ?? ""] = val ?? DocumentMetrics.create();
+    }
+    internalBinaryWrite(message: GetMetricsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* map<string, elephant.repository.DocumentMetrics> documents = 1; */
+        for (let k of globalThis.Object.keys(message.documents)) {
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
+            writer.tag(2, WireType.LengthDelimited).fork();
+            DocumentMetrics.internalBinaryWrite(message.documents[k], writer, options);
+            writer.join().join();
+        }
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetMetricsResponse
+ */
+export const GetMetricsResponse = new GetMetricsResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DocumentMetrics$Type extends MessageType<DocumentMetrics> {
+    constructor() {
+        super("elephant.repository.DocumentMetrics", [
+            { no: 1, name: "uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "metrics", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Metric }
+        ]);
+    }
+    create(value?: PartialMessage<DocumentMetrics>): DocumentMetrics {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.uuid = "";
+        message.metrics = [];
+        if (value !== undefined)
+            reflectionMergePartial<DocumentMetrics>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DocumentMetrics): DocumentMetrics {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string uuid */ 1:
+                    message.uuid = reader.string();
+                    break;
                 case /* repeated elephant.repository.Metric metrics */ 2:
                     message.metrics.push(Metric.internalBinaryRead(reader, reader.uint32(), options));
                     break;
@@ -8795,7 +8988,10 @@ class GetMetricsResponse$Type extends MessageType<GetMetricsResponse> {
         }
         return message;
     }
-    internalBinaryWrite(message: GetMetricsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+    internalBinaryWrite(message: DocumentMetrics, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string uuid = 1; */
+        if (message.uuid !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.uuid);
         /* repeated elephant.repository.Metric metrics = 2; */
         for (let i = 0; i < message.metrics.length; i++)
             Metric.internalBinaryWrite(message.metrics[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
@@ -8806,9 +9002,9 @@ class GetMetricsResponse$Type extends MessageType<GetMetricsResponse> {
     }
 }
 /**
- * @generated MessageType for protobuf message elephant.repository.GetMetricsResponse
+ * @generated MessageType for protobuf message elephant.repository.DocumentMetrics
  */
-export const GetMetricsResponse = new GetMetricsResponse$Type();
+export const DocumentMetrics = new DocumentMetrics$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class Metric$Type extends MessageType<Metric> {
     constructor() {
@@ -9141,6 +9337,181 @@ class UnlockResponse$Type extends MessageType<UnlockResponse> {
  * @generated MessageType for protobuf message elephant.repository.UnlockResponse
  */
 export const UnlockResponse = new UnlockResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetWithheldRequest$Type extends MessageType<GetWithheldRequest> {
+    constructor() {
+        super("elephant.repository.GetWithheldRequest", []);
+    }
+    create(value?: PartialMessage<GetWithheldRequest>): GetWithheldRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<GetWithheldRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetWithheldRequest): GetWithheldRequest {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message: GetWithheldRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetWithheldRequest
+ */
+export const GetWithheldRequest = new GetWithheldRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetWithheldResponse$Type extends MessageType<GetWithheldResponse> {
+    constructor() {
+        super("elephant.repository.GetWithheldResponse", [
+            { no: 1, name: "items", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ScheduledDocument }
+        ]);
+    }
+    create(value?: PartialMessage<GetWithheldResponse>): GetWithheldResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.items = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetWithheldResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetWithheldResponse): GetWithheldResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.repository.ScheduledDocument items */ 1:
+                    message.items.push(ScheduledDocument.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetWithheldResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.repository.ScheduledDocument items = 1; */
+        for (let i = 0; i < message.items.length; i++)
+            ScheduledDocument.internalBinaryWrite(message.items[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetWithheldResponse
+ */
+export const GetWithheldResponse = new GetWithheldResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ScheduledDocument$Type extends MessageType<ScheduledDocument> {
+    constructor() {
+        super("elephant.repository.ScheduledDocument", [
+            { no: 1, name: "uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "status_id", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 4, name: "document_version", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 5, name: "planning_item", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "assignment", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "publish", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "scheduled_by", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<ScheduledDocument>): ScheduledDocument {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.uuid = "";
+        message.type = "";
+        message.statusId = 0n;
+        message.documentVersion = 0n;
+        message.planningItem = "";
+        message.assignment = "";
+        message.publish = "";
+        message.scheduledBy = "";
+        if (value !== undefined)
+            reflectionMergePartial<ScheduledDocument>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ScheduledDocument): ScheduledDocument {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string uuid */ 1:
+                    message.uuid = reader.string();
+                    break;
+                case /* string type */ 2:
+                    message.type = reader.string();
+                    break;
+                case /* int64 status_id */ 3:
+                    message.statusId = reader.int64().toBigInt();
+                    break;
+                case /* int64 document_version */ 4:
+                    message.documentVersion = reader.int64().toBigInt();
+                    break;
+                case /* string planning_item */ 5:
+                    message.planningItem = reader.string();
+                    break;
+                case /* string assignment */ 6:
+                    message.assignment = reader.string();
+                    break;
+                case /* string publish */ 7:
+                    message.publish = reader.string();
+                    break;
+                case /* string scheduled_by */ 8:
+                    message.scheduledBy = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ScheduledDocument, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string uuid = 1; */
+        if (message.uuid !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.uuid);
+        /* string type = 2; */
+        if (message.type !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.type);
+        /* int64 status_id = 3; */
+        if (message.statusId !== 0n)
+            writer.tag(3, WireType.Varint).int64(message.statusId);
+        /* int64 document_version = 4; */
+        if (message.documentVersion !== 0n)
+            writer.tag(4, WireType.Varint).int64(message.documentVersion);
+        /* string planning_item = 5; */
+        if (message.planningItem !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.planningItem);
+        /* string assignment = 6; */
+        if (message.assignment !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.assignment);
+        /* string publish = 7; */
+        if (message.publish !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.publish);
+        /* string scheduled_by = 8; */
+        if (message.scheduledBy !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.scheduledBy);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.ScheduledDocument
+ */
+export const ScheduledDocument = new ScheduledDocument$Type();
 /**
  * @generated ServiceType for protobuf service elephant.repository.Documents
  */
@@ -9165,7 +9536,8 @@ export const Documents = new ServiceType("elephant.repository.Documents", [
     { name: "GetPermissions", options: {}, I: GetPermissionsRequest, O: GetPermissionsResponse },
     { name: "Lock", options: {}, I: LockRequest, O: LockResponse },
     { name: "ExtendLock", options: {}, I: ExtendLockRequest, O: LockResponse },
-    { name: "Unlock", options: {}, I: UnlockRequest, O: UnlockResponse }
+    { name: "Unlock", options: {}, I: UnlockRequest, O: UnlockResponse },
+    { name: "GetWithheld", options: {}, I: GetWithheldRequest, O: GetWithheldResponse }
 ]);
 /**
  * @generated ServiceType for protobuf service elephant.repository.Schemas

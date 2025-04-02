@@ -19,7 +19,7 @@ import { Document } from "../newsdoc/newsdoc";
  */
 export interface PushMessageRequest {
     /**
-     * Type of message being sent (e.g. "validation_error").
+     * Type of message being sent (e.g. "rpc_error").
      *
      * @generated from protobuf field: string type = 1;
      */
@@ -84,6 +84,7 @@ export interface PushInboxMessageResponse {
 export interface PollMessagesRequest {
     /**
      * ID of the message after which to start returning messages.
+     * Set to -1 for the initial request.
      *
      * @generated from protobuf field: int64 after_id = 1;
      */
@@ -94,14 +95,14 @@ export interface PollMessagesRequest {
  */
 export interface PollMessagesResponse {
     /**
-     * ID of the most recent message returned. Useful for subsequent polling requests.
-     * If no new messages are returned, it will reflect the "after_id" from the request.
+     * ID of the most recent message returned. Use for subsequent polling requests.
+     * If no new messages are returned, it matches the `after_id` from the request.
      *
      * @generated from protobuf field: int64 last_id = 1;
      */
     lastId: bigint;
     /**
-     * Messages sorted in descending order by id (reflects the created timestamp).
+     * Messages sorted in ascending order by id (oldest first).
      *
      * @generated from protobuf field: repeated elephant.user.Message messages = 2;
      */
@@ -118,7 +119,7 @@ export interface Message {
      */
     id: bigint;
     /**
-     * Type of message being sent (e.g. "validation_error").
+     * Type of message being sent (e.g. "rpc_error").
      *
      * @generated from protobuf field: string type = 2;
      */
@@ -169,6 +170,7 @@ export interface Message {
 export interface PollInboxMessagesRequest {
     /**
      * ID of the message after which to start returning messages.
+     * Set to -1 for the initial request.
      *
      * @generated from protobuf field: int64 after_id = 1;
      */
@@ -179,14 +181,14 @@ export interface PollInboxMessagesRequest {
  */
 export interface PollInboxMessagesResponse {
     /**
-     * ID of the most recent message returned. Useful for subsequent polling requests.
-     * If no new messages are returned, it will reflect the "after_id" from the request.
+     * ID of the most recent message returned. Use for subsequent polling requests.
+     * If no new messages are returned, it matches the `after_id` from the request.
      *
      * @generated from protobuf field: int64 last_id = 1;
      */
     lastId: bigint;
     /**
-     * Messages sorted in descending order by id (reflects the created timestamp).
+     * Messages sorted in ascending order by id (oldest first).
      *
      * @generated from protobuf field: repeated elephant.user.InboxMessage messages = 2;
      */
@@ -269,13 +271,13 @@ export interface ListInboxMessagesResponse {
      */
     latestId: bigint;
     /**
-     * ID of the earliest message returned. Useful for paginating backward.
+     * ID of the earliest message returned. Use for paginating backward.
      *
      * @generated from protobuf field: int64 earliest_id = 2;
      */
     earliestId: bigint;
     /**
-     * Messages sorted in descending order by id (reflects the created timestamp).
+     * Messages sorted in descending order by id (newest first).
      *
      * @generated from protobuf field: repeated elephant.user.InboxMessage messages = 3;
      */
