@@ -60,7 +60,7 @@
     "dist"
   ],
   "dependencies": {
-    "@protobuf-ts/runtime": "^2.9.4",
+    "@protobuf-ts/runtime": "^2.9.6",
     "@protobuf-ts/runtime-rpc": "^2.9.4"
   }
 }
