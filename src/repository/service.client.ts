@@ -14,19 +14,6 @@ import type { DeleteMetricKindResponse } from "./service";
 import type { DeleteMetricKindRequest } from "./service";
 import type { RegisterMetricKindResponse } from "./service";
 import type { RegisterMetricKindRequest } from "./service";
-import { Reports } from "./service";
-import type { TestReportResponse } from "./service";
-import type { TestReportRequest } from "./service";
-import type { RunReportResponse } from "./service";
-import type { RunReportRequest } from "./service";
-import type { DeleteReportResponse } from "./service";
-import type { DeleteReportRequest } from "./service";
-import type { GetReportResponse } from "./service";
-import type { GetReportRequest } from "./service";
-import type { UpdateReportResponse } from "./service";
-import type { UpdateReportRequest } from "./service";
-import type { ListReportsResponse } from "./service";
-import type { ListReportsRequest } from "./service";
 import { Workflows } from "./service";
 import type { DeleteWorkflowResponse } from "./service";
 import type { DeleteWorkflowRequest } from "./service";
@@ -64,6 +51,10 @@ import type { RegisterSchemaRequest } from "./service";
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { Documents } from "./service";
+import type { GetAttachmentsResponse } from "./service";
+import type { GetAttachmentsRequest } from "./service";
+import type { CreateUploadResponse } from "./service";
+import type { CreateUploadRequest } from "./service";
 import type { GetWithheldResponse } from "./service";
 import type { GetWithheldRequest } from "./service";
 import type { UnlockResponse } from "./service";
@@ -252,6 +243,19 @@ export interface IDocumentsClient {
      * @generated from protobuf rpc: GetWithheld(elephant.repository.GetWithheldRequest) returns (elephant.repository.GetWithheldResponse);
      */
     getWithheld(input: GetWithheldRequest, options?: RpcOptions): UnaryCall<GetWithheldRequest, GetWithheldResponse>;
+    /**
+     * CreateUpload is used to start the process of uploading objects that then
+     * can be attached to a document.
+     *
+     * @generated from protobuf rpc: CreateUpload(elephant.repository.CreateUploadRequest) returns (elephant.repository.CreateUploadResponse);
+     */
+    createUpload(input: CreateUploadRequest, options?: RpcOptions): UnaryCall<CreateUploadRequest, CreateUploadResponse>;
+    /**
+     * GetAttachments returns download links for the requested attachments.
+     *
+     * @generated from protobuf rpc: GetAttachments(elephant.repository.GetAttachmentsRequest) returns (elephant.repository.GetAttachmentsResponse);
+     */
+    getAttachments(input: GetAttachmentsRequest, options?: RpcOptions): UnaryCall<GetAttachmentsRequest, GetAttachmentsResponse>;
 }
 /**
  * @generated from protobuf service elephant.repository.Documents
@@ -465,6 +469,25 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
     getWithheld(input: GetWithheldRequest, options?: RpcOptions): UnaryCall<GetWithheldRequest, GetWithheldResponse> {
         const method = this.methods[21], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetWithheldRequest, GetWithheldResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * CreateUpload is used to start the process of uploading objects that then
+     * can be attached to a document.
+     *
+     * @generated from protobuf rpc: CreateUpload(elephant.repository.CreateUploadRequest) returns (elephant.repository.CreateUploadResponse);
+     */
+    createUpload(input: CreateUploadRequest, options?: RpcOptions): UnaryCall<CreateUploadRequest, CreateUploadResponse> {
+        const method = this.methods[22], opt = this._transport.mergeOptions(options);
+        return stackIntercept<CreateUploadRequest, CreateUploadResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * GetAttachments returns download links for the requested attachments.
+     *
+     * @generated from protobuf rpc: GetAttachments(elephant.repository.GetAttachmentsRequest) returns (elephant.repository.GetAttachmentsResponse);
+     */
+    getAttachments(input: GetAttachmentsRequest, options?: RpcOptions): UnaryCall<GetAttachmentsRequest, GetAttachmentsResponse> {
+        const method = this.methods[23], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetAttachmentsRequest, GetAttachmentsResponse>("unary", this._transport, method, opt, input);
     }
 }
 /**
@@ -737,113 +760,6 @@ export class WorkflowsClient implements IWorkflowsClient, ServiceInfo {
     deleteWorkflow(input: DeleteWorkflowRequest, options?: RpcOptions): UnaryCall<DeleteWorkflowRequest, DeleteWorkflowResponse> {
         const method = this.methods[7], opt = this._transport.mergeOptions(options);
         return stackIntercept<DeleteWorkflowRequest, DeleteWorkflowResponse>("unary", this._transport, method, opt, input);
-    }
-}
-/**
- * @generated from protobuf service elephant.repository.Reports
- */
-export interface IReportsClient {
-    /**
-     * List all reports.
-     *
-     * @generated from protobuf rpc: List(elephant.repository.ListReportsRequest) returns (elephant.repository.ListReportsResponse);
-     */
-    list(input: ListReportsRequest, options?: RpcOptions): UnaryCall<ListReportsRequest, ListReportsResponse>;
-    /**
-     * Update or create a report.
-     *
-     * @generated from protobuf rpc: Update(elephant.repository.UpdateReportRequest) returns (elephant.repository.UpdateReportResponse);
-     */
-    update(input: UpdateReportRequest, options?: RpcOptions): UnaryCall<UpdateReportRequest, UpdateReportResponse>;
-    /**
-     * Get a report.
-     *
-     * @generated from protobuf rpc: Get(elephant.repository.GetReportRequest) returns (elephant.repository.GetReportResponse);
-     */
-    get(input: GetReportRequest, options?: RpcOptions): UnaryCall<GetReportRequest, GetReportResponse>;
-    /**
-     * Delete a report.
-     *
-     * @generated from protobuf rpc: Delete(elephant.repository.DeleteReportRequest) returns (elephant.repository.DeleteReportResponse);
-     */
-    delete(input: DeleteReportRequest, options?: RpcOptions): UnaryCall<DeleteReportRequest, DeleteReportResponse>;
-    /**
-     * Run a report. This will run the report and return the results instead of
-     * sending it to any outputs.
-     *
-     * @generated from protobuf rpc: Run(elephant.repository.RunReportRequest) returns (elephant.repository.RunReportResponse);
-     */
-    run(input: RunReportRequest, options?: RpcOptions): UnaryCall<RunReportRequest, RunReportResponse>;
-    /**
-     * Test a report by runing it without saving.
-     *
-     * @generated from protobuf rpc: Test(elephant.repository.TestReportRequest) returns (elephant.repository.TestReportResponse);
-     */
-    test(input: TestReportRequest, options?: RpcOptions): UnaryCall<TestReportRequest, TestReportResponse>;
-}
-/**
- * @generated from protobuf service elephant.repository.Reports
- */
-export class ReportsClient implements IReportsClient, ServiceInfo {
-    typeName = Reports.typeName;
-    methods = Reports.methods;
-    options = Reports.options;
-    constructor(private readonly _transport: RpcTransport) {
-    }
-    /**
-     * List all reports.
-     *
-     * @generated from protobuf rpc: List(elephant.repository.ListReportsRequest) returns (elephant.repository.ListReportsResponse);
-     */
-    list(input: ListReportsRequest, options?: RpcOptions): UnaryCall<ListReportsRequest, ListReportsResponse> {
-        const method = this.methods[0], opt = this._transport.mergeOptions(options);
-        return stackIntercept<ListReportsRequest, ListReportsResponse>("unary", this._transport, method, opt, input);
-    }
-    /**
-     * Update or create a report.
-     *
-     * @generated from protobuf rpc: Update(elephant.repository.UpdateReportRequest) returns (elephant.repository.UpdateReportResponse);
-     */
-    update(input: UpdateReportRequest, options?: RpcOptions): UnaryCall<UpdateReportRequest, UpdateReportResponse> {
-        const method = this.methods[1], opt = this._transport.mergeOptions(options);
-        return stackIntercept<UpdateReportRequest, UpdateReportResponse>("unary", this._transport, method, opt, input);
-    }
-    /**
-     * Get a report.
-     *
-     * @generated from protobuf rpc: Get(elephant.repository.GetReportRequest) returns (elephant.repository.GetReportResponse);
-     */
-    get(input: GetReportRequest, options?: RpcOptions): UnaryCall<GetReportRequest, GetReportResponse> {
-        const method = this.methods[2], opt = this._transport.mergeOptions(options);
-        return stackIntercept<GetReportRequest, GetReportResponse>("unary", this._transport, method, opt, input);
-    }
-    /**
-     * Delete a report.
-     *
-     * @generated from protobuf rpc: Delete(elephant.repository.DeleteReportRequest) returns (elephant.repository.DeleteReportResponse);
-     */
-    delete(input: DeleteReportRequest, options?: RpcOptions): UnaryCall<DeleteReportRequest, DeleteReportResponse> {
-        const method = this.methods[3], opt = this._transport.mergeOptions(options);
-        return stackIntercept<DeleteReportRequest, DeleteReportResponse>("unary", this._transport, method, opt, input);
-    }
-    /**
-     * Run a report. This will run the report and return the results instead of
-     * sending it to any outputs.
-     *
-     * @generated from protobuf rpc: Run(elephant.repository.RunReportRequest) returns (elephant.repository.RunReportResponse);
-     */
-    run(input: RunReportRequest, options?: RpcOptions): UnaryCall<RunReportRequest, RunReportResponse> {
-        const method = this.methods[4], opt = this._transport.mergeOptions(options);
-        return stackIntercept<RunReportRequest, RunReportResponse>("unary", this._transport, method, opt, input);
-    }
-    /**
-     * Test a report by runing it without saving.
-     *
-     * @generated from protobuf rpc: Test(elephant.repository.TestReportRequest) returns (elephant.repository.TestReportResponse);
-     */
-    test(input: TestReportRequest, options?: RpcOptions): UnaryCall<TestReportRequest, TestReportResponse> {
-        const method = this.methods[5], opt = this._transport.mergeOptions(options);
-        return stackIntercept<TestReportRequest, TestReportResponse>("unary", this._transport, method, opt, input);
     }
 }
 /**

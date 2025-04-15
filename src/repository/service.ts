@@ -400,214 +400,26 @@ export interface EventlogItem {
      * @generated from protobuf field: string main_document_type = 17;
      */
     mainDocumentType: string;
-}
-/**
- * @generated from protobuf message elephant.repository.RunReportRequest
- */
-export interface RunReportRequest {
     /**
-     * @generated from protobuf field: string name = 1;
+     * AttachedObjects contains the object names, f.ex. "image" or "audio", when
+     * when objects (files) were attached together with a document update.
+     *
+     * @generated from protobuf field: repeated string attached_objects = 18;
      */
-    name: string;
-}
-/**
- * @generated from protobuf message elephant.repository.RunReportResponse
- */
-export interface RunReportResponse {
+    attachedObjects: string[];
     /**
-     * @generated from protobuf field: repeated string tables = 1;
+     * DetachedObjects contains the object names, f.ex. "image" or "audio", when
+     * when objects (files) were detached in a document update.
+     *
+     * @generated from protobuf field: repeated string detached_objects = 19;
      */
-    tables: string[];
+    detachedObjects: string[];
     /**
-     * @generated from protobuf field: bytes spreadsheet = 2;
+     * DeleteRecordId is the ID of the delete record if this was a delete event.
+     *
+     * @generated from protobuf field: int64 delete_record_id = 20;
      */
-    spreadsheet: Uint8Array;
-}
-/**
- * @generated from protobuf message elephant.repository.TestReportRequest
- */
-export interface TestReportRequest {
-    /**
-     * @generated from protobuf field: elephant.repository.Report report = 1;
-     */
-    report?: Report;
-}
-/**
- * @generated from protobuf message elephant.repository.TestReportResponse
- */
-export interface TestReportResponse {
-    /**
-     * @generated from protobuf field: repeated string tables = 1;
-     */
-    tables: string[];
-    /**
-     * @generated from protobuf field: bytes spreadsheet = 2;
-     */
-    spreadsheet: Uint8Array;
-}
-/**
- * @generated from protobuf message elephant.repository.DeleteReportRequest
- */
-export interface DeleteReportRequest {
-    /**
-     * @generated from protobuf field: string name = 1;
-     */
-    name: string;
-}
-/**
- * @generated from protobuf message elephant.repository.DeleteReportResponse
- */
-export interface DeleteReportResponse {
-}
-/**
- * @generated from protobuf message elephant.repository.GetReportRequest
- */
-export interface GetReportRequest {
-    /**
-     * @generated from protobuf field: string name = 1;
-     */
-    name: string;
-}
-/**
- * @generated from protobuf message elephant.repository.GetReportResponse
- */
-export interface GetReportResponse {
-    /**
-     * @generated from protobuf field: elephant.repository.Report report = 1;
-     */
-    report?: Report;
-    /**
-     * @generated from protobuf field: bool enabled = 2;
-     */
-    enabled: boolean;
-    /**
-     * @generated from protobuf field: string next_execution = 3;
-     */
-    nextExecution: string;
-}
-/**
- * @generated from protobuf message elephant.repository.UpdateReportRequest
- */
-export interface UpdateReportRequest {
-    /**
-     * @generated from protobuf field: elephant.repository.Report report = 1;
-     */
-    report?: Report;
-    /**
-     * @generated from protobuf field: bool enabled = 2;
-     */
-    enabled: boolean;
-}
-/**
- * @generated from protobuf message elephant.repository.ListReportsRequest
- */
-export interface ListReportsRequest {
-}
-/**
- * @generated from protobuf message elephant.repository.ListReportsResponse
- */
-export interface ListReportsResponse {
-    /**
-     * @generated from protobuf field: repeated elephant.repository.ReportListItem reports = 1;
-     */
-    reports: ReportListItem[];
-}
-/**
- * @generated from protobuf message elephant.repository.ReportListItem
- */
-export interface ReportListItem {
-    /**
-     * @generated from protobuf field: string name = 1;
-     */
-    name: string;
-    /**
-     * @generated from protobuf field: string title = 2;
-     */
-    title: string;
-    /**
-     * @generated from protobuf field: string cron_expression = 3;
-     */
-    cronExpression: string;
-    /**
-     * @generated from protobuf field: string cron_timezone = 4;
-     */
-    cronTimezone: string; // (default UTC)
-}
-/**
- * @generated from protobuf message elephant.repository.Report
- */
-export interface Report {
-    /**
-     * @generated from protobuf field: string name = 1;
-     */
-    name: string;
-    /**
-     * @generated from protobuf field: string title = 2;
-     */
-    title: string;
-    /**
-     * @generated from protobuf field: bool generate_sheet = 3;
-     */
-    generateSheet: boolean;
-    /**
-     * @generated from protobuf field: string cron_expression = 4;
-     */
-    cronExpression: string;
-    /**
-     * @generated from protobuf field: string cron_timezone = 7;
-     */
-    cronTimezone: string; // (default UTC)
-    /**
-     * @generated from protobuf field: repeated string slack_channels = 5;
-     */
-    slackChannels: string[];
-    /**
-     * @generated from protobuf field: repeated elephant.repository.ReportQuery queries = 6;
-     */
-    queries: ReportQuery[];
-}
-/**
- * @generated from protobuf message elephant.repository.ReportQuery
- */
-export interface ReportQuery {
-    /**
-     * @generated from protobuf field: string name = 1;
-     */
-    name: string;
-    /**
-     * @generated from protobuf field: repeated int32 summarise = 2;
-     */
-    summarise: number[];
-    /**
-     * @generated from protobuf field: string sql = 3;
-     */
-    sql: string;
-    /**
-     * @generated from protobuf field: repeated elephant.repository.ReportValue value_processing = 4;
-     */
-    valueProcessing: ReportValue[];
-}
-/**
- * @generated from protobuf message elephant.repository.ReportValue
- */
-export interface ReportValue {
-    /**
-     * @generated from protobuf field: string column = 1;
-     */
-    column: string;
-    /**
-     * @generated from protobuf field: repeated string processors = 2;
-     */
-    processors: string[];
-}
-/**
- * @generated from protobuf message elephant.repository.UpdateReportResponse
- */
-export interface UpdateReportResponse {
-    /**
-     * @generated from protobuf field: string next_execution = 1;
-     */
-    nextExecution: string;
+    deleteRecordId: bigint;
 }
 /**
  * @generated from protobuf message elephant.repository.GetStatusRulesRequest
@@ -1183,6 +995,24 @@ export interface UpdateRequest {
     ifStatusHeads: {
         [key: string]: bigint;
     };
+    /**
+     * AttachObjects is used to attach uploaded objects to a document. This must
+     * be done in combination with a document create or update. The key is the
+     * object name, f.ex. "image" or "audio", and the value is an upload ID. See
+     * CreateUpload().
+     *
+     * @generated from protobuf field: map<string, string> attach_objects = 12;
+     */
+    attachObjects: {
+        [key: string]: string;
+    };
+    /**
+     * DetatchObjects is used to detach uploaded objects from a document. This
+     * must be done in combination with a document create or update.
+     *
+     * @generated from protobuf field: repeated string detach_objects = 13;
+     */
+    detachObjects: string[];
 }
 /**
  * ImportDirective can be used to preserve timestamps and authorship information
@@ -1667,6 +1497,29 @@ export interface DocumentMeta {
      * @generated from protobuf field: string updater_uri = 12;
      */
     updaterUri: string;
+    /**
+     * Attachments are the names of the attached objects (files) for a document.
+     *
+     * @generated from protobuf field: repeated elephant.repository.AttachmentRef attachments = 13;
+     */
+    attachments: AttachmentRef[];
+}
+/**
+ * @generated from protobuf message elephant.repository.AttachmentRef
+ */
+export interface AttachmentRef {
+    /**
+     * Name of the attachment.
+     *
+     * @generated from protobuf field: string name = 1;
+     */
+    name: string;
+    /**
+     * Version is the current version of the attachment.
+     *
+     * @generated from protobuf field: int64 version = 2;
+     */
+    version: bigint;
 }
 /**
  * @generated from protobuf message elephant.repository.Status
@@ -2292,6 +2145,121 @@ export interface ScheduledDocument {
      * @generated from protobuf field: string scheduled_by = 8;
      */
     scheduledBy: string;
+}
+/**
+ * @generated from protobuf message elephant.repository.CreateUploadRequest
+ */
+export interface CreateUploadRequest {
+    /**
+     * Name of the uploaded file, this should be the basename of the file.
+     *
+     * @generated from protobuf field: string name = 1;
+     */
+    name: string;
+    /**
+     * ContentType is the type of the file as a mimetype.
+     *
+     * @generated from protobuf field: string content_type = 2;
+     */
+    contentType: string;
+    /**
+     * Meta can be used to set arbitrary key-value data on an upload.
+     *
+     * @generated from protobuf field: map<string, string> meta = 3;
+     */
+    meta: {
+        [key: string]: string;
+    };
+}
+/**
+ * @generated from protobuf message elephant.repository.CreateUploadResponse
+ */
+export interface CreateUploadResponse {
+    /**
+     * ID of the created upload.
+     *
+     * @generated from protobuf field: string id = 1;
+     */
+    id: string;
+    /**
+     * URL to post the object content to.
+     *
+     * @generated from protobuf field: string url = 2;
+     */
+    url: string;
+}
+/**
+ * @generated from protobuf message elephant.repository.GetAttachmentsRequest
+ */
+export interface GetAttachmentsRequest {
+    /**
+     * Documents to get attachments for.
+     *
+     * @generated from protobuf field: repeated string documents = 1;
+     */
+    documents: string[];
+    /**
+     * Attachment name to get information for.
+     *
+     * @generated from protobuf field: string attachment_name = 2;
+     */
+    attachmentName: string;
+    /**
+     * DownloadLink should be set to true to generate a download link.
+     *
+     * @generated from protobuf field: bool download_link = 3;
+     */
+    downloadLink: boolean;
+}
+/**
+ * @generated from protobuf message elephant.repository.GetAttachmentsResponse
+ */
+export interface GetAttachmentsResponse {
+    /**
+     * @generated from protobuf field: repeated elephant.repository.AttachmentDetails attachments = 1;
+     */
+    attachments: AttachmentDetails[];
+}
+/**
+ * @generated from protobuf message elephant.repository.AttachmentDetails
+ */
+export interface AttachmentDetails {
+    /**
+     * Document is the UUID of the document the object is attached to.
+     *
+     * @generated from protobuf field: string document = 1;
+     */
+    document: string;
+    /**
+     * Name of the attachment.
+     *
+     * @generated from protobuf field: string name = 2;
+     */
+    name: string;
+    /**
+     * Version of the attachment.
+     *
+     * @generated from protobuf field: int64 version = 3;
+     */
+    version: bigint;
+    /**
+     * DownloadLink that can be used to fetch the object contents, if requested.
+     *
+     * @generated from protobuf field: string download_link = 4;
+     */
+    downloadLink: string;
+    /**
+     * Filename is the name of the file the object represents.
+     *
+     * @generated from protobuf field: string filename = 5;
+     */
+    filename: string;
+    /**
+     * ContentType is the MIME type of the object.
+     *
+     * @generated from protobuf field: string content_type = 6;
+     */
+    contentType: string;
 }
 /**
  * @generated from protobuf enum elephant.repository.GetMetaDoc
@@ -3243,7 +3211,10 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
             { no: 14, name: "system_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 15, name: "workflow_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 16, name: "workflow_checkpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 17, name: "main_document_type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 17, name: "main_document_type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 18, name: "attached_objects", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 19, name: "detached_objects", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 20, name: "delete_record_id", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
         ]);
     }
     create(value?: PartialMessage<EventlogItem>): EventlogItem {
@@ -3265,6 +3236,9 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
         message.workflowState = "";
         message.workflowCheckpoint = "";
         message.mainDocumentType = "";
+        message.attachedObjects = [];
+        message.detachedObjects = [];
+        message.deleteRecordId = 0n;
         if (value !== undefined)
             reflectionMergePartial<EventlogItem>(this, message, value);
         return message;
@@ -3324,6 +3298,15 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
                     break;
                 case /* string main_document_type */ 17:
                     message.mainDocumentType = reader.string();
+                    break;
+                case /* repeated string attached_objects */ 18:
+                    message.attachedObjects.push(reader.string());
+                    break;
+                case /* repeated string detached_objects */ 19:
+                    message.detachedObjects.push(reader.string());
+                    break;
+                case /* int64 delete_record_id */ 20:
+                    message.deleteRecordId = reader.int64().toBigInt();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -3388,6 +3371,15 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
         /* string main_document_type = 17; */
         if (message.mainDocumentType !== "")
             writer.tag(17, WireType.LengthDelimited).string(message.mainDocumentType);
+        /* repeated string attached_objects = 18; */
+        for (let i = 0; i < message.attachedObjects.length; i++)
+            writer.tag(18, WireType.LengthDelimited).string(message.attachedObjects[i]);
+        /* repeated string detached_objects = 19; */
+        for (let i = 0; i < message.detachedObjects.length; i++)
+            writer.tag(19, WireType.LengthDelimited).string(message.detachedObjects[i]);
+        /* int64 delete_record_id = 20; */
+        if (message.deleteRecordId !== 0n)
+            writer.tag(20, WireType.Varint).int64(message.deleteRecordId);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3398,863 +3390,6 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
  * @generated MessageType for protobuf message elephant.repository.EventlogItem
  */
 export const EventlogItem = new EventlogItem$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class RunReportRequest$Type extends MessageType<RunReportRequest> {
-    constructor() {
-        super("elephant.repository.RunReportRequest", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<RunReportRequest>): RunReportRequest {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.name = "";
-        if (value !== undefined)
-            reflectionMergePartial<RunReportRequest>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: RunReportRequest): RunReportRequest {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string name */ 1:
-                    message.name = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: RunReportRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name = 1; */
-        if (message.name !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.name);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.RunReportRequest
- */
-export const RunReportRequest = new RunReportRequest$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class RunReportResponse$Type extends MessageType<RunReportResponse> {
-    constructor() {
-        super("elephant.repository.RunReportResponse", [
-            { no: 1, name: "tables", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "spreadsheet", kind: "scalar", T: 12 /*ScalarType.BYTES*/ }
-        ]);
-    }
-    create(value?: PartialMessage<RunReportResponse>): RunReportResponse {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.tables = [];
-        message.spreadsheet = new Uint8Array(0);
-        if (value !== undefined)
-            reflectionMergePartial<RunReportResponse>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: RunReportResponse): RunReportResponse {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* repeated string tables */ 1:
-                    message.tables.push(reader.string());
-                    break;
-                case /* bytes spreadsheet */ 2:
-                    message.spreadsheet = reader.bytes();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: RunReportResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* repeated string tables = 1; */
-        for (let i = 0; i < message.tables.length; i++)
-            writer.tag(1, WireType.LengthDelimited).string(message.tables[i]);
-        /* bytes spreadsheet = 2; */
-        if (message.spreadsheet.length)
-            writer.tag(2, WireType.LengthDelimited).bytes(message.spreadsheet);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.RunReportResponse
- */
-export const RunReportResponse = new RunReportResponse$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class TestReportRequest$Type extends MessageType<TestReportRequest> {
-    constructor() {
-        super("elephant.repository.TestReportRequest", [
-            { no: 1, name: "report", kind: "message", T: () => Report }
-        ]);
-    }
-    create(value?: PartialMessage<TestReportRequest>): TestReportRequest {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        if (value !== undefined)
-            reflectionMergePartial<TestReportRequest>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TestReportRequest): TestReportRequest {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* elephant.repository.Report report */ 1:
-                    message.report = Report.internalBinaryRead(reader, reader.uint32(), options, message.report);
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: TestReportRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* elephant.repository.Report report = 1; */
-        if (message.report)
-            Report.internalBinaryWrite(message.report, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.TestReportRequest
- */
-export const TestReportRequest = new TestReportRequest$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class TestReportResponse$Type extends MessageType<TestReportResponse> {
-    constructor() {
-        super("elephant.repository.TestReportResponse", [
-            { no: 1, name: "tables", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "spreadsheet", kind: "scalar", T: 12 /*ScalarType.BYTES*/ }
-        ]);
-    }
-    create(value?: PartialMessage<TestReportResponse>): TestReportResponse {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.tables = [];
-        message.spreadsheet = new Uint8Array(0);
-        if (value !== undefined)
-            reflectionMergePartial<TestReportResponse>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TestReportResponse): TestReportResponse {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* repeated string tables */ 1:
-                    message.tables.push(reader.string());
-                    break;
-                case /* bytes spreadsheet */ 2:
-                    message.spreadsheet = reader.bytes();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: TestReportResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* repeated string tables = 1; */
-        for (let i = 0; i < message.tables.length; i++)
-            writer.tag(1, WireType.LengthDelimited).string(message.tables[i]);
-        /* bytes spreadsheet = 2; */
-        if (message.spreadsheet.length)
-            writer.tag(2, WireType.LengthDelimited).bytes(message.spreadsheet);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.TestReportResponse
- */
-export const TestReportResponse = new TestReportResponse$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class DeleteReportRequest$Type extends MessageType<DeleteReportRequest> {
-    constructor() {
-        super("elephant.repository.DeleteReportRequest", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<DeleteReportRequest>): DeleteReportRequest {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.name = "";
-        if (value !== undefined)
-            reflectionMergePartial<DeleteReportRequest>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteReportRequest): DeleteReportRequest {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string name */ 1:
-                    message.name = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: DeleteReportRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name = 1; */
-        if (message.name !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.name);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.DeleteReportRequest
- */
-export const DeleteReportRequest = new DeleteReportRequest$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class DeleteReportResponse$Type extends MessageType<DeleteReportResponse> {
-    constructor() {
-        super("elephant.repository.DeleteReportResponse", []);
-    }
-    create(value?: PartialMessage<DeleteReportResponse>): DeleteReportResponse {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        if (value !== undefined)
-            reflectionMergePartial<DeleteReportResponse>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteReportResponse): DeleteReportResponse {
-        return target ?? this.create();
-    }
-    internalBinaryWrite(message: DeleteReportResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.DeleteReportResponse
- */
-export const DeleteReportResponse = new DeleteReportResponse$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class GetReportRequest$Type extends MessageType<GetReportRequest> {
-    constructor() {
-        super("elephant.repository.GetReportRequest", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<GetReportRequest>): GetReportRequest {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.name = "";
-        if (value !== undefined)
-            reflectionMergePartial<GetReportRequest>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetReportRequest): GetReportRequest {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string name */ 1:
-                    message.name = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: GetReportRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name = 1; */
-        if (message.name !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.name);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.GetReportRequest
- */
-export const GetReportRequest = new GetReportRequest$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class GetReportResponse$Type extends MessageType<GetReportResponse> {
-    constructor() {
-        super("elephant.repository.GetReportResponse", [
-            { no: 1, name: "report", kind: "message", T: () => Report },
-            { no: 2, name: "enabled", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 3, name: "next_execution", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<GetReportResponse>): GetReportResponse {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.enabled = false;
-        message.nextExecution = "";
-        if (value !== undefined)
-            reflectionMergePartial<GetReportResponse>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetReportResponse): GetReportResponse {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* elephant.repository.Report report */ 1:
-                    message.report = Report.internalBinaryRead(reader, reader.uint32(), options, message.report);
-                    break;
-                case /* bool enabled */ 2:
-                    message.enabled = reader.bool();
-                    break;
-                case /* string next_execution */ 3:
-                    message.nextExecution = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: GetReportResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* elephant.repository.Report report = 1; */
-        if (message.report)
-            Report.internalBinaryWrite(message.report, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* bool enabled = 2; */
-        if (message.enabled !== false)
-            writer.tag(2, WireType.Varint).bool(message.enabled);
-        /* string next_execution = 3; */
-        if (message.nextExecution !== "")
-            writer.tag(3, WireType.LengthDelimited).string(message.nextExecution);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.GetReportResponse
- */
-export const GetReportResponse = new GetReportResponse$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class UpdateReportRequest$Type extends MessageType<UpdateReportRequest> {
-    constructor() {
-        super("elephant.repository.UpdateReportRequest", [
-            { no: 1, name: "report", kind: "message", T: () => Report },
-            { no: 2, name: "enabled", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
-        ]);
-    }
-    create(value?: PartialMessage<UpdateReportRequest>): UpdateReportRequest {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.enabled = false;
-        if (value !== undefined)
-            reflectionMergePartial<UpdateReportRequest>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateReportRequest): UpdateReportRequest {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* elephant.repository.Report report */ 1:
-                    message.report = Report.internalBinaryRead(reader, reader.uint32(), options, message.report);
-                    break;
-                case /* bool enabled */ 2:
-                    message.enabled = reader.bool();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: UpdateReportRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* elephant.repository.Report report = 1; */
-        if (message.report)
-            Report.internalBinaryWrite(message.report, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* bool enabled = 2; */
-        if (message.enabled !== false)
-            writer.tag(2, WireType.Varint).bool(message.enabled);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.UpdateReportRequest
- */
-export const UpdateReportRequest = new UpdateReportRequest$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class ListReportsRequest$Type extends MessageType<ListReportsRequest> {
-    constructor() {
-        super("elephant.repository.ListReportsRequest", []);
-    }
-    create(value?: PartialMessage<ListReportsRequest>): ListReportsRequest {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        if (value !== undefined)
-            reflectionMergePartial<ListReportsRequest>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListReportsRequest): ListReportsRequest {
-        return target ?? this.create();
-    }
-    internalBinaryWrite(message: ListReportsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.ListReportsRequest
- */
-export const ListReportsRequest = new ListReportsRequest$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class ListReportsResponse$Type extends MessageType<ListReportsResponse> {
-    constructor() {
-        super("elephant.repository.ListReportsResponse", [
-            { no: 1, name: "reports", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ReportListItem }
-        ]);
-    }
-    create(value?: PartialMessage<ListReportsResponse>): ListReportsResponse {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.reports = [];
-        if (value !== undefined)
-            reflectionMergePartial<ListReportsResponse>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListReportsResponse): ListReportsResponse {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* repeated elephant.repository.ReportListItem reports */ 1:
-                    message.reports.push(ReportListItem.internalBinaryRead(reader, reader.uint32(), options));
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: ListReportsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* repeated elephant.repository.ReportListItem reports = 1; */
-        for (let i = 0; i < message.reports.length; i++)
-            ReportListItem.internalBinaryWrite(message.reports[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.ListReportsResponse
- */
-export const ListReportsResponse = new ListReportsResponse$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class ReportListItem$Type extends MessageType<ReportListItem> {
-    constructor() {
-        super("elephant.repository.ReportListItem", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "cron_expression", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "cron_timezone", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<ReportListItem>): ReportListItem {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.name = "";
-        message.title = "";
-        message.cronExpression = "";
-        message.cronTimezone = "";
-        if (value !== undefined)
-            reflectionMergePartial<ReportListItem>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ReportListItem): ReportListItem {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string name */ 1:
-                    message.name = reader.string();
-                    break;
-                case /* string title */ 2:
-                    message.title = reader.string();
-                    break;
-                case /* string cron_expression */ 3:
-                    message.cronExpression = reader.string();
-                    break;
-                case /* string cron_timezone */ 4:
-                    message.cronTimezone = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: ReportListItem, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name = 1; */
-        if (message.name !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.name);
-        /* string title = 2; */
-        if (message.title !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.title);
-        /* string cron_expression = 3; */
-        if (message.cronExpression !== "")
-            writer.tag(3, WireType.LengthDelimited).string(message.cronExpression);
-        /* string cron_timezone = 4; */
-        if (message.cronTimezone !== "")
-            writer.tag(4, WireType.LengthDelimited).string(message.cronTimezone);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.ReportListItem
- */
-export const ReportListItem = new ReportListItem$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class Report$Type extends MessageType<Report> {
-    constructor() {
-        super("elephant.repository.Report", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "title", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "generate_sheet", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 4, name: "cron_expression", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 7, name: "cron_timezone", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 5, name: "slack_channels", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 6, name: "queries", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ReportQuery }
-        ]);
-    }
-    create(value?: PartialMessage<Report>): Report {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.name = "";
-        message.title = "";
-        message.generateSheet = false;
-        message.cronExpression = "";
-        message.cronTimezone = "";
-        message.slackChannels = [];
-        message.queries = [];
-        if (value !== undefined)
-            reflectionMergePartial<Report>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Report): Report {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string name */ 1:
-                    message.name = reader.string();
-                    break;
-                case /* string title */ 2:
-                    message.title = reader.string();
-                    break;
-                case /* bool generate_sheet */ 3:
-                    message.generateSheet = reader.bool();
-                    break;
-                case /* string cron_expression */ 4:
-                    message.cronExpression = reader.string();
-                    break;
-                case /* string cron_timezone */ 7:
-                    message.cronTimezone = reader.string();
-                    break;
-                case /* repeated string slack_channels */ 5:
-                    message.slackChannels.push(reader.string());
-                    break;
-                case /* repeated elephant.repository.ReportQuery queries */ 6:
-                    message.queries.push(ReportQuery.internalBinaryRead(reader, reader.uint32(), options));
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: Report, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name = 1; */
-        if (message.name !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.name);
-        /* string title = 2; */
-        if (message.title !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.title);
-        /* bool generate_sheet = 3; */
-        if (message.generateSheet !== false)
-            writer.tag(3, WireType.Varint).bool(message.generateSheet);
-        /* string cron_expression = 4; */
-        if (message.cronExpression !== "")
-            writer.tag(4, WireType.LengthDelimited).string(message.cronExpression);
-        /* string cron_timezone = 7; */
-        if (message.cronTimezone !== "")
-            writer.tag(7, WireType.LengthDelimited).string(message.cronTimezone);
-        /* repeated string slack_channels = 5; */
-        for (let i = 0; i < message.slackChannels.length; i++)
-            writer.tag(5, WireType.LengthDelimited).string(message.slackChannels[i]);
-        /* repeated elephant.repository.ReportQuery queries = 6; */
-        for (let i = 0; i < message.queries.length; i++)
-            ReportQuery.internalBinaryWrite(message.queries[i], writer.tag(6, WireType.LengthDelimited).fork(), options).join();
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.Report
- */
-export const Report = new Report$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class ReportQuery$Type extends MessageType<ReportQuery> {
-    constructor() {
-        super("elephant.repository.ReportQuery", [
-            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "summarise", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 5 /*ScalarType.INT32*/ },
-            { no: 3, name: "sql", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "value_processing", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ReportValue }
-        ]);
-    }
-    create(value?: PartialMessage<ReportQuery>): ReportQuery {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.name = "";
-        message.summarise = [];
-        message.sql = "";
-        message.valueProcessing = [];
-        if (value !== undefined)
-            reflectionMergePartial<ReportQuery>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ReportQuery): ReportQuery {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string name */ 1:
-                    message.name = reader.string();
-                    break;
-                case /* repeated int32 summarise */ 2:
-                    if (wireType === WireType.LengthDelimited)
-                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
-                            message.summarise.push(reader.int32());
-                    else
-                        message.summarise.push(reader.int32());
-                    break;
-                case /* string sql */ 3:
-                    message.sql = reader.string();
-                    break;
-                case /* repeated elephant.repository.ReportValue value_processing */ 4:
-                    message.valueProcessing.push(ReportValue.internalBinaryRead(reader, reader.uint32(), options));
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: ReportQuery, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string name = 1; */
-        if (message.name !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.name);
-        /* repeated int32 summarise = 2; */
-        if (message.summarise.length) {
-            writer.tag(2, WireType.LengthDelimited).fork();
-            for (let i = 0; i < message.summarise.length; i++)
-                writer.int32(message.summarise[i]);
-            writer.join();
-        }
-        /* string sql = 3; */
-        if (message.sql !== "")
-            writer.tag(3, WireType.LengthDelimited).string(message.sql);
-        /* repeated elephant.repository.ReportValue value_processing = 4; */
-        for (let i = 0; i < message.valueProcessing.length; i++)
-            ReportValue.internalBinaryWrite(message.valueProcessing[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.ReportQuery
- */
-export const ReportQuery = new ReportQuery$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class ReportValue$Type extends MessageType<ReportValue> {
-    constructor() {
-        super("elephant.repository.ReportValue", [
-            { no: 1, name: "column", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "processors", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<ReportValue>): ReportValue {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.column = "";
-        message.processors = [];
-        if (value !== undefined)
-            reflectionMergePartial<ReportValue>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ReportValue): ReportValue {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string column */ 1:
-                    message.column = reader.string();
-                    break;
-                case /* repeated string processors */ 2:
-                    message.processors.push(reader.string());
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: ReportValue, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string column = 1; */
-        if (message.column !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.column);
-        /* repeated string processors = 2; */
-        for (let i = 0; i < message.processors.length; i++)
-            writer.tag(2, WireType.LengthDelimited).string(message.processors[i]);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.ReportValue
- */
-export const ReportValue = new ReportValue$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class UpdateReportResponse$Type extends MessageType<UpdateReportResponse> {
-    constructor() {
-        super("elephant.repository.UpdateReportResponse", [
-            { no: 1, name: "next_execution", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<UpdateReportResponse>): UpdateReportResponse {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.nextExecution = "";
-        if (value !== undefined)
-            reflectionMergePartial<UpdateReportResponse>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UpdateReportResponse): UpdateReportResponse {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string next_execution */ 1:
-                    message.nextExecution = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: UpdateReportResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string next_execution = 1; */
-        if (message.nextExecution !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.nextExecution);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message elephant.repository.UpdateReportResponse
- */
-export const UpdateReportResponse = new UpdateReportResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class GetStatusRulesRequest$Type extends MessageType<GetStatusRulesRequest> {
     constructor() {
@@ -5839,7 +4974,9 @@ class UpdateRequest$Type extends MessageType<UpdateRequest> {
             { no: 8, name: "lockToken", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 9, name: "update_meta_document", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 10, name: "if_workflow_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 11, name: "if_status_heads", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ } }
+            { no: 11, name: "if_status_heads", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ } },
+            { no: 12, name: "attach_objects", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } },
+            { no: 13, name: "detach_objects", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UpdateRequest>): UpdateRequest {
@@ -5853,6 +4990,8 @@ class UpdateRequest$Type extends MessageType<UpdateRequest> {
         message.updateMetaDocument = false;
         message.ifWorkflowState = "";
         message.ifStatusHeads = {};
+        message.attachObjects = {};
+        message.detachObjects = [];
         if (value !== undefined)
             reflectionMergePartial<UpdateRequest>(this, message, value);
         return message;
@@ -5894,6 +5033,12 @@ class UpdateRequest$Type extends MessageType<UpdateRequest> {
                     break;
                 case /* map<string, int64> if_status_heads */ 11:
                     this.binaryReadMap11(message.ifStatusHeads, reader, options);
+                    break;
+                case /* map<string, string> attach_objects */ 12:
+                    this.binaryReadMap12(message.attachObjects, reader, options);
+                    break;
+                case /* repeated string detach_objects */ 13:
+                    message.detachObjects.push(reader.string());
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -5938,6 +5083,22 @@ class UpdateRequest$Type extends MessageType<UpdateRequest> {
         }
         map[key ?? ""] = val ?? 0n;
     }
+    private binaryReadMap12(map: UpdateRequest["attachObjects"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof UpdateRequest["attachObjects"] | undefined, val: UpdateRequest["attachObjects"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.string();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field elephant.repository.UpdateRequest.attach_objects");
+            }
+        }
+        map[key ?? ""] = val ?? "";
+    }
     internalBinaryWrite(message: UpdateRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* string uuid = 1; */
         if (message.uuid !== "")
@@ -5972,6 +5133,12 @@ class UpdateRequest$Type extends MessageType<UpdateRequest> {
         /* map<string, int64> if_status_heads = 11; */
         for (let k of globalThis.Object.keys(message.ifStatusHeads))
             writer.tag(11, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.Varint).int64(message.ifStatusHeads[k]).join();
+        /* map<string, string> attach_objects = 12; */
+        for (let k of globalThis.Object.keys(message.attachObjects))
+            writer.tag(12, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.attachObjects[k]).join();
+        /* repeated string detach_objects = 13; */
+        for (let i = 0; i < message.detachObjects.length; i++)
+            writer.tag(13, WireType.LengthDelimited).string(message.detachObjects[i]);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -7237,7 +6404,8 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
             { no: 9, name: "workflow_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 10, name: "workflow_checkpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 11, name: "creator_uri", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 12, name: "updater_uri", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 12, name: "updater_uri", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 13, name: "attachments", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AttachmentRef }
         ]);
     }
     create(value?: PartialMessage<DocumentMeta>): DocumentMeta {
@@ -7253,6 +6421,7 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
         message.workflowCheckpoint = "";
         message.creatorUri = "";
         message.updaterUri = "";
+        message.attachments = [];
         if (value !== undefined)
             reflectionMergePartial<DocumentMeta>(this, message, value);
         return message;
@@ -7297,6 +6466,9 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
                     break;
                 case /* string updater_uri */ 12:
                     message.updaterUri = reader.string();
+                    break;
+                case /* repeated elephant.repository.AttachmentRef attachments */ 13:
+                    message.attachments.push(AttachmentRef.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -7366,6 +6538,9 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
         /* string updater_uri = 12; */
         if (message.updaterUri !== "")
             writer.tag(12, WireType.LengthDelimited).string(message.updaterUri);
+        /* repeated elephant.repository.AttachmentRef attachments = 13; */
+        for (let i = 0; i < message.attachments.length; i++)
+            AttachmentRef.internalBinaryWrite(message.attachments[i], writer.tag(13, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -7376,6 +6551,61 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
  * @generated MessageType for protobuf message elephant.repository.DocumentMeta
  */
 export const DocumentMeta = new DocumentMeta$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AttachmentRef$Type extends MessageType<AttachmentRef> {
+    constructor() {
+        super("elephant.repository.AttachmentRef", [
+            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "version", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AttachmentRef>): AttachmentRef {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.name = "";
+        message.version = 0n;
+        if (value !== undefined)
+            reflectionMergePartial<AttachmentRef>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AttachmentRef): AttachmentRef {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string name */ 1:
+                    message.name = reader.string();
+                    break;
+                case /* int64 version */ 2:
+                    message.version = reader.int64().toBigInt();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AttachmentRef, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string name = 1; */
+        if (message.name !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.name);
+        /* int64 version = 2; */
+        if (message.version !== 0n)
+            writer.tag(2, WireType.Varint).int64(message.version);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.AttachmentRef
+ */
+export const AttachmentRef = new AttachmentRef$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class Status$Type extends MessageType<Status> {
     constructor() {
@@ -9512,6 +8742,337 @@ class ScheduledDocument$Type extends MessageType<ScheduledDocument> {
  * @generated MessageType for protobuf message elephant.repository.ScheduledDocument
  */
 export const ScheduledDocument = new ScheduledDocument$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CreateUploadRequest$Type extends MessageType<CreateUploadRequest> {
+    constructor() {
+        super("elephant.repository.CreateUploadRequest", [
+            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "content_type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "meta", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
+        ]);
+    }
+    create(value?: PartialMessage<CreateUploadRequest>): CreateUploadRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.name = "";
+        message.contentType = "";
+        message.meta = {};
+        if (value !== undefined)
+            reflectionMergePartial<CreateUploadRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CreateUploadRequest): CreateUploadRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string name */ 1:
+                    message.name = reader.string();
+                    break;
+                case /* string content_type */ 2:
+                    message.contentType = reader.string();
+                    break;
+                case /* map<string, string> meta */ 3:
+                    this.binaryReadMap3(message.meta, reader, options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap3(map: CreateUploadRequest["meta"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof CreateUploadRequest["meta"] | undefined, val: CreateUploadRequest["meta"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.string();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for field elephant.repository.CreateUploadRequest.meta");
+            }
+        }
+        map[key ?? ""] = val ?? "";
+    }
+    internalBinaryWrite(message: CreateUploadRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string name = 1; */
+        if (message.name !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.name);
+        /* string content_type = 2; */
+        if (message.contentType !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.contentType);
+        /* map<string, string> meta = 3; */
+        for (let k of globalThis.Object.keys(message.meta))
+            writer.tag(3, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.meta[k]).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.CreateUploadRequest
+ */
+export const CreateUploadRequest = new CreateUploadRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CreateUploadResponse$Type extends MessageType<CreateUploadResponse> {
+    constructor() {
+        super("elephant.repository.CreateUploadResponse", [
+            { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "url", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<CreateUploadResponse>): CreateUploadResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.id = "";
+        message.url = "";
+        if (value !== undefined)
+            reflectionMergePartial<CreateUploadResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CreateUploadResponse): CreateUploadResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string id */ 1:
+                    message.id = reader.string();
+                    break;
+                case /* string url */ 2:
+                    message.url = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CreateUploadResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string id = 1; */
+        if (message.id !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.id);
+        /* string url = 2; */
+        if (message.url !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.url);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.CreateUploadResponse
+ */
+export const CreateUploadResponse = new CreateUploadResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAttachmentsRequest$Type extends MessageType<GetAttachmentsRequest> {
+    constructor() {
+        super("elephant.repository.GetAttachmentsRequest", [
+            { no: 1, name: "documents", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "attachment_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "download_link", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetAttachmentsRequest>): GetAttachmentsRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.documents = [];
+        message.attachmentName = "";
+        message.downloadLink = false;
+        if (value !== undefined)
+            reflectionMergePartial<GetAttachmentsRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAttachmentsRequest): GetAttachmentsRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated string documents */ 1:
+                    message.documents.push(reader.string());
+                    break;
+                case /* string attachment_name */ 2:
+                    message.attachmentName = reader.string();
+                    break;
+                case /* bool download_link */ 3:
+                    message.downloadLink = reader.bool();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAttachmentsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated string documents = 1; */
+        for (let i = 0; i < message.documents.length; i++)
+            writer.tag(1, WireType.LengthDelimited).string(message.documents[i]);
+        /* string attachment_name = 2; */
+        if (message.attachmentName !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.attachmentName);
+        /* bool download_link = 3; */
+        if (message.downloadLink !== false)
+            writer.tag(3, WireType.Varint).bool(message.downloadLink);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetAttachmentsRequest
+ */
+export const GetAttachmentsRequest = new GetAttachmentsRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAttachmentsResponse$Type extends MessageType<GetAttachmentsResponse> {
+    constructor() {
+        super("elephant.repository.GetAttachmentsResponse", [
+            { no: 1, name: "attachments", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AttachmentDetails }
+        ]);
+    }
+    create(value?: PartialMessage<GetAttachmentsResponse>): GetAttachmentsResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.attachments = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetAttachmentsResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAttachmentsResponse): GetAttachmentsResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.repository.AttachmentDetails attachments */ 1:
+                    message.attachments.push(AttachmentDetails.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAttachmentsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.repository.AttachmentDetails attachments = 1; */
+        for (let i = 0; i < message.attachments.length; i++)
+            AttachmentDetails.internalBinaryWrite(message.attachments[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetAttachmentsResponse
+ */
+export const GetAttachmentsResponse = new GetAttachmentsResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class AttachmentDetails$Type extends MessageType<AttachmentDetails> {
+    constructor() {
+        super("elephant.repository.AttachmentDetails", [
+            { no: 1, name: "document", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "version", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 4, name: "download_link", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "filename", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "content_type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<AttachmentDetails>): AttachmentDetails {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.document = "";
+        message.name = "";
+        message.version = 0n;
+        message.downloadLink = "";
+        message.filename = "";
+        message.contentType = "";
+        if (value !== undefined)
+            reflectionMergePartial<AttachmentDetails>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AttachmentDetails): AttachmentDetails {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string document */ 1:
+                    message.document = reader.string();
+                    break;
+                case /* string name */ 2:
+                    message.name = reader.string();
+                    break;
+                case /* int64 version */ 3:
+                    message.version = reader.int64().toBigInt();
+                    break;
+                case /* string download_link */ 4:
+                    message.downloadLink = reader.string();
+                    break;
+                case /* string filename */ 5:
+                    message.filename = reader.string();
+                    break;
+                case /* string content_type */ 6:
+                    message.contentType = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: AttachmentDetails, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string document = 1; */
+        if (message.document !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.document);
+        /* string name = 2; */
+        if (message.name !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.name);
+        /* int64 version = 3; */
+        if (message.version !== 0n)
+            writer.tag(3, WireType.Varint).int64(message.version);
+        /* string download_link = 4; */
+        if (message.downloadLink !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.downloadLink);
+        /* string filename = 5; */
+        if (message.filename !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.filename);
+        /* string content_type = 6; */
+        if (message.contentType !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.contentType);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.AttachmentDetails
+ */
+export const AttachmentDetails = new AttachmentDetails$Type();
 /**
  * @generated ServiceType for protobuf service elephant.repository.Documents
  */
@@ -9537,7 +9098,9 @@ export const Documents = new ServiceType("elephant.repository.Documents", [
     { name: "Lock", options: {}, I: LockRequest, O: LockResponse },
     { name: "ExtendLock", options: {}, I: ExtendLockRequest, O: LockResponse },
     { name: "Unlock", options: {}, I: UnlockRequest, O: UnlockResponse },
-    { name: "GetWithheld", options: {}, I: GetWithheldRequest, O: GetWithheldResponse }
+    { name: "GetWithheld", options: {}, I: GetWithheldRequest, O: GetWithheldResponse },
+    { name: "CreateUpload", options: {}, I: CreateUploadRequest, O: CreateUploadResponse },
+    { name: "GetAttachments", options: {}, I: GetAttachmentsRequest, O: GetAttachmentsResponse }
 ]);
 /**
  * @generated ServiceType for protobuf service elephant.repository.Schemas
@@ -9564,17 +9127,6 @@ export const Workflows = new ServiceType("elephant.repository.Workflows", [
     { name: "SetWorkflow", options: {}, I: SetWorkflowRequest, O: SetWorkflowResponse },
     { name: "GetWorkflow", options: {}, I: GetWorkflowRequest, O: GetWorkflowResponse },
     { name: "DeleteWorkflow", options: {}, I: DeleteWorkflowRequest, O: DeleteWorkflowResponse }
-]);
-/**
- * @generated ServiceType for protobuf service elephant.repository.Reports
- */
-export const Reports = new ServiceType("elephant.repository.Reports", [
-    { name: "List", options: {}, I: ListReportsRequest, O: ListReportsResponse },
-    { name: "Update", options: {}, I: UpdateReportRequest, O: UpdateReportResponse },
-    { name: "Get", options: {}, I: GetReportRequest, O: GetReportResponse },
-    { name: "Delete", options: {}, I: DeleteReportRequest, O: DeleteReportResponse },
-    { name: "Run", options: {}, I: RunReportRequest, O: RunReportResponse },
-    { name: "Test", options: {}, I: TestReportRequest, O: TestReportResponse }
 ]);
 /**
  * @generated ServiceType for protobuf service elephant.repository.Metrics
