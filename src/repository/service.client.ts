@@ -55,6 +55,8 @@ import type { GetAttachmentsResponse } from "./service";
 import type { GetAttachmentsRequest } from "./service";
 import type { CreateUploadResponse } from "./service";
 import type { CreateUploadRequest } from "./service";
+import type { GetDeliverableInfoResponse } from "./service";
+import type { GetDeliverableInfoRequest } from "./service";
 import type { GetWithheldResponse } from "./service";
 import type { GetWithheldRequest } from "./service";
 import type { UnlockResponse } from "./service";
@@ -243,6 +245,12 @@ export interface IDocumentsClient {
      * @generated from protobuf rpc: GetWithheld(elephant.repository.GetWithheldRequest) returns (elephant.repository.GetWithheldResponse);
      */
     getWithheld(input: GetWithheldRequest, options?: RpcOptions): UnaryCall<GetWithheldRequest, GetWithheldResponse>;
+    /**
+     * GetDeliverableInfo returns available information related to the deliverable.
+     *
+     * @generated from protobuf rpc: GetDeliverableInfo(elephant.repository.GetDeliverableInfoRequest) returns (elephant.repository.GetDeliverableInfoResponse);
+     */
+    getDeliverableInfo(input: GetDeliverableInfoRequest, options?: RpcOptions): UnaryCall<GetDeliverableInfoRequest, GetDeliverableInfoResponse>;
     /**
      * CreateUpload is used to start the process of uploading objects that then
      * can be attached to a document.
@@ -471,13 +479,22 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
         return stackIntercept<GetWithheldRequest, GetWithheldResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * GetDeliverableInfo returns available information related to the deliverable.
+     *
+     * @generated from protobuf rpc: GetDeliverableInfo(elephant.repository.GetDeliverableInfoRequest) returns (elephant.repository.GetDeliverableInfoResponse);
+     */
+    getDeliverableInfo(input: GetDeliverableInfoRequest, options?: RpcOptions): UnaryCall<GetDeliverableInfoRequest, GetDeliverableInfoResponse> {
+        const method = this.methods[22], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetDeliverableInfoRequest, GetDeliverableInfoResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * CreateUpload is used to start the process of uploading objects that then
      * can be attached to a document.
      *
      * @generated from protobuf rpc: CreateUpload(elephant.repository.CreateUploadRequest) returns (elephant.repository.CreateUploadResponse);
      */
     createUpload(input: CreateUploadRequest, options?: RpcOptions): UnaryCall<CreateUploadRequest, CreateUploadResponse> {
-        const method = this.methods[22], opt = this._transport.mergeOptions(options);
+        const method = this.methods[23], opt = this._transport.mergeOptions(options);
         return stackIntercept<CreateUploadRequest, CreateUploadResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -486,7 +503,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: GetAttachments(elephant.repository.GetAttachmentsRequest) returns (elephant.repository.GetAttachmentsResponse);
      */
     getAttachments(input: GetAttachmentsRequest, options?: RpcOptions): UnaryCall<GetAttachmentsRequest, GetAttachmentsResponse> {
-        const method = this.methods[23], opt = this._transport.mergeOptions(options);
+        const method = this.methods[24], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetAttachmentsRequest, GetAttachmentsResponse>("unary", this._transport, method, opt, input);
     }
 }

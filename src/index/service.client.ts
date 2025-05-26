@@ -10,6 +10,8 @@ import type { PollSubscriptionResponse } from "./service";
 import type { PollSubscriptionRequest } from "./service";
 import type { GetMappingsResponseV1 } from "./service";
 import type { GetMappingsRequestV1 } from "./service";
+import type { MultiSearchResponse } from "./service";
+import type { MultiSearchRequest } from "./service";
 import type { QueryResponseV1 } from "./service";
 import type { QueryRequestV1 } from "./service";
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
@@ -186,6 +188,10 @@ export interface ISearchV1Client {
      */
     query(input: QueryRequestV1, options?: RpcOptions): UnaryCall<QueryRequestV1, QueryResponseV1>;
     /**
+     * @generated from protobuf rpc: MultiSearch(elephant.index.MultiSearchRequest) returns (elephant.index.MultiSearchResponse);
+     */
+    multiSearch(input: MultiSearchRequest, options?: RpcOptions): UnaryCall<MultiSearchRequest, MultiSearchResponse>;
+    /**
      * @generated from protobuf rpc: GetMappings(elephant.index.GetMappingsRequestV1) returns (elephant.index.GetMappingsResponseV1);
      */
     getMappings(input: GetMappingsRequestV1, options?: RpcOptions): UnaryCall<GetMappingsRequestV1, GetMappingsResponseV1>;
@@ -215,24 +221,31 @@ export class SearchV1Client implements ISearchV1Client, ServiceInfo {
         return stackIntercept<QueryRequestV1, QueryResponseV1>("unary", this._transport, method, opt, input);
     }
     /**
+     * @generated from protobuf rpc: MultiSearch(elephant.index.MultiSearchRequest) returns (elephant.index.MultiSearchResponse);
+     */
+    multiSearch(input: MultiSearchRequest, options?: RpcOptions): UnaryCall<MultiSearchRequest, MultiSearchResponse> {
+        const method = this.methods[1], opt = this._transport.mergeOptions(options);
+        return stackIntercept<MultiSearchRequest, MultiSearchResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * @generated from protobuf rpc: GetMappings(elephant.index.GetMappingsRequestV1) returns (elephant.index.GetMappingsResponseV1);
      */
     getMappings(input: GetMappingsRequestV1, options?: RpcOptions): UnaryCall<GetMappingsRequestV1, GetMappingsResponseV1> {
-        const method = this.methods[1], opt = this._transport.mergeOptions(options);
+        const method = this.methods[2], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetMappingsRequestV1, GetMappingsResponseV1>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: PollSubscription(elephant.index.PollSubscriptionRequest) returns (elephant.index.PollSubscriptionResponse);
      */
     pollSubscription(input: PollSubscriptionRequest, options?: RpcOptions): UnaryCall<PollSubscriptionRequest, PollSubscriptionResponse> {
-        const method = this.methods[2], opt = this._transport.mergeOptions(options);
+        const method = this.methods[3], opt = this._transport.mergeOptions(options);
         return stackIntercept<PollSubscriptionRequest, PollSubscriptionResponse>("unary", this._transport, method, opt, input);
     }
     /**
      * @generated from protobuf rpc: EndSubscription(elephant.index.EndSubscriptionRequest) returns (elephant.index.EndSubscriptionResponse);
      */
     endSubscription(input: EndSubscriptionRequest, options?: RpcOptions): UnaryCall<EndSubscriptionRequest, EndSubscriptionResponse> {
-        const method = this.methods[3], opt = this._transport.mergeOptions(options);
+        const method = this.methods[4], opt = this._transport.mergeOptions(options);
         return stackIntercept<EndSubscriptionRequest, EndSubscriptionResponse>("unary", this._transport, method, opt, input);
     }
 }

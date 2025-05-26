@@ -118,7 +118,8 @@ export interface GetStatusOverviewRequest {
      */
     uuids: string[];
     /**
-     * Statuses to return information for.
+     * Statuses to return information for. Optional, omit to only return workflow
+     * state.
      *
      * @generated from protobuf field: repeated string statuses = 2;
      */
@@ -170,6 +171,18 @@ export interface StatusOverviewItem {
     heads: {
         [key: string]: Status;
     };
+    /**
+     * WorkflowState that the document is in.
+     *
+     * @generated from protobuf field: string workflow_state = 5;
+     */
+    workflowState: string;
+    /**
+     * WorkflowCheckpoint that the document reached most recently.
+     *
+     * @generated from protobuf field: string workflow_checkpoint = 6;
+     */
+    workflowCheckpoint: string;
 }
 /**
  * @generated from protobuf message elephant.repository.GetPermissionsRequest
@@ -713,6 +726,15 @@ export interface GetDocumentRequest {
      * @generated from protobuf field: elephant.repository.GetMetaDoc meta_document = 5;
      */
     metaDocument: GetMetaDoc;
+    /**
+     * MetaDocumentVersion is used to fetch a specific version of meta document.
+     * Can not be used with status. If status is specified,
+     * the version the meta document had at the time the status was set is returned.
+     * If ommited and status is not used, the latest meta document version is returned.
+     *
+     * @generated from protobuf field: int64 meta_document_version = 6;
+     */
+    metaDocumentVersion: bigint;
 }
 /**
  * @generated from protobuf message elephant.repository.GetDocumentResponse
@@ -2147,6 +2169,46 @@ export interface ScheduledDocument {
     scheduledBy: string;
 }
 /**
+ * @generated from protobuf message elephant.repository.GetDeliverableInfoRequest
+ */
+export interface GetDeliverableInfoRequest {
+    /**
+     * UUID of the deliverable.
+     *
+     * @generated from protobuf field: string uuid = 1;
+     */
+    uuid: string;
+}
+/**
+ * @generated from protobuf message elephant.repository.GetDeliverableInfoResponse
+ */
+export interface GetDeliverableInfoResponse {
+    /**
+     * Indicates whether the deliverable has planning information.
+     *
+     * @generated from protobuf field: bool has_planning_info = 1;
+     */
+    hasPlanningInfo: boolean;
+    /**
+     * UUID of the related planning item.
+     *
+     * @generated from protobuf field: string planning_uuid = 2;
+     */
+    planningUuid: string;
+    /**
+     * UUID of the related assignment.
+     *
+     * @generated from protobuf field: string assignment_uuid = 3;
+     */
+    assignmentUuid: string;
+    /**
+     * UUID of the related event.
+     *
+     * @generated from protobuf field: string event_uuid = 4;
+     */
+    eventUuid: string;
+}
+/**
  * @generated from protobuf message elephant.repository.CreateUploadRequest
  */
 export interface CreateUploadRequest {
@@ -2753,7 +2815,9 @@ class StatusOverviewItem$Type extends MessageType<StatusOverviewItem> {
             { no: 1, name: "uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "version", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
             { no: 3, name: "modified", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "heads", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => Status } }
+            { no: 4, name: "heads", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => Status } },
+            { no: 5, name: "workflow_state", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "workflow_checkpoint", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<StatusOverviewItem>): StatusOverviewItem {
@@ -2762,6 +2826,8 @@ class StatusOverviewItem$Type extends MessageType<StatusOverviewItem> {
         message.version = 0n;
         message.modified = "";
         message.heads = {};
+        message.workflowState = "";
+        message.workflowCheckpoint = "";
         if (value !== undefined)
             reflectionMergePartial<StatusOverviewItem>(this, message, value);
         return message;
@@ -2782,6 +2848,12 @@ class StatusOverviewItem$Type extends MessageType<StatusOverviewItem> {
                     break;
                 case /* map<string, elephant.repository.Status> heads */ 4:
                     this.binaryReadMap4(message.heads, reader, options);
+                    break;
+                case /* string workflow_state */ 5:
+                    message.workflowState = reader.string();
+                    break;
+                case /* string workflow_checkpoint */ 6:
+                    message.workflowCheckpoint = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -2827,6 +2899,12 @@ class StatusOverviewItem$Type extends MessageType<StatusOverviewItem> {
             Status.internalBinaryWrite(message.heads[k], writer, options);
             writer.join().join();
         }
+        /* string workflow_state = 5; */
+        if (message.workflowState !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.workflowState);
+        /* string workflow_checkpoint = 6; */
+        if (message.workflowCheckpoint !== "")
+            writer.tag(6, WireType.LengthDelimited).string(message.workflowCheckpoint);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -4276,7 +4354,8 @@ class GetDocumentRequest$Type extends MessageType<GetDocumentRequest> {
             { no: 2, name: "version", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
             { no: 3, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "lock", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 5, name: "meta_document", kind: "enum", T: () => ["elephant.repository.GetMetaDoc", GetMetaDoc] }
+            { no: 5, name: "meta_document", kind: "enum", T: () => ["elephant.repository.GetMetaDoc", GetMetaDoc] },
+            { no: 6, name: "meta_document_version", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
         ]);
     }
     create(value?: PartialMessage<GetDocumentRequest>): GetDocumentRequest {
@@ -4286,6 +4365,7 @@ class GetDocumentRequest$Type extends MessageType<GetDocumentRequest> {
         message.status = "";
         message.lock = false;
         message.metaDocument = 0;
+        message.metaDocumentVersion = 0n;
         if (value !== undefined)
             reflectionMergePartial<GetDocumentRequest>(this, message, value);
         return message;
@@ -4309,6 +4389,9 @@ class GetDocumentRequest$Type extends MessageType<GetDocumentRequest> {
                     break;
                 case /* elephant.repository.GetMetaDoc meta_document */ 5:
                     message.metaDocument = reader.int32();
+                    break;
+                case /* int64 meta_document_version */ 6:
+                    message.metaDocumentVersion = reader.int64().toBigInt();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -4337,6 +4420,9 @@ class GetDocumentRequest$Type extends MessageType<GetDocumentRequest> {
         /* elephant.repository.GetMetaDoc meta_document = 5; */
         if (message.metaDocument !== 0)
             writer.tag(5, WireType.Varint).int32(message.metaDocument);
+        /* int64 meta_document_version = 6; */
+        if (message.metaDocumentVersion !== 0n)
+            writer.tag(6, WireType.Varint).int64(message.metaDocumentVersion);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -8743,6 +8829,124 @@ class ScheduledDocument$Type extends MessageType<ScheduledDocument> {
  */
 export const ScheduledDocument = new ScheduledDocument$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class GetDeliverableInfoRequest$Type extends MessageType<GetDeliverableInfoRequest> {
+    constructor() {
+        super("elephant.repository.GetDeliverableInfoRequest", [
+            { no: 1, name: "uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetDeliverableInfoRequest>): GetDeliverableInfoRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.uuid = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetDeliverableInfoRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetDeliverableInfoRequest): GetDeliverableInfoRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string uuid */ 1:
+                    message.uuid = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetDeliverableInfoRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string uuid = 1; */
+        if (message.uuid !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.uuid);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetDeliverableInfoRequest
+ */
+export const GetDeliverableInfoRequest = new GetDeliverableInfoRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetDeliverableInfoResponse$Type extends MessageType<GetDeliverableInfoResponse> {
+    constructor() {
+        super("elephant.repository.GetDeliverableInfoResponse", [
+            { no: 1, name: "has_planning_info", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 2, name: "planning_uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "assignment_uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "event_uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetDeliverableInfoResponse>): GetDeliverableInfoResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.hasPlanningInfo = false;
+        message.planningUuid = "";
+        message.assignmentUuid = "";
+        message.eventUuid = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetDeliverableInfoResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetDeliverableInfoResponse): GetDeliverableInfoResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* bool has_planning_info */ 1:
+                    message.hasPlanningInfo = reader.bool();
+                    break;
+                case /* string planning_uuid */ 2:
+                    message.planningUuid = reader.string();
+                    break;
+                case /* string assignment_uuid */ 3:
+                    message.assignmentUuid = reader.string();
+                    break;
+                case /* string event_uuid */ 4:
+                    message.eventUuid = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetDeliverableInfoResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* bool has_planning_info = 1; */
+        if (message.hasPlanningInfo !== false)
+            writer.tag(1, WireType.Varint).bool(message.hasPlanningInfo);
+        /* string planning_uuid = 2; */
+        if (message.planningUuid !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.planningUuid);
+        /* string assignment_uuid = 3; */
+        if (message.assignmentUuid !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.assignmentUuid);
+        /* string event_uuid = 4; */
+        if (message.eventUuid !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.eventUuid);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetDeliverableInfoResponse
+ */
+export const GetDeliverableInfoResponse = new GetDeliverableInfoResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class CreateUploadRequest$Type extends MessageType<CreateUploadRequest> {
     constructor() {
         super("elephant.repository.CreateUploadRequest", [
@@ -9099,6 +9303,7 @@ export const Documents = new ServiceType("elephant.repository.Documents", [
     { name: "ExtendLock", options: {}, I: ExtendLockRequest, O: LockResponse },
     { name: "Unlock", options: {}, I: UnlockRequest, O: UnlockResponse },
     { name: "GetWithheld", options: {}, I: GetWithheldRequest, O: GetWithheldResponse },
+    { name: "GetDeliverableInfo", options: {}, I: GetDeliverableInfoRequest, O: GetDeliverableInfoResponse },
     { name: "CreateUpload", options: {}, I: CreateUploadRequest, O: CreateUploadResponse },
     { name: "GetAttachments", options: {}, I: GetAttachmentsRequest, O: GetAttachmentsResponse }
 ]);

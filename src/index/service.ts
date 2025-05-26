@@ -305,6 +305,24 @@ export interface IndexSet {
     position: bigint;
 }
 /**
+ * @generated from protobuf message elephant.index.MultiSearchRequest
+ */
+export interface MultiSearchRequest {
+    /**
+     * @generated from protobuf field: repeated elephant.index.QueryRequestV1 queries = 1;
+     */
+    queries: QueryRequestV1[];
+}
+/**
+ * @generated from protobuf message elephant.index.MultiSearchResponse
+ */
+export interface MultiSearchResponse {
+    /**
+     * @generated from protobuf field: repeated elephant.index.QueryResponseV1 results = 1;
+     */
+    results: QueryResponseV1[];
+}
+/**
  * @generated from protobuf message elephant.index.QueryRequestV1
  */
 export interface QueryRequestV1 {
@@ -462,6 +480,10 @@ export interface BoolQueryV1 {
      * @generated from protobuf field: repeated elephant.index.QueryV1 filter = 4;
      */
     filter: QueryV1[];
+    /**
+     * @generated from protobuf field: int64 minimum_should_match = 5;
+     */
+    minimumShouldMatch: bigint;
 }
 /**
  * @generated from protobuf message elephant.index.RangeQueryV1
@@ -587,6 +609,33 @@ export interface MultiMatchQueryV1 {
      * @generated from protobuf field: float tie_breaker = 7;
      */
     tieBreaker: number;
+    /**
+     * PrefixLength is the number of beginning characters left unchanged for fuzzy
+     * matching. Optional, defaults to 0.
+     *
+     * @generated from protobuf field: int64 prefix_length = 8;
+     */
+    prefixLength: bigint;
+    /**
+     * Fuzziness is the maximum edit distance allowed for matching.
+     *
+     * @generated from protobuf field: elephant.index.Fuzziness fuzziness = 9;
+     */
+    fuzziness?: Fuzziness;
+}
+/**
+ * Fuzziness has more ways to be specified, implementing that when we need it.
+ *
+ * @generated from protobuf message elephant.index.Fuzziness
+ */
+export interface Fuzziness {
+    /**
+     * Edits is the maximum allowed Levenshtein Edit Distance (or number of
+     * edits).
+     *
+     * @generated from protobuf field: int64 edits = 1;
+     */
+    edits: bigint;
 }
 /**
  * @generated from protobuf message elephant.index.MatchPhraseQueryV1
@@ -831,17 +880,25 @@ export interface PollSubscriptionRequest {
      */
     subscriptions: SubscriptionReference[];
     /**
-     * MaxWaitMS is the maximum time to wait before returning an empty response.
+     * MaxWaitMS is the maximum time to wait before returning an empty
+     * response. Optional, defaults to 10s.
      *
      * @generated from protobuf field: int64 max_wait_ms = 2;
      */
     maxWaitMs: bigint;
     /**
-     * BatchDelayMS is the number of milliseconds to wait for more items after the first.
+     * BatchDelayMS is the number of milliseconds to wait for more items after the
+     * first. Optional, defaults to 200ms.
      *
      * @generated from protobuf field: int64 batch_delay_ms = 3;
      */
     batchDelayMs: bigint;
+    /**
+     * NotifyOnly will skip loading any data to include with the hits.
+     *
+     * @generated from protobuf field: bool notify_only = 4;
+     */
+    notifyOnly: boolean;
 }
 /**
  * @generated from protobuf message elephant.index.SubscriptionReference
@@ -1902,6 +1959,100 @@ class IndexSet$Type extends MessageType<IndexSet> {
  */
 export const IndexSet = new IndexSet$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class MultiSearchRequest$Type extends MessageType<MultiSearchRequest> {
+    constructor() {
+        super("elephant.index.MultiSearchRequest", [
+            { no: 1, name: "queries", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => QueryRequestV1 }
+        ]);
+    }
+    create(value?: PartialMessage<MultiSearchRequest>): MultiSearchRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.queries = [];
+        if (value !== undefined)
+            reflectionMergePartial<MultiSearchRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MultiSearchRequest): MultiSearchRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.index.QueryRequestV1 queries */ 1:
+                    message.queries.push(QueryRequestV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MultiSearchRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.index.QueryRequestV1 queries = 1; */
+        for (let i = 0; i < message.queries.length; i++)
+            QueryRequestV1.internalBinaryWrite(message.queries[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.MultiSearchRequest
+ */
+export const MultiSearchRequest = new MultiSearchRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MultiSearchResponse$Type extends MessageType<MultiSearchResponse> {
+    constructor() {
+        super("elephant.index.MultiSearchResponse", [
+            { no: 1, name: "results", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => QueryResponseV1 }
+        ]);
+    }
+    create(value?: PartialMessage<MultiSearchResponse>): MultiSearchResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.results = [];
+        if (value !== undefined)
+            reflectionMergePartial<MultiSearchResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MultiSearchResponse): MultiSearchResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.index.QueryResponseV1 results */ 1:
+                    message.results.push(QueryResponseV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MultiSearchResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.index.QueryResponseV1 results = 1; */
+        for (let i = 0; i < message.results.length; i++)
+            QueryResponseV1.internalBinaryWrite(message.results[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.MultiSearchResponse
+ */
+export const MultiSearchResponse = new MultiSearchResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class QueryRequestV1$Type extends MessageType<QueryRequestV1> {
     constructor() {
         super("elephant.index.QueryRequestV1", [
@@ -2192,7 +2343,8 @@ class BoolQueryV1$Type extends MessageType<BoolQueryV1> {
             { no: 1, name: "must", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => QueryV1 },
             { no: 2, name: "must_not", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => QueryV1 },
             { no: 3, name: "should", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => QueryV1 },
-            { no: 4, name: "filter", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => QueryV1 }
+            { no: 4, name: "filter", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => QueryV1 },
+            { no: 5, name: "minimum_should_match", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
         ]);
     }
     create(value?: PartialMessage<BoolQueryV1>): BoolQueryV1 {
@@ -2201,6 +2353,7 @@ class BoolQueryV1$Type extends MessageType<BoolQueryV1> {
         message.mustNot = [];
         message.should = [];
         message.filter = [];
+        message.minimumShouldMatch = 0n;
         if (value !== undefined)
             reflectionMergePartial<BoolQueryV1>(this, message, value);
         return message;
@@ -2221,6 +2374,9 @@ class BoolQueryV1$Type extends MessageType<BoolQueryV1> {
                     break;
                 case /* repeated elephant.index.QueryV1 filter */ 4:
                     message.filter.push(QueryV1.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* int64 minimum_should_match */ 5:
+                    message.minimumShouldMatch = reader.int64().toBigInt();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -2246,6 +2402,9 @@ class BoolQueryV1$Type extends MessageType<BoolQueryV1> {
         /* repeated elephant.index.QueryV1 filter = 4; */
         for (let i = 0; i < message.filter.length; i++)
             QueryV1.internalBinaryWrite(message.filter[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        /* int64 minimum_should_match = 5; */
+        if (message.minimumShouldMatch !== 0n)
+            writer.tag(5, WireType.Varint).int64(message.minimumShouldMatch);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -2559,7 +2718,9 @@ class MultiMatchQueryV1$Type extends MessageType<MultiMatchQueryV1> {
             { no: 4, name: "boost", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
             { no: 5, name: "boolean_and", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 6, name: "minimum_should_match", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 7, name: "tie_breaker", kind: "scalar", T: 2 /*ScalarType.FLOAT*/ }
+            { no: 7, name: "tie_breaker", kind: "scalar", T: 2 /*ScalarType.FLOAT*/ },
+            { no: 8, name: "prefix_length", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 9, name: "fuzziness", kind: "message", T: () => Fuzziness }
         ]);
     }
     create(value?: PartialMessage<MultiMatchQueryV1>): MultiMatchQueryV1 {
@@ -2571,6 +2732,7 @@ class MultiMatchQueryV1$Type extends MessageType<MultiMatchQueryV1> {
         message.booleanAnd = false;
         message.minimumShouldMatch = "";
         message.tieBreaker = 0;
+        message.prefixLength = 0n;
         if (value !== undefined)
             reflectionMergePartial<MultiMatchQueryV1>(this, message, value);
         return message;
@@ -2600,6 +2762,12 @@ class MultiMatchQueryV1$Type extends MessageType<MultiMatchQueryV1> {
                     break;
                 case /* float tie_breaker */ 7:
                     message.tieBreaker = reader.float();
+                    break;
+                case /* int64 prefix_length */ 8:
+                    message.prefixLength = reader.int64().toBigInt();
+                    break;
+                case /* elephant.index.Fuzziness fuzziness */ 9:
+                    message.fuzziness = Fuzziness.internalBinaryRead(reader, reader.uint32(), options, message.fuzziness);
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -2634,6 +2802,12 @@ class MultiMatchQueryV1$Type extends MessageType<MultiMatchQueryV1> {
         /* float tie_breaker = 7; */
         if (message.tieBreaker !== 0)
             writer.tag(7, WireType.Bit32).float(message.tieBreaker);
+        /* int64 prefix_length = 8; */
+        if (message.prefixLength !== 0n)
+            writer.tag(8, WireType.Varint).int64(message.prefixLength);
+        /* elephant.index.Fuzziness fuzziness = 9; */
+        if (message.fuzziness)
+            Fuzziness.internalBinaryWrite(message.fuzziness, writer.tag(9, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -2644,6 +2818,53 @@ class MultiMatchQueryV1$Type extends MessageType<MultiMatchQueryV1> {
  * @generated MessageType for protobuf message elephant.index.MultiMatchQueryV1
  */
 export const MultiMatchQueryV1 = new MultiMatchQueryV1$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class Fuzziness$Type extends MessageType<Fuzziness> {
+    constructor() {
+        super("elephant.index.Fuzziness", [
+            { no: 1, name: "edits", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<Fuzziness>): Fuzziness {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.edits = 0n;
+        if (value !== undefined)
+            reflectionMergePartial<Fuzziness>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Fuzziness): Fuzziness {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int64 edits */ 1:
+                    message.edits = reader.int64().toBigInt();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: Fuzziness, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int64 edits = 1; */
+        if (message.edits !== 0n)
+            writer.tag(1, WireType.Varint).int64(message.edits);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.index.Fuzziness
+ */
+export const Fuzziness = new Fuzziness$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class MatchPhraseQueryV1$Type extends MessageType<MatchPhraseQueryV1> {
     constructor() {
@@ -3488,7 +3709,8 @@ class PollSubscriptionRequest$Type extends MessageType<PollSubscriptionRequest> 
         super("elephant.index.PollSubscriptionRequest", [
             { no: 1, name: "subscriptions", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => SubscriptionReference },
             { no: 2, name: "max_wait_ms", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
-            { no: 3, name: "batch_delay_ms", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+            { no: 3, name: "batch_delay_ms", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 4, name: "notify_only", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value?: PartialMessage<PollSubscriptionRequest>): PollSubscriptionRequest {
@@ -3496,6 +3718,7 @@ class PollSubscriptionRequest$Type extends MessageType<PollSubscriptionRequest> 
         message.subscriptions = [];
         message.maxWaitMs = 0n;
         message.batchDelayMs = 0n;
+        message.notifyOnly = false;
         if (value !== undefined)
             reflectionMergePartial<PollSubscriptionRequest>(this, message, value);
         return message;
@@ -3513,6 +3736,9 @@ class PollSubscriptionRequest$Type extends MessageType<PollSubscriptionRequest> 
                     break;
                 case /* int64 batch_delay_ms */ 3:
                     message.batchDelayMs = reader.int64().toBigInt();
+                    break;
+                case /* bool notify_only */ 4:
+                    message.notifyOnly = reader.bool();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -3535,6 +3761,9 @@ class PollSubscriptionRequest$Type extends MessageType<PollSubscriptionRequest> 
         /* int64 batch_delay_ms = 3; */
         if (message.batchDelayMs !== 0n)
             writer.tag(3, WireType.Varint).int64(message.batchDelayMs);
+        /* bool notify_only = 4; */
+        if (message.notifyOnly !== false)
+            writer.tag(4, WireType.Varint).bool(message.notifyOnly);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3925,6 +4154,7 @@ export const Management = new ServiceType("elephant.index.Management", [
  */
 export const SearchV1 = new ServiceType("elephant.index.SearchV1", [
     { name: "Query", options: {}, I: QueryRequestV1, O: QueryResponseV1 },
+    { name: "MultiSearch", options: {}, I: MultiSearchRequest, O: MultiSearchResponse },
     { name: "GetMappings", options: {}, I: GetMappingsRequestV1, O: GetMappingsResponseV1 },
     { name: "PollSubscription", options: {}, I: PollSubscriptionRequest, O: PollSubscriptionResponse },
     { name: "EndSubscription", options: {}, I: EndSubscriptionRequest, O: EndSubscriptionResponse }
