@@ -52,7 +52,7 @@ done
 # Build the docker image, just temporary, should live in a separate repo.
 docker buildx build \
        -t node-protobuf --load \
-       --build-arg="protoc_version=24.4-r1" ./src
+       --build-arg="protoc_version=29.4-r0" ./src
 
 docker run --rm \
        -v "$(pwd):/usr/src" \

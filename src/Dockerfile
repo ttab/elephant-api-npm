@@ -1,4 +1,4 @@
-FROM node:20.17-alpine
+FROM node:22.20-alpine
 
 ARG protoc_version
 
