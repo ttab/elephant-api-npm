@@ -32,6 +32,10 @@ import type { GetStatusesRequest } from "./service";
 import type { UpdateStatusResponse } from "./service";
 import type { UpdateStatusRequest } from "./service";
 import { Schemas } from "./service";
+import type { GetDocumentTypesResponse } from "./service";
+import type { GetDocumentTypesRequest } from "./service";
+import type { GetMetaTypesResponse } from "./service";
+import type { GetMetaTypesRequest } from "./service";
 import type { UpdateDeprecationResponse } from "./service";
 import type { UpdateDeprecationRequest } from "./service";
 import type { GetDeprecationsResponse } from "./service";
@@ -40,6 +44,8 @@ import type { RegisterMetaTypeUseResponse } from "./service";
 import type { RegisterMetaTypeUseRequest } from "./service";
 import type { RegisterMetaTypeResponse } from "./service";
 import type { RegisterMetaTypeRequest } from "./service";
+import type { ListActiveSchemasResponse } from "./service";
+import type { ListActiveSchemasRequest } from "./service";
 import type { GetAllActiveSchemasResponse } from "./service";
 import type { GetAllActiveSchemasRequest } from "./service";
 import type { GetSchemaResponse } from "./service";
@@ -536,6 +542,12 @@ export interface ISchemasClient {
      */
     getAllActive(input: GetAllActiveSchemasRequest, options?: RpcOptions): UnaryCall<GetAllActiveSchemasRequest, GetAllActiveSchemasResponse>;
     /**
+     * ListActiveSchemas lists the currently active schemas.
+     *
+     * @generated from protobuf rpc: ListActive(elephant.repository.ListActiveSchemasRequest) returns (elephant.repository.ListActiveSchemasResponse);
+     */
+    listActive(input: ListActiveSchemasRequest, options?: RpcOptions): UnaryCall<ListActiveSchemasRequest, ListActiveSchemasResponse>;
+    /**
      * RegisterMetaType registers a type that can be used for meta documents.
      *
      * @generated from protobuf rpc: RegisterMetaType(elephant.repository.RegisterMetaTypeRequest) returns (elephant.repository.RegisterMetaTypeResponse);
@@ -559,6 +571,18 @@ export interface ISchemasClient {
      * @generated from protobuf rpc: UpdateDeprecation(elephant.repository.UpdateDeprecationRequest) returns (elephant.repository.UpdateDeprecationResponse);
      */
     updateDeprecation(input: UpdateDeprecationRequest, options?: RpcOptions): UnaryCall<UpdateDeprecationRequest, UpdateDeprecationResponse>;
+    /**
+     * GetMetaTypes lists the registered meta types.
+     *
+     * @generated from protobuf rpc: GetMetaTypes(elephant.repository.GetMetaTypesRequest) returns (elephant.repository.GetMetaTypesResponse);
+     */
+    getMetaTypes(input: GetMetaTypesRequest, options?: RpcOptions): UnaryCall<GetMetaTypesRequest, GetMetaTypesResponse>;
+    /**
+     * GetDocumentTypes lists the defined document types.
+     *
+     * @generated from protobuf rpc: GetDocumentTypes(elephant.repository.GetDocumentTypesRequest) returns (elephant.repository.GetDocumentTypesResponse);
+     */
+    getDocumentTypes(input: GetDocumentTypesRequest, options?: RpcOptions): UnaryCall<GetDocumentTypesRequest, GetDocumentTypesResponse>;
 }
 /**
  * @generated from protobuf service elephant.repository.Schemas
@@ -606,12 +630,21 @@ export class SchemasClient implements ISchemasClient, ServiceInfo {
         return stackIntercept<GetAllActiveSchemasRequest, GetAllActiveSchemasResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * ListActiveSchemas lists the currently active schemas.
+     *
+     * @generated from protobuf rpc: ListActive(elephant.repository.ListActiveSchemasRequest) returns (elephant.repository.ListActiveSchemasResponse);
+     */
+    listActive(input: ListActiveSchemasRequest, options?: RpcOptions): UnaryCall<ListActiveSchemasRequest, ListActiveSchemasResponse> {
+        const method = this.methods[4], opt = this._transport.mergeOptions(options);
+        return stackIntercept<ListActiveSchemasRequest, ListActiveSchemasResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * RegisterMetaType registers a type that can be used for meta documents.
      *
      * @generated from protobuf rpc: RegisterMetaType(elephant.repository.RegisterMetaTypeRequest) returns (elephant.repository.RegisterMetaTypeResponse);
      */
     registerMetaType(input: RegisterMetaTypeRequest, options?: RpcOptions): UnaryCall<RegisterMetaTypeRequest, RegisterMetaTypeResponse> {
-        const method = this.methods[4], opt = this._transport.mergeOptions(options);
+        const method = this.methods[5], opt = this._transport.mergeOptions(options);
         return stackIntercept<RegisterMetaTypeRequest, RegisterMetaTypeResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -620,7 +653,7 @@ export class SchemasClient implements ISchemasClient, ServiceInfo {
      * @generated from protobuf rpc: RegisterMetaTypeUse(elephant.repository.RegisterMetaTypeUseRequest) returns (elephant.repository.RegisterMetaTypeUseResponse);
      */
     registerMetaTypeUse(input: RegisterMetaTypeUseRequest, options?: RpcOptions): UnaryCall<RegisterMetaTypeUseRequest, RegisterMetaTypeUseResponse> {
-        const method = this.methods[5], opt = this._transport.mergeOptions(options);
+        const method = this.methods[6], opt = this._transport.mergeOptions(options);
         return stackIntercept<RegisterMetaTypeUseRequest, RegisterMetaTypeUseResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -629,7 +662,7 @@ export class SchemasClient implements ISchemasClient, ServiceInfo {
      * @generated from protobuf rpc: GetDeprecations(elephant.repository.GetDeprecationsRequest) returns (elephant.repository.GetDeprecationsResponse);
      */
     getDeprecations(input: GetDeprecationsRequest, options?: RpcOptions): UnaryCall<GetDeprecationsRequest, GetDeprecationsResponse> {
-        const method = this.methods[6], opt = this._transport.mergeOptions(options);
+        const method = this.methods[7], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetDeprecationsRequest, GetDeprecationsResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -638,8 +671,26 @@ export class SchemasClient implements ISchemasClient, ServiceInfo {
      * @generated from protobuf rpc: UpdateDeprecation(elephant.repository.UpdateDeprecationRequest) returns (elephant.repository.UpdateDeprecationResponse);
      */
     updateDeprecation(input: UpdateDeprecationRequest, options?: RpcOptions): UnaryCall<UpdateDeprecationRequest, UpdateDeprecationResponse> {
-        const method = this.methods[7], opt = this._transport.mergeOptions(options);
+        const method = this.methods[8], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateDeprecationRequest, UpdateDeprecationResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * GetMetaTypes lists the registered meta types.
+     *
+     * @generated from protobuf rpc: GetMetaTypes(elephant.repository.GetMetaTypesRequest) returns (elephant.repository.GetMetaTypesResponse);
+     */
+    getMetaTypes(input: GetMetaTypesRequest, options?: RpcOptions): UnaryCall<GetMetaTypesRequest, GetMetaTypesResponse> {
+        const method = this.methods[9], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetMetaTypesRequest, GetMetaTypesResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * GetDocumentTypes lists the defined document types.
+     *
+     * @generated from protobuf rpc: GetDocumentTypes(elephant.repository.GetDocumentTypesRequest) returns (elephant.repository.GetDocumentTypesResponse);
+     */
+    getDocumentTypes(input: GetDocumentTypesRequest, options?: RpcOptions): UnaryCall<GetDocumentTypesRequest, GetDocumentTypesResponse> {
+        const method = this.methods[10], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetDocumentTypesRequest, GetDocumentTypesResponse>("unary", this._transport, method, opt, input);
     }
 }
 /**

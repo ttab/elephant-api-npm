@@ -30,6 +30,11 @@
       "import": "./dist/user/index.js",
       "require": "./dist/user/index.cjs"
     },
+    "./replicant": {
+      "types": "./dist/replicant/index.d.ts",
+      "import": "./dist/replicant/index.js",
+      "require": "./dist/replicant/index.cjs"
+    },
     "./package.json": "./package.json"
   },
   "publishConfig": {
@@ -46,7 +51,8 @@
     "build:index": "tsup ./src/index/index.ts --format cjs,esm --dts --outDir ./dist/index",
     "build:spell": "tsup ./src/spell/index.ts --format cjs,esm --dts --outDir ./dist/spell",
     "build:user": "tsup ./src/user/index.ts --format cjs,esm --dts --outDir ./dist/user",
-    "build": "npm run build:repository && npm run build:newsdoc && npm run build:index && npm run build:spell && npm run build:user",
+    "build:replicant": "tsup ./src/replicant/index.ts --format cjs,esm --dts --outDir ./dist/replicant",
+    "build": "npm run build:repository && npm run build:newsdoc && npm run build:index && npm run build:spell && npm run build:user && npm run build:replicant",
     "update": "bash .github/workflows/update.sh",
     "prepublish": "npm run build"
   },
