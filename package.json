@@ -59,14 +59,14 @@
   "author": "",
   "description": "",
   "devDependencies": {
-    "@protobuf-ts/plugin": "^2.9.4",
+    "@protobuf-ts/plugin": "^2.11.1",
     "tsdown": "^0.15.6"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "@protobuf-ts/runtime": "^2.9.4",
-    "@protobuf-ts/runtime-rpc": "^2.9.4"
+    "@protobuf-ts/runtime": "^2.11.1",
+    "@protobuf-ts/runtime-rpc": "^2.11.1"
   }
 }
