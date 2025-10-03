@@ -46,12 +46,12 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:repository": "tsup ./src/repository/index.ts --format cjs,esm --dts --outDir ./dist/repository",
-    "build:newsdoc": "tsup ./src/newsdoc/newsdoc.ts --format cjs,esm --dts --outDir ./dist/newsdoc",
-    "build:index": "tsup ./src/index/index.ts --format cjs,esm --dts --outDir ./dist/index",
-    "build:spell": "tsup ./src/spell/index.ts --format cjs,esm --dts --outDir ./dist/spell",
-    "build:user": "tsup ./src/user/index.ts --format cjs,esm --dts --outDir ./dist/user",
-    "build:replicant": "tsup ./src/replicant/index.ts --format cjs,esm --dts --outDir ./dist/replicant",
+    "build:repository": "tsdown ./src/repository/index.ts --format cjs,esm --dts --outDir ./dist/repository",
+    "build:newsdoc": "tsdown ./src/newsdoc/newsdoc.ts --format cjs,esm --dts --outDir ./dist/newsdoc",
+    "build:index": "tsdown ./src/index/index.ts --format cjs,esm --dts --outDir ./dist/index",
+    "build:spell": "tsdown ./src/spell/index.ts --format cjs,esm --dts --outDir ./dist/spell",
+    "build:user": "tsdown ./src/user/index.ts --format cjs,esm --dts --outDir ./dist/user",
+    "build:replicant": "tsdown ./src/replicant/index.ts --format cjs,esm --dts --outDir ./dist/replicant",
     "build": "npm run build:repository && npm run build:newsdoc && npm run build:index && npm run build:spell && npm run build:user && npm run build:replicant",
     "update": "bash .github/workflows/update.sh",
     "prepublish": "npm run build"
@@ -60,7 +60,7 @@
   "description": "",
   "devDependencies": {
     "@protobuf-ts/plugin": "^2.9.4",
-    "tsup": "^8.3.6"
+    "tsdown": "^0.15.6"
   },
   "files": [
     "dist"
