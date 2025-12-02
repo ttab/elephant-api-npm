@@ -47,6 +47,30 @@ export interface RegisterClusterAuth {
      * @generated from protobuf field: bool iam = 1
      */
     iam: boolean;
+    /**
+     * Username.
+     *
+     * @generated from protobuf field: string username = 2
+     */
+    username: string;
+    /**
+     * Password.
+     *
+     * @generated from protobuf field: string password = 3
+     */
+    password: string;
+    /**
+     * InsecureTLS sets insecure skip verify for the cluster client, optional.
+     *
+     * @generated from protobuf field: bool insecure_tls = 4
+     */
+    insecureTls: boolean;
+    /**
+     * CACert can be set to provide a PEM encoded CA certificate to trust.
+     *
+     * @generated from protobuf field: string ca_cert = 5
+     */
+    caCert: string;
 }
 /**
  * @generated from protobuf message elephant.index.RegisterClusterResponse
@@ -128,6 +152,12 @@ export interface ClusterAuth {
      * @generated from protobuf field: bool iam = 1
      */
     iam: boolean;
+    /**
+     * Username.
+     *
+     * @generated from protobuf field: string username = 2
+     */
+    username: string;
 }
 /**
  * @generated from protobuf message elephant.index.DeleteClusterRequest
@@ -1082,12 +1112,20 @@ export const RegisterClusterRequest = new RegisterClusterRequest$Type();
 class RegisterClusterAuth$Type extends MessageType<RegisterClusterAuth> {
     constructor() {
         super("elephant.index.RegisterClusterAuth", [
-            { no: 1, name: "iam", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+            { no: 1, name: "iam", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 2, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "password", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "insecure_tls", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 5, name: "ca_cert", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<RegisterClusterAuth>): RegisterClusterAuth {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.iam = false;
+        message.username = "";
+        message.password = "";
+        message.insecureTls = false;
+        message.caCert = "";
         if (value !== undefined)
             reflectionMergePartial<RegisterClusterAuth>(this, message, value);
         return message;
@@ -1099,6 +1137,18 @@ class RegisterClusterAuth$Type extends MessageType<RegisterClusterAuth> {
             switch (fieldNo) {
                 case /* bool iam */ 1:
                     message.iam = reader.bool();
+                    break;
+                case /* string username */ 2:
+                    message.username = reader.string();
+                    break;
+                case /* string password */ 3:
+                    message.password = reader.string();
+                    break;
+                case /* bool insecure_tls */ 4:
+                    message.insecureTls = reader.bool();
+                    break;
+                case /* string ca_cert */ 5:
+                    message.caCert = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -1115,6 +1165,18 @@ class RegisterClusterAuth$Type extends MessageType<RegisterClusterAuth> {
         /* bool iam = 1; */
         if (message.iam !== false)
             writer.tag(1, WireType.Varint).bool(message.iam);
+        /* string username = 2; */
+        if (message.username !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.username);
+        /* string password = 3; */
+        if (message.password !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.password);
+        /* bool insecure_tls = 4; */
+        if (message.insecureTls !== false)
+            writer.tag(4, WireType.Varint).bool(message.insecureTls);
+        /* string ca_cert = 5; */
+        if (message.caCert !== "")
+            writer.tag(5, WireType.LengthDelimited).string(message.caCert);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1416,12 +1478,14 @@ export const Cluster = new Cluster$Type();
 class ClusterAuth$Type extends MessageType<ClusterAuth> {
     constructor() {
         super("elephant.index.ClusterAuth", [
-            { no: 1, name: "iam", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+            { no: 1, name: "iam", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 2, name: "username", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<ClusterAuth>): ClusterAuth {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.iam = false;
+        message.username = "";
         if (value !== undefined)
             reflectionMergePartial<ClusterAuth>(this, message, value);
         return message;
@@ -1433,6 +1497,9 @@ class ClusterAuth$Type extends MessageType<ClusterAuth> {
             switch (fieldNo) {
                 case /* bool iam */ 1:
                     message.iam = reader.bool();
+                    break;
+                case /* string username */ 2:
+                    message.username = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -1449,6 +1516,9 @@ class ClusterAuth$Type extends MessageType<ClusterAuth> {
         /* bool iam = 1; */
         if (message.iam !== false)
             writer.tag(1, WireType.Varint).bool(message.iam);
+        /* string username = 2; */
+        if (message.username !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.username);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

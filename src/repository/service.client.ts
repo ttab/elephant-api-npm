@@ -32,6 +32,10 @@ import type { GetStatusesRequest } from "./service";
 import type { UpdateStatusResponse } from "./service";
 import type { UpdateStatusRequest } from "./service";
 import { Schemas } from "./service";
+import type { GetTypeConfigurationResponse } from "./service";
+import type { GetTypeConfigurationRequest } from "./service";
+import type { ConfigureTypeResponse } from "./service";
+import type { ConfigureTypeRequest } from "./service";
 import type { GetDocumentTypesResponse } from "./service";
 import type { GetDocumentTypesRequest } from "./service";
 import type { GetMetaTypesResponse } from "./service";
@@ -57,6 +61,10 @@ import type { RegisterSchemaRequest } from "./service";
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { Documents } from "./service";
+import type { GetSocketTokenResponse } from "./service";
+import type { GetSocketTokenRequest } from "./service";
+import type { GetMatchingResponse } from "./service";
+import type { GetMatchingRequest } from "./service";
 import type { GetAttachmentsResponse } from "./service";
 import type { GetAttachmentsRequest } from "./service";
 import type { CreateUploadResponse } from "./service";
@@ -270,6 +278,18 @@ export interface IDocumentsClient {
      * @generated from protobuf rpc: GetAttachments
      */
     getAttachments(input: GetAttachmentsRequest, options?: RpcOptions): UnaryCall<GetAttachmentsRequest, GetAttachmentsResponse>;
+    /**
+     * GetMatching returns documents matching the given criteria.
+     *
+     * @generated from protobuf rpc: GetMatching
+     */
+    getMatching(input: GetMatchingRequest, options?: RpcOptions): UnaryCall<GetMatchingRequest, GetMatchingResponse>;
+    /**
+     * GetSocketToken returns a token that can be used to open socket connections.
+     *
+     * @generated from protobuf rpc: GetSocketToken
+     */
+    getSocketToken(input: GetSocketTokenRequest, options?: RpcOptions): UnaryCall<GetSocketTokenRequest, GetSocketTokenResponse>;
 }
 /**
  * @generated from protobuf service elephant.repository.Documents
@@ -512,6 +532,24 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
         const method = this.methods[24], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetAttachmentsRequest, GetAttachmentsResponse>("unary", this._transport, method, opt, input);
     }
+    /**
+     * GetMatching returns documents matching the given criteria.
+     *
+     * @generated from protobuf rpc: GetMatching
+     */
+    getMatching(input: GetMatchingRequest, options?: RpcOptions): UnaryCall<GetMatchingRequest, GetMatchingResponse> {
+        const method = this.methods[25], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetMatchingRequest, GetMatchingResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * GetSocketToken returns a token that can be used to open socket connections.
+     *
+     * @generated from protobuf rpc: GetSocketToken
+     */
+    getSocketToken(input: GetSocketTokenRequest, options?: RpcOptions): UnaryCall<GetSocketTokenRequest, GetSocketTokenResponse> {
+        const method = this.methods[26], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetSocketTokenRequest, GetSocketTokenResponse>("unary", this._transport, method, opt, input);
+    }
 }
 /**
  * @generated from protobuf service elephant.repository.Schemas
@@ -583,6 +621,18 @@ export interface ISchemasClient {
      * @generated from protobuf rpc: GetDocumentTypes
      */
     getDocumentTypes(input: GetDocumentTypesRequest, options?: RpcOptions): UnaryCall<GetDocumentTypesRequest, GetDocumentTypesResponse>;
+    /**
+     * ConfigureType configures a document type.
+     *
+     * @generated from protobuf rpc: ConfigureType
+     */
+    configureType(input: ConfigureTypeRequest, options?: RpcOptions): UnaryCall<ConfigureTypeRequest, ConfigureTypeResponse>;
+    /**
+     * GetTypeConfiguration returns the current configuration for a type.
+     *
+     * @generated from protobuf rpc: GetTypeConfiguration
+     */
+    getTypeConfiguration(input: GetTypeConfigurationRequest, options?: RpcOptions): UnaryCall<GetTypeConfigurationRequest, GetTypeConfigurationResponse>;
 }
 /**
  * @generated from protobuf service elephant.repository.Schemas
@@ -691,6 +741,24 @@ export class SchemasClient implements ISchemasClient, ServiceInfo {
     getDocumentTypes(input: GetDocumentTypesRequest, options?: RpcOptions): UnaryCall<GetDocumentTypesRequest, GetDocumentTypesResponse> {
         const method = this.methods[10], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetDocumentTypesRequest, GetDocumentTypesResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * ConfigureType configures a document type.
+     *
+     * @generated from protobuf rpc: ConfigureType
+     */
+    configureType(input: ConfigureTypeRequest, options?: RpcOptions): UnaryCall<ConfigureTypeRequest, ConfigureTypeResponse> {
+        const method = this.methods[11], opt = this._transport.mergeOptions(options);
+        return stackIntercept<ConfigureTypeRequest, ConfigureTypeResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * GetTypeConfiguration returns the current configuration for a type.
+     *
+     * @generated from protobuf rpc: GetTypeConfiguration
+     */
+    getTypeConfiguration(input: GetTypeConfigurationRequest, options?: RpcOptions): UnaryCall<GetTypeConfigurationRequest, GetTypeConfigurationResponse> {
+        const method = this.methods[12], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetTypeConfigurationRequest, GetTypeConfigurationResponse>("unary", this._transport, method, opt, input);
     }
 }
 /**
