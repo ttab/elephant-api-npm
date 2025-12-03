@@ -10,6 +10,11 @@
       "import": "./dist/repository/index.js",
       "require": "./dist/repository/index.cjs"
     },
+    "./repositorysocket": {
+      "types": "./dist/repositorysocket/index.d.ts",
+      "import": "./dist/repositorysocket/index.js",
+      "require": "./dist/repositorysocket/index.cjs"
+    },
     "./newsdoc": {
       "types": "./dist/newsdoc/newsdoc.d.ts",
       "import": "./dist/newsdoc/newsdoc.js",
@@ -47,12 +52,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:repository": "tsdown ./src/repository/index.ts --format cjs,esm --dts --outDir ./dist/repository",
+    "build:repositorysocket": "tsdown ./src/repositorysocket/index.ts --format cjs,esm --dts --outDir ./dist/repositorysocket",
     "build:newsdoc": "tsdown ./src/newsdoc/newsdoc.ts --format cjs,esm --dts --outDir ./dist/newsdoc",
     "build:index": "tsdown ./src/index/index.ts --format cjs,esm --dts --outDir ./dist/index",
     "build:spell": "tsdown ./src/spell/index.ts --format cjs,esm --dts --outDir ./dist/spell",
     "build:user": "tsdown ./src/user/index.ts --format cjs,esm --dts --outDir ./dist/user",
     "build:replicant": "tsdown ./src/replicant/index.ts --format cjs,esm --dts --outDir ./dist/replicant",
-    "build": "npm run build:repository && npm run build:newsdoc && npm run build:index && npm run build:spell && npm run build:user && npm run build:replicant",
+    "build": "npm run build:repository && npm run build:repositorysocket && npm run build:newsdoc && npm run build:index && npm run build:spell && npm run build:user && npm run build:replicant",
     "update": "bash .github/workflows/update.sh",
     "prepublish": "npm run build"
   },

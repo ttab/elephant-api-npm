@@ -327,7 +327,7 @@ export interface EventlogItem {
     id: bigint;
     /**
      * Event type, one of: "document", "status", "acl", "delete_document",
-     * "restore_finished".
+     * "restore_finished", "workflow".
      *
      * @generated from protobuf field: string event = 2
      */
@@ -446,12 +446,38 @@ export interface EventlogItem {
      */
     deleteRecordId: bigint;
     /**
-     * DocumentNonce is the unique nonce for this document. If the document is deleted and
-     * recreated with the same ID it will still have a unique nonce.
+     * DocumentNonce is the unique nonce for this document. If the document is
+     * deleted and recreated with the same ID it will still have a unique nonce.
      *
      * @generated from protobuf field: string document_nonce = 21
      */
     documentNonce: string;
+    /**
+     * Timespans are the timespans that were extracted from the last document
+     * update and from the assignment if this document is a deliverable.
+     *
+     * @generated from protobuf field: repeated elephant.repository.Timespan timespans = 22
+     */
+    timespans: Timespan[];
+    /**
+     * Labels are the labels that were extracted from the last document update.
+     *
+     * @generated from protobuf field: repeated string labels = 23
+     */
+    labels: string[];
+}
+/**
+ * @generated from protobuf message elephant.repository.Timespan
+ */
+export interface Timespan {
+    /**
+     * @generated from protobuf field: string from = 1
+     */
+    from: string;
+    /**
+     * @generated from protobuf field: string to = 2
+     */
+    to: string;
 }
 /**
  * @generated from protobuf message elephant.repository.GetStatusRulesRequest
@@ -1551,6 +1577,12 @@ export interface DocumentMeta {
      * @generated from protobuf field: string nonce = 14
      */
     nonce: string;
+    /**
+     * Type is the type of the document.
+     *
+     * @generated from protobuf field: string type = 15
+     */
+    type: string;
 }
 /**
  * @generated from protobuf message elephant.repository.AttachmentRef
@@ -2435,6 +2467,277 @@ export interface AttachmentDetails {
     contentType: string;
 }
 /**
+ * @generated from protobuf message elephant.repository.ConfigureTypeRequest
+ */
+export interface ConfigureTypeRequest {
+    /**
+     * Type to configure.
+     *
+     * @generated from protobuf field: string type = 1
+     */
+    type: string;
+    /**
+     * Configuration for the type.
+     *
+     * @generated from protobuf field: elephant.repository.TypeConfiguration configuration = 2
+     */
+    configuration?: TypeConfiguration;
+}
+/**
+ * @generated from protobuf message elephant.repository.TypeConfiguration
+ */
+export interface TypeConfiguration {
+    /**
+     * Set to true if this is a collection of documents that are bounded (limited
+     * in size). Bounded collections can be fetched by type and language in one
+     * go.
+     *
+     * @generated from protobuf field: bool bounded_collection = 1
+     */
+    boundedCollection: boolean;
+    /**
+     * TimeExpressions are used for extracting time ranges from documents.
+     *
+     * @generated from protobuf field: repeated elephant.repository.TypeTimeExpression time_expressions = 2
+     */
+    timeExpressions: TypeTimeExpression[];
+    /**
+     * LabelExpressions are used to extract labels from documents.
+     *
+     * @generated from protobuf field: repeated elephant.repository.LabelExpression label_expressions = 3
+     */
+    labelExpressions: LabelExpression[];
+}
+/**
+ * @generated from protobuf message elephant.repository.TypeTimeExpression
+ */
+export interface TypeTimeExpression {
+    /**
+     * Expression is a newsdoc value extraction expression.
+     *
+     * @generated from protobuf field: string expression = 1
+     */
+    expression: string;
+    /**
+     * Layout is the time/date format to use when parsing. Optional, defaults to
+     * RFC3339 or ISO 8601 for values annotated as dates.
+     *
+     * @generated from protobuf field: string layout = 2
+     */
+    layout: string;
+    /**
+     * Timezone is the timezone the time should be parsed in. Optional, most
+     * timestamps should include timezone information, if they don't, parsing will
+     * fall back to the default timezone that the repository has been configured
+     * with.
+     *
+     * @generated from protobuf field: string timezone = 3
+     */
+    timezone: string;
+}
+/**
+ * @generated from protobuf message elephant.repository.LabelExpression
+ */
+export interface LabelExpression {
+    /**
+     * Expression is a newsdoc value extraction expression.
+     *
+     * @generated from protobuf field: string expression = 1
+     */
+    expression: string;
+    /**
+     * Template is the template that turns the extracted values into a label.
+     *
+     * @generated from protobuf field: string template = 2
+     */
+    template: string;
+}
+/**
+ * @generated from protobuf message elephant.repository.ConfigureTypeResponse
+ */
+export interface ConfigureTypeResponse {
+}
+/**
+ * @generated from protobuf message elephant.repository.GetTypeConfigurationRequest
+ */
+export interface GetTypeConfigurationRequest {
+    /**
+     * Type to get configuration for.
+     *
+     * @generated from protobuf field: string type = 1
+     */
+    type: string;
+}
+/**
+ * @generated from protobuf message elephant.repository.GetTypeConfigurationResponse
+ */
+export interface GetTypeConfigurationResponse {
+    /**
+     * Configuration of the type.
+     *
+     * @generated from protobuf field: elephant.repository.TypeConfiguration configuration = 1
+     */
+    configuration?: TypeConfiguration;
+}
+/**
+ * @generated from protobuf message elephant.repository.GetMatchingRequest
+ */
+export interface GetMatchingRequest {
+    /**
+     * Type of the documents to get.
+     *
+     * @generated from protobuf field: string type = 1
+     */
+    type: string;
+    /**
+     * Timespan is the inclusive time range to get documents for. Optional, this
+     * is only available for document types with time expressions and/or
+     * deliverables.
+     *
+     * @generated from protobuf field: elephant.repository.Timespan timespan = 2
+     */
+    timespan?: Timespan;
+    /**
+     * Labels is a list of labels that the document must have to be included.
+     *
+     * @generated from protobuf field: repeated string labels = 3
+     */
+    labels: string[];
+    /**
+     * Filter to apply to the documents.
+     *
+     * @generated from protobuf field: elephant.repository.DocumentFilter filter = 4
+     */
+    filter?: DocumentFilter;
+    /**
+     * IncludeDocuments should be set to true to get the document for each match.
+     *
+     * @generated from protobuf field: bool include_documents = 5
+     */
+    includeDocuments: boolean;
+    /**
+     * IncludeMeta should be set to true to include document meta.
+     *
+     * @generated from protobuf field: bool include_meta = 6
+     */
+    includeMeta: boolean;
+    /**
+     * Include will include documents with an UUID that matches the uuid of the
+     * newdoc extraction expression. Timespans, labels and filters will not be
+     * applied to included documents.
+     *
+     * @generated from protobuf field: repeated string include = 7
+     */
+    include: string[];
+}
+/**
+ * @generated from protobuf message elephant.repository.GetMatchingResponse
+ */
+export interface GetMatchingResponse {
+    /**
+     * @generated from protobuf field: repeated elephant.repository.DocumentMatch matches = 1
+     */
+    matches: DocumentMatch[];
+}
+/**
+ * @generated from protobuf message elephant.repository.DocumentMatch
+ */
+export interface DocumentMatch {
+    /**
+     * UUID of the document.
+     *
+     * @generated from protobuf field: string uuid = 1
+     */
+    uuid: string;
+    /**
+     * Version of the document.
+     *
+     * @generated from protobuf field: int64 version = 2
+     */
+    version: bigint;
+    /**
+     * Document for the match.
+     *
+     * @generated from protobuf field: newsdoc.Document document = 3
+     */
+    document?: Document;
+    /**
+     * Meta information for the match.
+     *
+     * @generated from protobuf field: elephant.repository.DocumentMeta meta = 4
+     */
+    meta?: DocumentMeta;
+}
+/**
+ * @generated from protobuf message elephant.repository.DocumentFilter
+ */
+export interface DocumentFilter {
+    /**
+     * Expression used to extract values from the document.
+     *
+     * @generated from protobuf field: string expression = 1
+     */
+    expression: string;
+    /**
+     * Operator to use when comparing the provided values to the extracted values.
+     *
+     * @generated from protobuf field: elephant.repository.FilterOperator operator = 2
+     */
+    operator: FilterOperator;
+    /**
+     * Values to compare to the extracted values.
+     *
+     * @generated from protobuf field: repeated elephant.repository.FilterValues values = 3
+     */
+    values: FilterValues[];
+    /**
+     * And filters that all must be true.
+     *
+     * @generated from protobuf field: repeated elephant.repository.DocumentFilter and = 4
+     */
+    and: DocumentFilter[];
+    /**
+     * Or filters of which at least one must be true.
+     *
+     * @generated from protobuf field: repeated elephant.repository.DocumentFilter or = 5
+     */
+    or: DocumentFilter[];
+}
+/**
+ * @generated from protobuf message elephant.repository.FilterValues
+ */
+export interface FilterValues {
+    /**
+     * @generated from protobuf field: map<string, string> values = 1
+     */
+    values: {
+        [key: string]: string;
+    };
+}
+/**
+ * @generated from protobuf message elephant.repository.GetSocketTokenRequest
+ */
+export interface GetSocketTokenRequest {
+}
+/**
+ * @generated from protobuf message elephant.repository.GetSocketTokenResponse
+ */
+export interface GetSocketTokenResponse {
+    /**
+     * Token that is unique for the calling user that can be used to open
+     * websocket API connections.
+     *
+     * @generated from protobuf field: string token = 1
+     */
+    token: string;
+    /**
+     * Expires is the expiry time of the token as a RFC3339 timestamp.
+     *
+     * @generated from protobuf field: string expires = 2
+     */
+    expires: string;
+}
+/**
  * @generated from protobuf enum elephant.repository.GetMetaDoc
  */
 export enum GetMetaDoc {
@@ -2467,6 +2770,27 @@ export enum MetricAggregation {
      * @generated from protobuf enum value: INCREMENT = 2;
      */
     INCREMENT = 2
+}
+/**
+ * @generated from protobuf enum elephant.repository.FilterOperator
+ */
+export enum FilterOperator {
+    /**
+     * @generated from protobuf enum value: FILTER_OP_UNKNOWN = 0;
+     */
+    FILTER_OP_UNKNOWN = 0,
+    /**
+     * @generated from protobuf enum value: FILTER_OP_ANY = 1;
+     */
+    FILTER_OP_ANY = 1,
+    /**
+     * @generated from protobuf enum value: FILTER_OP_ALL = 2;
+     */
+    FILTER_OP_ALL = 2,
+    /**
+     * @generated from protobuf enum value: FILTER_OP_NONE = 3;
+     */
+    FILTER_OP_NONE = 3
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class GetStatusRequest$Type extends MessageType<GetStatusRequest> {
@@ -3420,7 +3744,9 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
             { no: 18, name: "attached_objects", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 19, name: "detached_objects", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
             { no: 20, name: "delete_record_id", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
-            { no: 21, name: "document_nonce", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 21, name: "document_nonce", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 22, name: "timespans", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Timespan },
+            { no: 23, name: "labels", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<EventlogItem>): EventlogItem {
@@ -3446,6 +3772,8 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
         message.detachedObjects = [];
         message.deleteRecordId = 0n;
         message.documentNonce = "";
+        message.timespans = [];
+        message.labels = [];
         if (value !== undefined)
             reflectionMergePartial<EventlogItem>(this, message, value);
         return message;
@@ -3517,6 +3845,12 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
                     break;
                 case /* string document_nonce */ 21:
                     message.documentNonce = reader.string();
+                    break;
+                case /* repeated elephant.repository.Timespan timespans */ 22:
+                    message.timespans.push(Timespan.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* repeated string labels */ 23:
+                    message.labels.push(reader.string());
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -3593,6 +3927,12 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
         /* string document_nonce = 21; */
         if (message.documentNonce !== "")
             writer.tag(21, WireType.LengthDelimited).string(message.documentNonce);
+        /* repeated elephant.repository.Timespan timespans = 22; */
+        for (let i = 0; i < message.timespans.length; i++)
+            Timespan.internalBinaryWrite(message.timespans[i], writer.tag(22, WireType.LengthDelimited).fork(), options).join();
+        /* repeated string labels = 23; */
+        for (let i = 0; i < message.labels.length; i++)
+            writer.tag(23, WireType.LengthDelimited).string(message.labels[i]);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3603,6 +3943,61 @@ class EventlogItem$Type extends MessageType<EventlogItem> {
  * @generated MessageType for protobuf message elephant.repository.EventlogItem
  */
 export const EventlogItem = new EventlogItem$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class Timespan$Type extends MessageType<Timespan> {
+    constructor() {
+        super("elephant.repository.Timespan", [
+            { no: 1, name: "from", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "to", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<Timespan>): Timespan {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.from = "";
+        message.to = "";
+        if (value !== undefined)
+            reflectionMergePartial<Timespan>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Timespan): Timespan {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string from */ 1:
+                    message.from = reader.string();
+                    break;
+                case /* string to */ 2:
+                    message.to = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: Timespan, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string from = 1; */
+        if (message.from !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.from);
+        /* string to = 2; */
+        if (message.to !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.to);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.Timespan
+ */
+export const Timespan = new Timespan$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class GetStatusRulesRequest$Type extends MessageType<GetStatusRulesRequest> {
     constructor() {
@@ -6757,7 +7152,8 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
             { no: 11, name: "creator_uri", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 12, name: "updater_uri", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 13, name: "attachments", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => AttachmentRef },
-            { no: 14, name: "nonce", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 14, name: "nonce", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 15, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<DocumentMeta>): DocumentMeta {
@@ -6775,6 +7171,7 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
         message.updaterUri = "";
         message.attachments = [];
         message.nonce = "";
+        message.type = "";
         if (value !== undefined)
             reflectionMergePartial<DocumentMeta>(this, message, value);
         return message;
@@ -6825,6 +7222,9 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
                     break;
                 case /* string nonce */ 14:
                     message.nonce = reader.string();
+                    break;
+                case /* string type */ 15:
+                    message.type = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -6900,6 +7300,9 @@ class DocumentMeta$Type extends MessageType<DocumentMeta> {
         /* string nonce = 14; */
         if (message.nonce !== "")
             writer.tag(14, WireType.LengthDelimited).string(message.nonce);
+        /* string type = 15; */
+        if (message.type !== "")
+            writer.tag(15, WireType.LengthDelimited).string(message.type);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -10040,6 +10443,816 @@ class AttachmentDetails$Type extends MessageType<AttachmentDetails> {
  * @generated MessageType for protobuf message elephant.repository.AttachmentDetails
  */
 export const AttachmentDetails = new AttachmentDetails$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ConfigureTypeRequest$Type extends MessageType<ConfigureTypeRequest> {
+    constructor() {
+        super("elephant.repository.ConfigureTypeRequest", [
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "configuration", kind: "message", T: () => TypeConfiguration }
+        ]);
+    }
+    create(value?: PartialMessage<ConfigureTypeRequest>): ConfigureTypeRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.type = "";
+        if (value !== undefined)
+            reflectionMergePartial<ConfigureTypeRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ConfigureTypeRequest): ConfigureTypeRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string type */ 1:
+                    message.type = reader.string();
+                    break;
+                case /* elephant.repository.TypeConfiguration configuration */ 2:
+                    message.configuration = TypeConfiguration.internalBinaryRead(reader, reader.uint32(), options, message.configuration);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ConfigureTypeRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string type = 1; */
+        if (message.type !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.type);
+        /* elephant.repository.TypeConfiguration configuration = 2; */
+        if (message.configuration)
+            TypeConfiguration.internalBinaryWrite(message.configuration, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.ConfigureTypeRequest
+ */
+export const ConfigureTypeRequest = new ConfigureTypeRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TypeConfiguration$Type extends MessageType<TypeConfiguration> {
+    constructor() {
+        super("elephant.repository.TypeConfiguration", [
+            { no: 1, name: "bounded_collection", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 2, name: "time_expressions", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => TypeTimeExpression },
+            { no: 3, name: "label_expressions", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => LabelExpression }
+        ]);
+    }
+    create(value?: PartialMessage<TypeConfiguration>): TypeConfiguration {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.boundedCollection = false;
+        message.timeExpressions = [];
+        message.labelExpressions = [];
+        if (value !== undefined)
+            reflectionMergePartial<TypeConfiguration>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TypeConfiguration): TypeConfiguration {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* bool bounded_collection */ 1:
+                    message.boundedCollection = reader.bool();
+                    break;
+                case /* repeated elephant.repository.TypeTimeExpression time_expressions */ 2:
+                    message.timeExpressions.push(TypeTimeExpression.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* repeated elephant.repository.LabelExpression label_expressions */ 3:
+                    message.labelExpressions.push(LabelExpression.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: TypeConfiguration, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* bool bounded_collection = 1; */
+        if (message.boundedCollection !== false)
+            writer.tag(1, WireType.Varint).bool(message.boundedCollection);
+        /* repeated elephant.repository.TypeTimeExpression time_expressions = 2; */
+        for (let i = 0; i < message.timeExpressions.length; i++)
+            TypeTimeExpression.internalBinaryWrite(message.timeExpressions[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* repeated elephant.repository.LabelExpression label_expressions = 3; */
+        for (let i = 0; i < message.labelExpressions.length; i++)
+            LabelExpression.internalBinaryWrite(message.labelExpressions[i], writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.TypeConfiguration
+ */
+export const TypeConfiguration = new TypeConfiguration$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TypeTimeExpression$Type extends MessageType<TypeTimeExpression> {
+    constructor() {
+        super("elephant.repository.TypeTimeExpression", [
+            { no: 1, name: "expression", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "layout", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "timezone", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<TypeTimeExpression>): TypeTimeExpression {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.expression = "";
+        message.layout = "";
+        message.timezone = "";
+        if (value !== undefined)
+            reflectionMergePartial<TypeTimeExpression>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TypeTimeExpression): TypeTimeExpression {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string expression */ 1:
+                    message.expression = reader.string();
+                    break;
+                case /* string layout */ 2:
+                    message.layout = reader.string();
+                    break;
+                case /* string timezone */ 3:
+                    message.timezone = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: TypeTimeExpression, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string expression = 1; */
+        if (message.expression !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.expression);
+        /* string layout = 2; */
+        if (message.layout !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.layout);
+        /* string timezone = 3; */
+        if (message.timezone !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.timezone);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.TypeTimeExpression
+ */
+export const TypeTimeExpression = new TypeTimeExpression$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class LabelExpression$Type extends MessageType<LabelExpression> {
+    constructor() {
+        super("elephant.repository.LabelExpression", [
+            { no: 1, name: "expression", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "template", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<LabelExpression>): LabelExpression {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.expression = "";
+        message.template = "";
+        if (value !== undefined)
+            reflectionMergePartial<LabelExpression>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: LabelExpression): LabelExpression {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string expression */ 1:
+                    message.expression = reader.string();
+                    break;
+                case /* string template */ 2:
+                    message.template = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: LabelExpression, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string expression = 1; */
+        if (message.expression !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.expression);
+        /* string template = 2; */
+        if (message.template !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.template);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.LabelExpression
+ */
+export const LabelExpression = new LabelExpression$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ConfigureTypeResponse$Type extends MessageType<ConfigureTypeResponse> {
+    constructor() {
+        super("elephant.repository.ConfigureTypeResponse", []);
+    }
+    create(value?: PartialMessage<ConfigureTypeResponse>): ConfigureTypeResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<ConfigureTypeResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ConfigureTypeResponse): ConfigureTypeResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ConfigureTypeResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.ConfigureTypeResponse
+ */
+export const ConfigureTypeResponse = new ConfigureTypeResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetTypeConfigurationRequest$Type extends MessageType<GetTypeConfigurationRequest> {
+    constructor() {
+        super("elephant.repository.GetTypeConfigurationRequest", [
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetTypeConfigurationRequest>): GetTypeConfigurationRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.type = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetTypeConfigurationRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetTypeConfigurationRequest): GetTypeConfigurationRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string type */ 1:
+                    message.type = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetTypeConfigurationRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string type = 1; */
+        if (message.type !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.type);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetTypeConfigurationRequest
+ */
+export const GetTypeConfigurationRequest = new GetTypeConfigurationRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetTypeConfigurationResponse$Type extends MessageType<GetTypeConfigurationResponse> {
+    constructor() {
+        super("elephant.repository.GetTypeConfigurationResponse", [
+            { no: 1, name: "configuration", kind: "message", T: () => TypeConfiguration }
+        ]);
+    }
+    create(value?: PartialMessage<GetTypeConfigurationResponse>): GetTypeConfigurationResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<GetTypeConfigurationResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetTypeConfigurationResponse): GetTypeConfigurationResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* elephant.repository.TypeConfiguration configuration */ 1:
+                    message.configuration = TypeConfiguration.internalBinaryRead(reader, reader.uint32(), options, message.configuration);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetTypeConfigurationResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* elephant.repository.TypeConfiguration configuration = 1; */
+        if (message.configuration)
+            TypeConfiguration.internalBinaryWrite(message.configuration, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetTypeConfigurationResponse
+ */
+export const GetTypeConfigurationResponse = new GetTypeConfigurationResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetMatchingRequest$Type extends MessageType<GetMatchingRequest> {
+    constructor() {
+        super("elephant.repository.GetMatchingRequest", [
+            { no: 1, name: "type", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "timespan", kind: "message", T: () => Timespan },
+            { no: 3, name: "labels", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "filter", kind: "message", T: () => DocumentFilter },
+            { no: 5, name: "include_documents", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 6, name: "include_meta", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 7, name: "include", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetMatchingRequest>): GetMatchingRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.type = "";
+        message.labels = [];
+        message.includeDocuments = false;
+        message.includeMeta = false;
+        message.include = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetMatchingRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetMatchingRequest): GetMatchingRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string type */ 1:
+                    message.type = reader.string();
+                    break;
+                case /* elephant.repository.Timespan timespan */ 2:
+                    message.timespan = Timespan.internalBinaryRead(reader, reader.uint32(), options, message.timespan);
+                    break;
+                case /* repeated string labels */ 3:
+                    message.labels.push(reader.string());
+                    break;
+                case /* elephant.repository.DocumentFilter filter */ 4:
+                    message.filter = DocumentFilter.internalBinaryRead(reader, reader.uint32(), options, message.filter);
+                    break;
+                case /* bool include_documents */ 5:
+                    message.includeDocuments = reader.bool();
+                    break;
+                case /* bool include_meta */ 6:
+                    message.includeMeta = reader.bool();
+                    break;
+                case /* repeated string include */ 7:
+                    message.include.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetMatchingRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string type = 1; */
+        if (message.type !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.type);
+        /* elephant.repository.Timespan timespan = 2; */
+        if (message.timespan)
+            Timespan.internalBinaryWrite(message.timespan, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* repeated string labels = 3; */
+        for (let i = 0; i < message.labels.length; i++)
+            writer.tag(3, WireType.LengthDelimited).string(message.labels[i]);
+        /* elephant.repository.DocumentFilter filter = 4; */
+        if (message.filter)
+            DocumentFilter.internalBinaryWrite(message.filter, writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        /* bool include_documents = 5; */
+        if (message.includeDocuments !== false)
+            writer.tag(5, WireType.Varint).bool(message.includeDocuments);
+        /* bool include_meta = 6; */
+        if (message.includeMeta !== false)
+            writer.tag(6, WireType.Varint).bool(message.includeMeta);
+        /* repeated string include = 7; */
+        for (let i = 0; i < message.include.length; i++)
+            writer.tag(7, WireType.LengthDelimited).string(message.include[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetMatchingRequest
+ */
+export const GetMatchingRequest = new GetMatchingRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetMatchingResponse$Type extends MessageType<GetMatchingResponse> {
+    constructor() {
+        super("elephant.repository.GetMatchingResponse", [
+            { no: 1, name: "matches", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => DocumentMatch }
+        ]);
+    }
+    create(value?: PartialMessage<GetMatchingResponse>): GetMatchingResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.matches = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetMatchingResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetMatchingResponse): GetMatchingResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.repository.DocumentMatch matches */ 1:
+                    message.matches.push(DocumentMatch.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetMatchingResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.repository.DocumentMatch matches = 1; */
+        for (let i = 0; i < message.matches.length; i++)
+            DocumentMatch.internalBinaryWrite(message.matches[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetMatchingResponse
+ */
+export const GetMatchingResponse = new GetMatchingResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DocumentMatch$Type extends MessageType<DocumentMatch> {
+    constructor() {
+        super("elephant.repository.DocumentMatch", [
+            { no: 1, name: "uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "version", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ },
+            { no: 3, name: "document", kind: "message", T: () => Document },
+            { no: 4, name: "meta", kind: "message", T: () => DocumentMeta }
+        ]);
+    }
+    create(value?: PartialMessage<DocumentMatch>): DocumentMatch {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.uuid = "";
+        message.version = 0n;
+        if (value !== undefined)
+            reflectionMergePartial<DocumentMatch>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DocumentMatch): DocumentMatch {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string uuid */ 1:
+                    message.uuid = reader.string();
+                    break;
+                case /* int64 version */ 2:
+                    message.version = reader.int64().toBigInt();
+                    break;
+                case /* newsdoc.Document document */ 3:
+                    message.document = Document.internalBinaryRead(reader, reader.uint32(), options, message.document);
+                    break;
+                case /* elephant.repository.DocumentMeta meta */ 4:
+                    message.meta = DocumentMeta.internalBinaryRead(reader, reader.uint32(), options, message.meta);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DocumentMatch, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string uuid = 1; */
+        if (message.uuid !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.uuid);
+        /* int64 version = 2; */
+        if (message.version !== 0n)
+            writer.tag(2, WireType.Varint).int64(message.version);
+        /* newsdoc.Document document = 3; */
+        if (message.document)
+            Document.internalBinaryWrite(message.document, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        /* elephant.repository.DocumentMeta meta = 4; */
+        if (message.meta)
+            DocumentMeta.internalBinaryWrite(message.meta, writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.DocumentMatch
+ */
+export const DocumentMatch = new DocumentMatch$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DocumentFilter$Type extends MessageType<DocumentFilter> {
+    constructor() {
+        super("elephant.repository.DocumentFilter", [
+            { no: 1, name: "expression", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "operator", kind: "enum", T: () => ["elephant.repository.FilterOperator", FilterOperator] },
+            { no: 3, name: "values", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => FilterValues },
+            { no: 4, name: "and", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => DocumentFilter },
+            { no: 5, name: "or", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => DocumentFilter }
+        ]);
+    }
+    create(value?: PartialMessage<DocumentFilter>): DocumentFilter {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.expression = "";
+        message.operator = 0;
+        message.values = [];
+        message.and = [];
+        message.or = [];
+        if (value !== undefined)
+            reflectionMergePartial<DocumentFilter>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DocumentFilter): DocumentFilter {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string expression */ 1:
+                    message.expression = reader.string();
+                    break;
+                case /* elephant.repository.FilterOperator operator */ 2:
+                    message.operator = reader.int32();
+                    break;
+                case /* repeated elephant.repository.FilterValues values */ 3:
+                    message.values.push(FilterValues.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* repeated elephant.repository.DocumentFilter and */ 4:
+                    message.and.push(DocumentFilter.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* repeated elephant.repository.DocumentFilter or */ 5:
+                    message.or.push(DocumentFilter.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DocumentFilter, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string expression = 1; */
+        if (message.expression !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.expression);
+        /* elephant.repository.FilterOperator operator = 2; */
+        if (message.operator !== 0)
+            writer.tag(2, WireType.Varint).int32(message.operator);
+        /* repeated elephant.repository.FilterValues values = 3; */
+        for (let i = 0; i < message.values.length; i++)
+            FilterValues.internalBinaryWrite(message.values[i], writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        /* repeated elephant.repository.DocumentFilter and = 4; */
+        for (let i = 0; i < message.and.length; i++)
+            DocumentFilter.internalBinaryWrite(message.and[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        /* repeated elephant.repository.DocumentFilter or = 5; */
+        for (let i = 0; i < message.or.length; i++)
+            DocumentFilter.internalBinaryWrite(message.or[i], writer.tag(5, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.DocumentFilter
+ */
+export const DocumentFilter = new DocumentFilter$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FilterValues$Type extends MessageType<FilterValues> {
+    constructor() {
+        super("elephant.repository.FilterValues", [
+            { no: 1, name: "values", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
+        ]);
+    }
+    create(value?: PartialMessage<FilterValues>): FilterValues {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.values = {};
+        if (value !== undefined)
+            reflectionMergePartial<FilterValues>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FilterValues): FilterValues {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* map<string, string> values */ 1:
+                    this.binaryReadMap1(message.values, reader, options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap1(map: FilterValues["values"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof FilterValues["values"] | undefined, val: FilterValues["values"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.string();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for elephant.repository.FilterValues.values");
+            }
+        }
+        map[key ?? ""] = val ?? "";
+    }
+    internalBinaryWrite(message: FilterValues, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* map<string, string> values = 1; */
+        for (let k of globalThis.Object.keys(message.values))
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.values[k]).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.FilterValues
+ */
+export const FilterValues = new FilterValues$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetSocketTokenRequest$Type extends MessageType<GetSocketTokenRequest> {
+    constructor() {
+        super("elephant.repository.GetSocketTokenRequest", []);
+    }
+    create(value?: PartialMessage<GetSocketTokenRequest>): GetSocketTokenRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<GetSocketTokenRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetSocketTokenRequest): GetSocketTokenRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetSocketTokenRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetSocketTokenRequest
+ */
+export const GetSocketTokenRequest = new GetSocketTokenRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetSocketTokenResponse$Type extends MessageType<GetSocketTokenResponse> {
+    constructor() {
+        super("elephant.repository.GetSocketTokenResponse", [
+            { no: 1, name: "token", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "expires", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetSocketTokenResponse>): GetSocketTokenResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.token = "";
+        message.expires = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetSocketTokenResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetSocketTokenResponse): GetSocketTokenResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string token */ 1:
+                    message.token = reader.string();
+                    break;
+                case /* string expires */ 2:
+                    message.expires = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetSocketTokenResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string token = 1; */
+        if (message.token !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.token);
+        /* string expires = 2; */
+        if (message.expires !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.expires);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.GetSocketTokenResponse
+ */
+export const GetSocketTokenResponse = new GetSocketTokenResponse$Type();
 /**
  * @generated ServiceType for protobuf service elephant.repository.Documents
  */
@@ -10068,7 +11281,9 @@ export const Documents = new ServiceType("elephant.repository.Documents", [
     { name: "GetWithheld", options: {}, I: GetWithheldRequest, O: GetWithheldResponse },
     { name: "GetDeliverableInfo", options: {}, I: GetDeliverableInfoRequest, O: GetDeliverableInfoResponse },
     { name: "CreateUpload", options: {}, I: CreateUploadRequest, O: CreateUploadResponse },
-    { name: "GetAttachments", options: {}, I: GetAttachmentsRequest, O: GetAttachmentsResponse }
+    { name: "GetAttachments", options: {}, I: GetAttachmentsRequest, O: GetAttachmentsResponse },
+    { name: "GetMatching", options: {}, I: GetMatchingRequest, O: GetMatchingResponse },
+    { name: "GetSocketToken", options: {}, I: GetSocketTokenRequest, O: GetSocketTokenResponse }
 ]);
 /**
  * @generated ServiceType for protobuf service elephant.repository.Schemas
@@ -10084,7 +11299,9 @@ export const Schemas = new ServiceType("elephant.repository.Schemas", [
     { name: "GetDeprecations", options: {}, I: GetDeprecationsRequest, O: GetDeprecationsResponse },
     { name: "UpdateDeprecation", options: {}, I: UpdateDeprecationRequest, O: UpdateDeprecationResponse },
     { name: "GetMetaTypes", options: {}, I: GetMetaTypesRequest, O: GetMetaTypesResponse },
-    { name: "GetDocumentTypes", options: {}, I: GetDocumentTypesRequest, O: GetDocumentTypesResponse }
+    { name: "GetDocumentTypes", options: {}, I: GetDocumentTypesRequest, O: GetDocumentTypesResponse },
+    { name: "ConfigureType", options: {}, I: ConfigureTypeRequest, O: ConfigureTypeResponse },
+    { name: "GetTypeConfiguration", options: {}, I: GetTypeConfigurationRequest, O: GetTypeConfigurationResponse }
 ]);
 /**
  * @generated ServiceType for protobuf service elephant.repository.Workflows
