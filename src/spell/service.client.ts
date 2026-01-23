@@ -19,6 +19,8 @@ import type { SupportedLanguagesRequest } from "./service";
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { Check } from "./service";
+import type { SuggestionsResponse } from "./service";
+import type { SuggestionsRequest } from "./service";
 import { stackIntercept } from "@protobuf-ts/runtime-rpc";
 import type { TextResponse } from "./service";
 import type { TextRequest } from "./service";
@@ -36,6 +38,12 @@ export interface ICheckClient {
      * @generated from protobuf rpc: Text
      */
     text(input: TextRequest, options?: RpcOptions): UnaryCall<TextRequest, TextResponse>;
+    /**
+     * Suggestions returns suggestions for a word or phrase.
+     *
+     * @generated from protobuf rpc: Suggestions
+     */
+    suggestions(input: SuggestionsRequest, options?: RpcOptions): UnaryCall<SuggestionsRequest, SuggestionsResponse>;
 }
 /**
  * Check content for spelling errors.
@@ -56,6 +64,15 @@ export class CheckClient implements ICheckClient, ServiceInfo {
     text(input: TextRequest, options?: RpcOptions): UnaryCall<TextRequest, TextResponse> {
         const method = this.methods[0], opt = this._transport.mergeOptions(options);
         return stackIntercept<TextRequest, TextResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Suggestions returns suggestions for a word or phrase.
+     *
+     * @generated from protobuf rpc: Suggestions
+     */
+    suggestions(input: SuggestionsRequest, options?: RpcOptions): UnaryCall<SuggestionsRequest, SuggestionsResponse> {
+        const method = this.methods[1], opt = this._transport.mergeOptions(options);
+        return stackIntercept<SuggestionsRequest, SuggestionsResponse>("unary", this._transport, method, opt, input);
     }
 }
 /**
