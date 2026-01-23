@@ -56,6 +56,14 @@ export interface TextRequest {
      * @generated from protobuf field: string language = 2
      */
     language: string;
+    /**
+     * Suggestions enables generation of suggestions for misspelled words. In
+     * interactive applications this should normally be done by calling the
+     * Suggestions method on demand.
+     *
+     * @generated from protobuf field: bool suggestions = 3
+     */
+    suggestions: boolean;
 }
 /**
  * @generated from protobuf message elephant.spell.TextResponse
@@ -89,6 +97,40 @@ export interface MisspelledEntry {
      * Suggestions for replacements.
      *
      * @generated from protobuf field: repeated elephant.spell.Suggestion suggestions = 2
+     */
+    suggestions: Suggestion[];
+    /**
+     * Level is the level of the correction.
+     *
+     * @generated from protobuf field: elephant.spell.CorrectionLevel level = 3
+     */
+    level: CorrectionLevel;
+}
+/**
+ * @generated from protobuf message elephant.spell.SuggestionsRequest
+ */
+export interface SuggestionsRequest {
+    /**
+     * Text is the word or phrase to get suggestions for.
+     *
+     * @generated from protobuf field: string text = 1
+     */
+    text: string;
+    /**
+     * Language to get suggestions in.
+     *
+     * @generated from protobuf field: string language = 2
+     */
+    language: string;
+}
+/**
+ * @generated from protobuf message elephant.spell.SuggestionsResponse
+ */
+export interface SuggestionsResponse {
+    /**
+     * Suggestions for replacements.
+     *
+     * @generated from protobuf field: repeated elephant.spell.Suggestion suggestions = 1
      */
     suggestions: Suggestion[];
 }
@@ -178,6 +220,23 @@ export interface CustomEntry {
      * @generated from protobuf field: repeated string common_mistakes = 5
      */
     commonMistakes: string[];
+    /**
+     * Level to use when offering corrections based on this entry. Optional,
+     * defaults to LEVEL_ERROR.
+     *
+     * @generated from protobuf field: elephant.spell.CorrectionLevel level = 6
+     */
+    level: CorrectionLevel;
+    /**
+     * Forms is an alternative to the common mistakes -> text pairing and allows
+     * the mapping of different forms of the word or phrase to specific
+     * replacements.
+     *
+     * @generated from protobuf field: map<string, string> forms = 7
+     */
+    forms: {
+        [key: string]: string;
+    };
 }
 /**
  * @generated from protobuf message elephant.spell.ListDictionariesRequest
@@ -275,6 +334,23 @@ export interface DeleteEntryRequest {
  * @generated from protobuf message elephant.spell.DeleteEntryResponse
  */
 export interface DeleteEntryResponse {
+}
+/**
+ * @generated from protobuf enum elephant.spell.CorrectionLevel
+ */
+export enum CorrectionLevel {
+    /**
+     * @generated from protobuf enum value: LEVEL_UNSPECIFIED = 0;
+     */
+    LEVEL_UNSPECIFIED = 0,
+    /**
+     * @generated from protobuf enum value: LEVEL_ERROR = 1;
+     */
+    LEVEL_ERROR = 1,
+    /**
+     * @generated from protobuf enum value: LEVEL_SUGGESTION = 2;
+     */
+    LEVEL_SUGGESTION = 2
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class SupportedLanguagesRequest$Type extends MessageType<SupportedLanguagesRequest> {
@@ -413,13 +489,15 @@ class TextRequest$Type extends MessageType<TextRequest> {
     constructor() {
         super("elephant.spell.TextRequest", [
             { no: 1, name: "text", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "language", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "language", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "suggestions", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value?: PartialMessage<TextRequest>): TextRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.text = [];
         message.language = "";
+        message.suggestions = false;
         if (value !== undefined)
             reflectionMergePartial<TextRequest>(this, message, value);
         return message;
@@ -434,6 +512,9 @@ class TextRequest$Type extends MessageType<TextRequest> {
                     break;
                 case /* string language */ 2:
                     message.language = reader.string();
+                    break;
+                case /* bool suggestions */ 3:
+                    message.suggestions = reader.bool();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -453,6 +534,9 @@ class TextRequest$Type extends MessageType<TextRequest> {
         /* string language = 2; */
         if (message.language !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.language);
+        /* bool suggestions = 3; */
+        if (message.suggestions !== false)
+            writer.tag(3, WireType.Varint).bool(message.suggestions);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -562,13 +646,15 @@ class MisspelledEntry$Type extends MessageType<MisspelledEntry> {
     constructor() {
         super("elephant.spell.MisspelledEntry", [
             { no: 1, name: "text", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "suggestions", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Suggestion }
+            { no: 2, name: "suggestions", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Suggestion },
+            { no: 3, name: "level", kind: "enum", T: () => ["elephant.spell.CorrectionLevel", CorrectionLevel] }
         ]);
     }
     create(value?: PartialMessage<MisspelledEntry>): MisspelledEntry {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.text = "";
         message.suggestions = [];
+        message.level = 0;
         if (value !== undefined)
             reflectionMergePartial<MisspelledEntry>(this, message, value);
         return message;
@@ -583,6 +669,9 @@ class MisspelledEntry$Type extends MessageType<MisspelledEntry> {
                     break;
                 case /* repeated elephant.spell.Suggestion suggestions */ 2:
                     message.suggestions.push(Suggestion.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* elephant.spell.CorrectionLevel level */ 3:
+                    message.level = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -602,6 +691,9 @@ class MisspelledEntry$Type extends MessageType<MisspelledEntry> {
         /* repeated elephant.spell.Suggestion suggestions = 2; */
         for (let i = 0; i < message.suggestions.length; i++)
             Suggestion.internalBinaryWrite(message.suggestions[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* elephant.spell.CorrectionLevel level = 3; */
+        if (message.level !== 0)
+            writer.tag(3, WireType.Varint).int32(message.level);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -612,6 +704,108 @@ class MisspelledEntry$Type extends MessageType<MisspelledEntry> {
  * @generated MessageType for protobuf message elephant.spell.MisspelledEntry
  */
 export const MisspelledEntry = new MisspelledEntry$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SuggestionsRequest$Type extends MessageType<SuggestionsRequest> {
+    constructor() {
+        super("elephant.spell.SuggestionsRequest", [
+            { no: 1, name: "text", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "language", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<SuggestionsRequest>): SuggestionsRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.text = "";
+        message.language = "";
+        if (value !== undefined)
+            reflectionMergePartial<SuggestionsRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SuggestionsRequest): SuggestionsRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string text */ 1:
+                    message.text = reader.string();
+                    break;
+                case /* string language */ 2:
+                    message.language = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SuggestionsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string text = 1; */
+        if (message.text !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.text);
+        /* string language = 2; */
+        if (message.language !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.language);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.spell.SuggestionsRequest
+ */
+export const SuggestionsRequest = new SuggestionsRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SuggestionsResponse$Type extends MessageType<SuggestionsResponse> {
+    constructor() {
+        super("elephant.spell.SuggestionsResponse", [
+            { no: 1, name: "suggestions", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Suggestion }
+        ]);
+    }
+    create(value?: PartialMessage<SuggestionsResponse>): SuggestionsResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.suggestions = [];
+        if (value !== undefined)
+            reflectionMergePartial<SuggestionsResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SuggestionsResponse): SuggestionsResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.spell.Suggestion suggestions */ 1:
+                    message.suggestions.push(Suggestion.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SuggestionsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.spell.Suggestion suggestions = 1; */
+        for (let i = 0; i < message.suggestions.length; i++)
+            Suggestion.internalBinaryWrite(message.suggestions[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.spell.SuggestionsResponse
+ */
+export const SuggestionsResponse = new SuggestionsResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class Suggestion$Type extends MessageType<Suggestion> {
     constructor() {
@@ -793,7 +987,9 @@ class CustomEntry$Type extends MessageType<CustomEntry> {
             { no: 2, name: "text", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "status", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 5, name: "common_mistakes", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+            { no: 5, name: "common_mistakes", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "level", kind: "enum", T: () => ["elephant.spell.CorrectionLevel", CorrectionLevel] },
+            { no: 7, name: "forms", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
         ]);
     }
     create(value?: PartialMessage<CustomEntry>): CustomEntry {
@@ -803,6 +999,8 @@ class CustomEntry$Type extends MessageType<CustomEntry> {
         message.status = "";
         message.description = "";
         message.commonMistakes = [];
+        message.level = 0;
+        message.forms = {};
         if (value !== undefined)
             reflectionMergePartial<CustomEntry>(this, message, value);
         return message;
@@ -827,6 +1025,12 @@ class CustomEntry$Type extends MessageType<CustomEntry> {
                 case /* repeated string common_mistakes */ 5:
                     message.commonMistakes.push(reader.string());
                     break;
+                case /* elephant.spell.CorrectionLevel level */ 6:
+                    message.level = reader.int32();
+                    break;
+                case /* map<string, string> forms */ 7:
+                    this.binaryReadMap7(message.forms, reader, options);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -837,6 +1041,22 @@ class CustomEntry$Type extends MessageType<CustomEntry> {
             }
         }
         return message;
+    }
+    private binaryReadMap7(map: CustomEntry["forms"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof CustomEntry["forms"] | undefined, val: CustomEntry["forms"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.string();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for elephant.spell.CustomEntry.forms");
+            }
+        }
+        map[key ?? ""] = val ?? "";
     }
     internalBinaryWrite(message: CustomEntry, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* string language = 1; */
@@ -854,6 +1074,12 @@ class CustomEntry$Type extends MessageType<CustomEntry> {
         /* repeated string common_mistakes = 5; */
         for (let i = 0; i < message.commonMistakes.length; i++)
             writer.tag(5, WireType.LengthDelimited).string(message.commonMistakes[i]);
+        /* elephant.spell.CorrectionLevel level = 6; */
+        if (message.level !== 0)
+            writer.tag(6, WireType.Varint).int32(message.level);
+        /* map<string, string> forms = 7; */
+        for (let k of globalThis.Object.keys(message.forms))
+            writer.tag(7, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.forms[k]).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1286,7 +1512,8 @@ export const DeleteEntryResponse = new DeleteEntryResponse$Type();
  * @generated ServiceType for protobuf service elephant.spell.Check
  */
 export const Check = new ServiceType("elephant.spell.Check", [
-    { name: "Text", options: {}, I: TextRequest, O: TextResponse }
+    { name: "Text", options: {}, I: TextRequest, O: TextResponse },
+    { name: "Suggestions", options: {}, I: SuggestionsRequest, O: SuggestionsResponse }
 ]);
 /**
  * @generated ServiceType for protobuf service elephant.spell.Dictionaries
