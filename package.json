@@ -2,13 +2,13 @@
   "name": "@ttab/elephant-api",
   "private": false,
   "license": "MIT",
-  "version": "0.20.0",
+  "version": "0.20.0-1",
   "type": "module",
   "exports": {
     "./repository": {
       "import": {
         "types": "./dist/repository/index.d.mts",
-        "default": "./dist/repository/index.js"
+        "default": "./dist/repository/index.mjs"
       },
       "require": {
         "types": "./dist/repository/index.d.cts",
@@ -18,7 +18,7 @@
     "./repositorysocket": {
       "import": {
         "types": "./dist/repositorysocket/index.d.mts",
-        "default": "./dist/repositorysocket/index.js"
+        "default": "./dist/repositorysocket/index.mjs"
       },
       "require": {
         "types": "./dist/repositorysocket/index.d.cts",
@@ -28,7 +28,7 @@
     "./newsdoc": {
       "import": {
         "types": "./dist/newsdoc/newsdoc.d.mts",
-        "default": "./dist/newsdoc/newsdoc.js"
+        "default": "./dist/newsdoc/newsdoc.mjs"
       },
       "require": {
         "types": "./dist/newsdoc/newsdoc.d.cts",
@@ -38,7 +38,7 @@
     "./index": {
       "import": {
         "types": "./dist/index/index.d.mts",
-        "default": "./dist/index/index.js"
+        "default": "./dist/index/index.mjs"
       },
       "require": {
         "types": "./dist/index/index.d.cts",
@@ -48,7 +48,7 @@
     "./spell": {
       "import": {
         "types": "./dist/spell/index.d.mts",
-        "default": "./dist/spell/index.js"
+        "default": "./dist/spell/index.mjs"
       },
       "require": {
         "types": "./dist/spell/index.d.cts",
@@ -58,7 +58,7 @@
     "./user": {
       "import": {
         "types": "./dist/user/index.d.mts",
-        "default": "./dist/user/index.js"
+        "default": "./dist/user/index.mjs"
       },
       "require": {
         "types": "./dist/user/index.d.cts",
@@ -68,7 +68,7 @@
     "./replicant": {
       "import": {
         "types": "./dist/replicant/index.d.mts",
-        "default": "./dist/replicant/index.js"
+        "default": "./dist/replicant/index.mjs"
       },
       "require": {
         "types": "./dist/replicant/index.d.cts",
