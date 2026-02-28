@@ -1,0 +1,97 @@
+name: Update
+
+on:
+  repository_dispatch:
+    types: [new-tag]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Upstream tag to update to (leave empty for latest)'
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve tag
+        id: tag
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            echo "tag=${{ github.event.client_payload.tag }}" >> "$GITHUB_OUTPUT"
+          elif [ -n "${{ inputs.tag }}" ]; then
+            echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - run: npm ci
+
+      - name: Generate code
+        id: generate
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+
+          if [ -n "$TAG" ]; then
+            OUTPUT=$(bash .github/workflows/update.sh "$TAG" 2>&1)
+          else
+            OUTPUT=$(bash .github/workflows/update.sh 2>&1)
+          fi
+
+          echo "$OUTPUT"
+
+          if echo "$OUTPUT" | grep -q "Tag already exist"; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            RESOLVED_TAG=$(echo "$OUTPUT" | sed -n 's/^Updated to //p')
+            echo "tag=$RESOLVED_TAG" >> "$GITHUB_OUTPUT"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create pull request
+        if: steps.generate.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ steps.generate.outputs.tag }}"
+          BRANCH="update/${TAG}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git checkout -b "$BRANCH"
+          git add proto/ src/
+          git commit -m "chore: update to ${TAG}"
+          git push -u origin "$BRANCH"
+
+          WARNINGS=""
+          for dir in src/*/; do
+            service=$(basename "$dir")
+            if ! node -e "const p=require('./package.json'); process.exit(p.scripts['build:${service}'] ? 0 : 1)"; then
+              WARNINGS="$WARNINGS> - \`${service}\` needs a \`build:${service}\` script in package.json"$'\n'
+            fi
+            if ! node -e "const p=require('./package.json'); process.exit(p.exports['./${service}'] ? 0 : 1)"; then
+              WARNINGS="$WARNINGS> - \`${service}\` needs an export entry in package.json"$'\n'
+            fi
+          done
+
+          BODY="Auto-generated update from upstream tag \`${TAG}\`."
+          if [ -n "$WARNINGS" ]; then
+            printf -v BODY '%s\n\n> [!WARNING]\n> **Manual changes needed before merging:**\n>\n%s' "$BODY" "$WARNINGS"
+          fi
+
+          gh pr create \
+            --title "chore: update ${TAG}" \
+            --body "$BODY" \
+            --base main

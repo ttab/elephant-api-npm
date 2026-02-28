@@ -22,7 +22,7 @@ if [ -z "$tag" ]; then
 
     git -C $checkout checkout $tag >/dev/null 2>&1
 else
-    git clone --depth 1 --branch $tag $src_repo
+    git clone --depth 1 --branch $tag $src_repo $checkout
 fi
 
 # Check if the tag already exists in the current repo.
