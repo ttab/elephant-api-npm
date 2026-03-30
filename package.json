@@ -101,7 +101,7 @@
   "description": "",
   "devDependencies": {
     "@protobuf-ts/plugin": "^2.11.1",
-    "tsdown": "^0.20.3"
+    "tsdown": "^0.21.7"
   },
   "files": [
     "dist"
