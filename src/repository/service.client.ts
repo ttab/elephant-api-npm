@@ -73,6 +73,8 @@ import type { GetAttachmentsResponse } from "./service";
 import type { GetAttachmentsRequest } from "./service";
 import type { CreateUploadResponse } from "./service";
 import type { CreateUploadRequest } from "./service";
+import type { BulkGetDeliverableInfoResponse } from "./service";
+import type { BulkGetDeliverableInfoRequest } from "./service";
 import type { GetDeliverableInfoResponse } from "./service";
 import type { GetDeliverableInfoRequest } from "./service";
 import type { GetWithheldResponse } from "./service";
@@ -290,6 +292,13 @@ export interface IDocumentsClient {
      * @generated from protobuf rpc: GetDeliverableInfo
      */
     getDeliverableInfo(input: GetDeliverableInfoRequest, options?: RpcOptions): UnaryCall<GetDeliverableInfoRequest, GetDeliverableInfoResponse>;
+    /**
+     * BulkGetDeliverableInfo returns deliverable information for multiple
+     * documents in a single request.
+     *
+     * @generated from protobuf rpc: BulkGetDeliverableInfo
+     */
+    bulkGetDeliverableInfo(input: BulkGetDeliverableInfoRequest, options?: RpcOptions): UnaryCall<BulkGetDeliverableInfoRequest, BulkGetDeliverableInfoResponse>;
     /**
      * CreateUpload is used to start the process of uploading objects that then
      * can be attached to a document.
@@ -562,13 +571,23 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
         return stackIntercept<GetDeliverableInfoRequest, GetDeliverableInfoResponse>("unary", this._transport, method, opt, input);
     }
     /**
+     * BulkGetDeliverableInfo returns deliverable information for multiple
+     * documents in a single request.
+     *
+     * @generated from protobuf rpc: BulkGetDeliverableInfo
+     */
+    bulkGetDeliverableInfo(input: BulkGetDeliverableInfoRequest, options?: RpcOptions): UnaryCall<BulkGetDeliverableInfoRequest, BulkGetDeliverableInfoResponse> {
+        const method = this.methods[25], opt = this._transport.mergeOptions(options);
+        return stackIntercept<BulkGetDeliverableInfoRequest, BulkGetDeliverableInfoResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
      * CreateUpload is used to start the process of uploading objects that then
      * can be attached to a document.
      *
      * @generated from protobuf rpc: CreateUpload
      */
     createUpload(input: CreateUploadRequest, options?: RpcOptions): UnaryCall<CreateUploadRequest, CreateUploadResponse> {
-        const method = this.methods[25], opt = this._transport.mergeOptions(options);
+        const method = this.methods[26], opt = this._transport.mergeOptions(options);
         return stackIntercept<CreateUploadRequest, CreateUploadResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -577,7 +596,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: GetAttachments
      */
     getAttachments(input: GetAttachmentsRequest, options?: RpcOptions): UnaryCall<GetAttachmentsRequest, GetAttachmentsResponse> {
-        const method = this.methods[26], opt = this._transport.mergeOptions(options);
+        const method = this.methods[27], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetAttachmentsRequest, GetAttachmentsResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -586,7 +605,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: GetMatching
      */
     getMatching(input: GetMatchingRequest, options?: RpcOptions): UnaryCall<GetMatchingRequest, GetMatchingResponse> {
-        const method = this.methods[27], opt = this._transport.mergeOptions(options);
+        const method = this.methods[28], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetMatchingRequest, GetMatchingResponse>("unary", this._transport, method, opt, input);
     }
     /**
@@ -595,7 +614,7 @@ export class DocumentsClient implements IDocumentsClient, ServiceInfo {
      * @generated from protobuf rpc: GetSocketToken
      */
     getSocketToken(input: GetSocketTokenRequest, options?: RpcOptions): UnaryCall<GetSocketTokenRequest, GetSocketTokenResponse> {
-        const method = this.methods[28], opt = this._transport.mergeOptions(options);
+        const method = this.methods[29], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetSocketTokenRequest, GetSocketTokenResponse>("unary", this._transport, method, opt, input);
     }
 }

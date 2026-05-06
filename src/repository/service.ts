@@ -2637,6 +2637,58 @@ export interface GetDeliverableInfoResponse {
     eventUuid: string;
 }
 /**
+ * @generated from protobuf message elephant.repository.BulkGetDeliverableInfoRequest
+ */
+export interface BulkGetDeliverableInfoRequest {
+    /**
+     * UUIDs of the deliverables to look up.
+     *
+     * @generated from protobuf field: repeated string uuids = 1
+     */
+    uuids: string[];
+}
+/**
+ * @generated from protobuf message elephant.repository.BulkGetDeliverableInfoResponse
+ */
+export interface BulkGetDeliverableInfoResponse {
+    /**
+     * Items contains one entry per deliverable that has planning information.
+     * Deliverables without planning information are omitted.
+     *
+     * @generated from protobuf field: repeated elephant.repository.DeliverableInfo items = 1
+     */
+    items: DeliverableInfo[];
+}
+/**
+ * @generated from protobuf message elephant.repository.DeliverableInfo
+ */
+export interface DeliverableInfo {
+    /**
+     * UUID of the deliverable document.
+     *
+     * @generated from protobuf field: string uuid = 1
+     */
+    uuid: string;
+    /**
+     * UUID of the related planning item.
+     *
+     * @generated from protobuf field: string planning_uuid = 2
+     */
+    planningUuid: string;
+    /**
+     * UUID of the related assignment.
+     *
+     * @generated from protobuf field: string assignment_uuid = 3
+     */
+    assignmentUuid: string;
+    /**
+     * UUID of the related event.
+     *
+     * @generated from protobuf field: string event_uuid = 4
+     */
+    eventUuid: string;
+}
+/**
  * @generated from protobuf message elephant.repository.CreateUploadRequest
  */
 export interface CreateUploadRequest {
@@ -11272,6 +11324,171 @@ class GetDeliverableInfoResponse$Type extends MessageType<GetDeliverableInfoResp
  */
 export const GetDeliverableInfoResponse = new GetDeliverableInfoResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
+class BulkGetDeliverableInfoRequest$Type extends MessageType<BulkGetDeliverableInfoRequest> {
+    constructor() {
+        super("elephant.repository.BulkGetDeliverableInfoRequest", [
+            { no: 1, name: "uuids", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<BulkGetDeliverableInfoRequest>): BulkGetDeliverableInfoRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.uuids = [];
+        if (value !== undefined)
+            reflectionMergePartial<BulkGetDeliverableInfoRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: BulkGetDeliverableInfoRequest): BulkGetDeliverableInfoRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated string uuids */ 1:
+                    message.uuids.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: BulkGetDeliverableInfoRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated string uuids = 1; */
+        for (let i = 0; i < message.uuids.length; i++)
+            writer.tag(1, WireType.LengthDelimited).string(message.uuids[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.BulkGetDeliverableInfoRequest
+ */
+export const BulkGetDeliverableInfoRequest = new BulkGetDeliverableInfoRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class BulkGetDeliverableInfoResponse$Type extends MessageType<BulkGetDeliverableInfoResponse> {
+    constructor() {
+        super("elephant.repository.BulkGetDeliverableInfoResponse", [
+            { no: 1, name: "items", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => DeliverableInfo }
+        ]);
+    }
+    create(value?: PartialMessage<BulkGetDeliverableInfoResponse>): BulkGetDeliverableInfoResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.items = [];
+        if (value !== undefined)
+            reflectionMergePartial<BulkGetDeliverableInfoResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: BulkGetDeliverableInfoResponse): BulkGetDeliverableInfoResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.repository.DeliverableInfo items */ 1:
+                    message.items.push(DeliverableInfo.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: BulkGetDeliverableInfoResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.repository.DeliverableInfo items = 1; */
+        for (let i = 0; i < message.items.length; i++)
+            DeliverableInfo.internalBinaryWrite(message.items[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.BulkGetDeliverableInfoResponse
+ */
+export const BulkGetDeliverableInfoResponse = new BulkGetDeliverableInfoResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class DeliverableInfo$Type extends MessageType<DeliverableInfo> {
+    constructor() {
+        super("elephant.repository.DeliverableInfo", [
+            { no: 1, name: "uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "planning_uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "assignment_uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "event_uuid", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<DeliverableInfo>): DeliverableInfo {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.uuid = "";
+        message.planningUuid = "";
+        message.assignmentUuid = "";
+        message.eventUuid = "";
+        if (value !== undefined)
+            reflectionMergePartial<DeliverableInfo>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeliverableInfo): DeliverableInfo {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string uuid */ 1:
+                    message.uuid = reader.string();
+                    break;
+                case /* string planning_uuid */ 2:
+                    message.planningUuid = reader.string();
+                    break;
+                case /* string assignment_uuid */ 3:
+                    message.assignmentUuid = reader.string();
+                    break;
+                case /* string event_uuid */ 4:
+                    message.eventUuid = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: DeliverableInfo, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string uuid = 1; */
+        if (message.uuid !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.uuid);
+        /* string planning_uuid = 2; */
+        if (message.planningUuid !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.planningUuid);
+        /* string assignment_uuid = 3; */
+        if (message.assignmentUuid !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.assignmentUuid);
+        /* string event_uuid = 4; */
+        if (message.eventUuid !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.eventUuid);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.repository.DeliverableInfo
+ */
+export const DeliverableInfo = new DeliverableInfo$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class CreateUploadRequest$Type extends MessageType<CreateUploadRequest> {
     constructor() {
         super("elephant.repository.CreateUploadRequest", [
@@ -12457,6 +12674,7 @@ export const Documents = new ServiceType("elephant.repository.Documents", [
     { name: "Unlock", options: {}, I: UnlockRequest, O: UnlockResponse },
     { name: "GetWithheld", options: {}, I: GetWithheldRequest, O: GetWithheldResponse },
     { name: "GetDeliverableInfo", options: {}, I: GetDeliverableInfoRequest, O: GetDeliverableInfoResponse },
+    { name: "BulkGetDeliverableInfo", options: {}, I: BulkGetDeliverableInfoRequest, O: BulkGetDeliverableInfoResponse },
     { name: "CreateUpload", options: {}, I: CreateUploadRequest, O: CreateUploadResponse },
     { name: "GetAttachments", options: {}, I: GetAttachmentsRequest, O: GetAttachmentsResponse },
     { name: "GetMatching", options: {}, I: GetMatchingRequest, O: GetMatchingResponse },
