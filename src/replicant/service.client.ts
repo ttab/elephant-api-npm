@@ -6,6 +6,8 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { Replication } from "./service";
+import type { ListTargetsResponse } from "./service";
+import type { ListTargetsRequest } from "./service";
 import type { GetTargetStateResponse } from "./service";
 import type { GetTargetStateRequest } from "./service";
 import type { ChangeTargetStateResponse } from "./service";
@@ -59,6 +61,13 @@ export interface IReplicationClient {
      * @generated from protobuf rpc: GetTargetState
      */
     getTargetState(input: GetTargetStateRequest, options?: RpcOptions): UnaryCall<GetTargetStateRequest, GetTargetStateResponse>;
+    /**
+     * ListTargets returns all configured replication targets and their current
+     * state.
+     *
+     * @generated from protobuf rpc: ListTargets
+     */
+    listTargets(input: ListTargetsRequest, options?: RpcOptions): UnaryCall<ListTargetsRequest, ListTargetsResponse>;
 }
 /**
  * Replication manages document replication between Elephant repository
@@ -119,5 +128,15 @@ export class ReplicationClient implements IReplicationClient, ServiceInfo {
     getTargetState(input: GetTargetStateRequest, options?: RpcOptions): UnaryCall<GetTargetStateRequest, GetTargetStateResponse> {
         const method = this.methods[4], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetTargetStateRequest, GetTargetStateResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * ListTargets returns all configured replication targets and their current
+     * state.
+     *
+     * @generated from protobuf rpc: ListTargets
+     */
+    listTargets(input: ListTargetsRequest, options?: RpcOptions): UnaryCall<ListTargetsRequest, ListTargetsResponse> {
+        const method = this.methods[5], opt = this._transport.mergeOptions(options);
+        return stackIntercept<ListTargetsRequest, ListTargetsResponse>("unary", this._transport, method, opt, input);
     }
 }

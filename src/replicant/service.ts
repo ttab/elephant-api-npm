@@ -239,6 +239,47 @@ export interface GetTargetStateResponse {
     state: TargetState;
 }
 /**
+ * @generated from protobuf message elephant.replicant.ListTargetsRequest
+ */
+export interface ListTargetsRequest {
+}
+/**
+ * @generated from protobuf message elephant.replicant.ListTargetsResponse
+ */
+export interface ListTargetsResponse {
+    /**
+     * The configured replication targets.
+     *
+     * @generated from protobuf field: repeated elephant.replicant.TargetInfo targets = 1
+     */
+    targets: TargetInfo[];
+}
+/**
+ * TargetInfo is a summary of a configured replication target.
+ *
+ * @generated from protobuf message elephant.replicant.TargetInfo
+ */
+export interface TargetInfo {
+    /**
+     * Name of the replication target.
+     *
+     * @generated from protobuf field: string name = 1
+     */
+    name: string;
+    /**
+     * The URL of the target repository.
+     *
+     * @generated from protobuf field: string repository_url = 2
+     */
+    repositoryUrl: string;
+    /**
+     * Enabled is true if the target is configured to run.
+     *
+     * @generated from protobuf field: bool enabled = 3
+     */
+    enabled: boolean;
+}
+/**
  * TargetAction is the action to take on a replication target.
  *
  * @generated from protobuf enum elephant.replicant.TargetAction
@@ -987,6 +1028,154 @@ class GetTargetStateResponse$Type extends MessageType<GetTargetStateResponse> {
  * @generated MessageType for protobuf message elephant.replicant.GetTargetStateResponse
  */
 export const GetTargetStateResponse = new GetTargetStateResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListTargetsRequest$Type extends MessageType<ListTargetsRequest> {
+    constructor() {
+        super("elephant.replicant.ListTargetsRequest", []);
+    }
+    create(value?: PartialMessage<ListTargetsRequest>): ListTargetsRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        if (value !== undefined)
+            reflectionMergePartial<ListTargetsRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListTargetsRequest): ListTargetsRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListTargetsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.replicant.ListTargetsRequest
+ */
+export const ListTargetsRequest = new ListTargetsRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ListTargetsResponse$Type extends MessageType<ListTargetsResponse> {
+    constructor() {
+        super("elephant.replicant.ListTargetsResponse", [
+            { no: 1, name: "targets", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => TargetInfo }
+        ]);
+    }
+    create(value?: PartialMessage<ListTargetsResponse>): ListTargetsResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.targets = [];
+        if (value !== undefined)
+            reflectionMergePartial<ListTargetsResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ListTargetsResponse): ListTargetsResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated elephant.replicant.TargetInfo targets */ 1:
+                    message.targets.push(TargetInfo.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ListTargetsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated elephant.replicant.TargetInfo targets = 1; */
+        for (let i = 0; i < message.targets.length; i++)
+            TargetInfo.internalBinaryWrite(message.targets[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.replicant.ListTargetsResponse
+ */
+export const ListTargetsResponse = new ListTargetsResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TargetInfo$Type extends MessageType<TargetInfo> {
+    constructor() {
+        super("elephant.replicant.TargetInfo", [
+            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "repository_url", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "enabled", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        ]);
+    }
+    create(value?: PartialMessage<TargetInfo>): TargetInfo {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.name = "";
+        message.repositoryUrl = "";
+        message.enabled = false;
+        if (value !== undefined)
+            reflectionMergePartial<TargetInfo>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TargetInfo): TargetInfo {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string name */ 1:
+                    message.name = reader.string();
+                    break;
+                case /* string repository_url */ 2:
+                    message.repositoryUrl = reader.string();
+                    break;
+                case /* bool enabled */ 3:
+                    message.enabled = reader.bool();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: TargetInfo, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string name = 1; */
+        if (message.name !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.name);
+        /* string repository_url = 2; */
+        if (message.repositoryUrl !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.repositoryUrl);
+        /* bool enabled = 3; */
+        if (message.enabled !== false)
+            writer.tag(3, WireType.Varint).bool(message.enabled);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message elephant.replicant.TargetInfo
+ */
+export const TargetInfo = new TargetInfo$Type();
 /**
  * @generated ServiceType for protobuf service elephant.replicant.Replication
  */
@@ -995,5 +1184,6 @@ export const Replication = new ServiceType("elephant.replicant.Replication", [
     { name: "ConfigureTarget", options: {}, I: ConfigureTargetRequest, O: ConfigureTargetResponse },
     { name: "RemoveTarget", options: {}, I: RemoveTargetRequest, O: RemoveTargetResponse },
     { name: "ChangeTargetState", options: {}, I: ChangeTargetStateRequest, O: ChangeTargetStateResponse },
-    { name: "GetTargetState", options: {}, I: GetTargetStateRequest, O: GetTargetStateResponse }
+    { name: "GetTargetState", options: {}, I: GetTargetStateRequest, O: GetTargetStateResponse },
+    { name: "ListTargets", options: {}, I: ListTargetsRequest, O: ListTargetsResponse }
 ]);
