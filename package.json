@@ -2,7 +2,7 @@
   "name": "@ttab/elephant-api",
   "private": false,
   "license": "MIT",
-  "version": "0.24.2",
+  "version": "0.24.3-beta.2",
   "type": "module",
   "exports": {
     "./repository": {
@@ -82,11 +82,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ttab/elephant-api-npm.git"
+    "url": "https://github.com/ttab/elephant-api-npm"
   },
   "scripts": {
     "test": "echo \"no tests\"",
     "typecheck": "tsc --noEmit",
+    "lint": "eslint . --cache --report-unused-disable-directives --max-warnings 0",
     "build": "pnpm run typecheck && tsdown",
     "update": "bash scripts/update.sh",
     "prepublish": "pnpm run build"
